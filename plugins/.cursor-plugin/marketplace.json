@@ -1,0 +1,16 @@
+{
+  "name": "techultra-cursor-marketplace",
+  "owner": {
+    "name": "TechUltra Solutions Pvt Ltd"
+  },
+  "metadata": {
+    "pluginRoot": "plugins"
+  },
+  "plugins": [
+    {
+      "name": "odoo-development",
+      "source": "odoo-development",
+      "description": "odoo development plugin with skills, commands, rules, hooks, and mcp-first workflows for odoo 18 and 19 community and enterprise."
+    }
+  ]
+}

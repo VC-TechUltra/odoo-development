@@ -1,0 +1,17 @@
+{
+  "name": "odoo-development",
+  "version": "1.0.0",
+  "description": "odoo development plugin for cursor with focused skills, commands, rules, hooks, and mcp-first workflows for odoo 18 and 19 community and enterprise.",
+  "author": {
+    "name": "TechUltra Solutions Pvt Ltd"
+  },
+  "license": "MIT",
+  "homepage": "",
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "rules": "./rules/",
+  "agents": "./agents/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./mcp.json",
+  "logo": "./assets/logo.svg"
+}
