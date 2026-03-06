@@ -1,0 +1,12 @@
+---
+description: Odoo migration and upgrade guardrails with Odoo 18/19 CE/EE MCP-first validation. Use for upgrade tasks and deprecated-pattern cleanup.
+globs: ["**/*.py", "**/*.xml", "**/*.js"]
+alwaysApply: false
+---
+
+# Odoo Upgrade Rule
+
+- State source version, target version, impacted modules, and likely risk areas first.
+- Preserve external IDs and business semantics where possible.
+- For Odoo 18/19 Community and Enterprise, verify breaking changes with MCP before proposing replacements.
+- Prefer incremental patches over broad rewrites.

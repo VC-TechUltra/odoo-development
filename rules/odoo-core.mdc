@@ -1,0 +1,15 @@
+---
+description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and MCP-first verification. Use for Python and module work.
+globs: ["**/*.py", "**/__manifest__.py", "**/__init__.py"]
+alwaysApply: false
+---
+
+# Odoo Core Rule
+
+- Detect Odoo version first.
+- Search the repository and use MCP before proposing framework-specific code.
+- For Odoo 18/19 Community and Enterprise, always validate schema and dependencies through MCP.
+- Do not invent fields, comodels, XML IDs, method names, or dependencies.
+- Prefer batch-safe ORM code.
+- Avoid unnecessary sudo().
+- Keep manifests, imports, security, views, and tests aligned.

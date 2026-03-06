@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "bash ./hooks/mcp-health-check.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "bash ./hooks/validate-odoo-paths.sh"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+---
+description: Odoo frontend and OWL standards for web client work, assets, components, and version-aware patterns. Use for JS, XML templates, and OWL tasks.
+globs: ["**/*.js", "**/*.ts", "**/*.xml", "**/*.scss", "**/static/src/**"]
+alwaysApply: false
+---
+
+# Odoo OWL Rule
+
+- Detect target Odoo version before proposing OWL code.
+- For Odoo 18/19, verify frontend conventions via MCP development guidelines before generating code.
+- Keep components small and registry usage explicit.
+- Align assets with the module manifest and bundle declarations.

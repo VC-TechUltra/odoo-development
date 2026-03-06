@@ -1,0 +1,13 @@
+---
+description: Odoo XML, actions, menus, ACLs, and record-rule standards with MCP-first XML ID verification. Use for XML and security tasks.
+globs: ["**/*.xml", "**/security/*.csv", "**/security/*.xml"]
+alwaysApply: false
+---
+
+# Odoo Views and Security Rule
+
+- Use inherited views with minimal XPath.
+- Verify XML IDs with MCP before referencing them.
+- Distinguish ACLs, record rules, and groups clearly.
+- Do not broaden access accidentally.
+- For Odoo 18/19 Community and Enterprise, validate `allowed_company_ids`, multi-company behavior, and Enterprise-only assumptions through MCP-guided source knowledge.

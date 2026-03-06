@@ -1,0 +1,7 @@
+{
+  "note": "sample hook layout only; adapt to the exact Cursor hook schema you use",
+  "hooks": [
+    {"name": "validate-odoo-paths", "command": "./hooks/validate-odoo-paths.sh"},
+    {"name": "mcp-health-check", "command": "./hooks/mcp-health-check.sh"}
+  ]
+}
