@@ -2,6 +2,19 @@
 
 Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, hooks, and MCP-first workflows.
 
+## How to use
+
+**Commands** (run in Agent Chat / Cmd+K):
+- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, or `/odoo-fix-traceback` in chat
+- Or press `Ctrl+Shift+P` (Cmd+Shift+P on Mac) and type `odoo` to see commands
+
+**Skills** (apply automatically or invoke manually):
+- Type `/` in chat and pick a skill (e.g. `odoo-orchestrator`, `odoo-backend`)
+- Or mention Odoo in your request—the agent will use relevant skills
+
+**Rules** (apply when editing matching files):
+- Edit `.py`, `.xml`, `.js` files—rules apply automatically
+
 ## Included capabilities
 - Skills for backend, security, migration, OWL, testing, troubleshooting, functional flows, and orchestration
 - Commands for module generation, review, migration, traceback fixing, and planning
@@ -19,7 +32,9 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 "url": "http://your-server:8090/mcp"
 ```
 
-**Prerequisites:** The odoo-knowledge MCP server must be running and reachable before using the plugin's commands and skills. Run `health_check` via MCP when connectivity is uncertain.
+**With MCP:** Commands and skills use odoo-knowledge MCP for best results. Run `health_check` via MCP when connectivity is uncertain.
+
+**Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 
 ## MCP policy
 This plugin is designed to use the `odoo-knowledge` MCP first for:

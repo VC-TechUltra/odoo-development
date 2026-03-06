@@ -5,6 +5,8 @@ description: review the selected odoo code for correctness, security, maintainab
 
 Review the selected Odoo code for correctness, security, maintainability, and upgrade safety.
 
+**If odoo-knowledge MCP is unavailable:** Use built-in SemanticSearch, Grep, and Read tools. Proceed with the review—do not block.
+
 Before reviewing:
 - Detect version.
 - Use `search_odoo_codebase` or `code_search`.

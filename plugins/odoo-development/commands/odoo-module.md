@@ -5,6 +5,8 @@ description: create or extend an odoo module using repository patterns and mcp v
 
 Create or extend an Odoo module using repository patterns and MCP verification.
 
+**If odoo-knowledge MCP is unavailable:** Use built-in SemanticSearch, Grep, and Read tools to find patterns. Proceed with implementation—do not block.
+
 Workflow:
 1. Detect Odoo version.
 2. Use `search_odoo_codebase` or `code_search`.

@@ -11,6 +11,8 @@ description: odoo task-routing and planning skill that decides which odoo skill 
 - Start here for ambiguous Odoo work. Route to backend, security, migration, owl, testing, troubleshooting, or functional skills as needed. For Odoo 18/19 Community and Enterprise, consult MCP before selecting implementation patterns.
 
 ## MCP-first workflow
+When odoo-knowledge MCP is available: use it first. When MCP is unavailable: use built-in SemanticSearch, Grep, and Read tools—proceed, do not block.
+
 1. `health_check` when MCP reachability is uncertain.
 2. `search_odoo_codebase` or `code_search` for similar patterns.
 3. `read_odoo_file` or `get_file_snippet` for exact source context.
