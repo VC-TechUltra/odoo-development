@@ -10,7 +10,9 @@
     {
       "name": "odoo-development",
       "source": "odoo-development",
-      "description": "odoo development plugin with skills, commands, rules, hooks, and mcp-first workflows for odoo 18 and 19 community and enterprise."
+      "description": "odoo development plugin with skills, commands, rules, hooks, and mcp-first workflows for odoo 18 and 19 community and enterprise.",
+      "repository": "https://github.com/VC-TechUltra/odoo-development",
+      "homepage": "https://github.com/VC-TechUltra/odoo-development"
     }
   ]
 }
