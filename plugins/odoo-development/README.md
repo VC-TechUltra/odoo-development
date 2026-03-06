@@ -54,6 +54,23 @@ The plugin's agents (odoo-code-reviewer, odoo-upgrade-analyzer) use `Read`, `Glo
 - `assets/logo.svg`
 
 ## Marketplace repo layout
-This zip is structured as a marketplace source repo:
-- `plugins/.cursor-plugin/marketplace.json`
-- `plugins/odoo-development/...`
+This repo is structured as a Cursor marketplace source. The marketplace manifest must be at the **repository root**:
+
+```
+<repo-root>/
+├── .cursor-plugin/
+│   └── marketplace.json       # Required: at repo root
+├── plugins/
+│   └── odoo-development/      # This plugin
+│       ├── .cursor-plugin/
+│       │   └── plugin.json
+│       ├── skills/
+│       ├── commands/
+│       ├── rules/
+│       ├── agents/
+│       ├── hooks/
+│       ├── mcp.json
+│       └── assets/
+```
+
+With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers the plugin at `plugins/odoo-development/`.

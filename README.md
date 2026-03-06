@@ -1,17 +1,27 @@
 # TechUltra Cursor Marketplace Source
 
-This repository is a build-oriented source layout for Cursor plugin packaging.
+This repository is a Cursor marketplace source layout for plugin packaging.
 
 ## Layout
-- `plugins/.cursor-plugin/marketplace.json`
-- `plugins/odoo-development/.cursor-plugin/plugin.json`
-- `plugins/odoo-development/skills/`
-- `plugins/odoo-development/commands/`
-- `plugins/odoo-development/rules/`
-- `plugins/odoo-development/agents/`
-- `plugins/odoo-development/hooks/hooks.json`
-- `plugins/odoo-development/mcp.json`
+
+The marketplace manifest **must** be at the repository root for Cursor to discover plugins:
+
+```
+<repo-root>/
+├── .cursor-plugin/
+│   └── marketplace.json       # At repo root (required)
+├── plugins/
+│   └── odoo-development/
+│       ├── .cursor-plugin/plugin.json
+│       ├── skills/
+│       ├── commands/
+│       ├── rules/
+│       ├── agents/
+│       ├── hooks/hooks.json
+│       ├── mcp.json
+│       └── assets/
+```
 
 ## Notes
-- The plugin uses a streamable-http MCP server at `http://192.168.29.55:8090/mcp`.
+- The plugin uses a streamable-http MCP server (default: `http://127.0.0.1:8090/mcp`). Edit `plugins/odoo-development/mcp.json` to change the URL.
 - The plugin is tuned for Odoo 18 and 19 Community and Enterprise.
