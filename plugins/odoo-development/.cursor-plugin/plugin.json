@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/VC-TechUltra/odoo-development",
-  "repository": "https://github.com/VC-TechUltra/odoo-development",
+  "repository": "https://github.com/VC-TechUltra/odoo-development/tree/main/plugins/odoo-development",
   "skills": "./skills/",
   "commands": "./commands/",
   "rules": "./rules/",
