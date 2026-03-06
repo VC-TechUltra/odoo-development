@@ -1,7 +1,16 @@
 {
-  "note": "sample hook layout only; adapt to the exact Cursor hook schema you use",
-  "hooks": [
-    {"name": "validate-odoo-paths", "command": "./hooks/validate-odoo-paths.sh"},
-    {"name": "mcp-health-check", "command": "./hooks/mcp-health-check.sh"}
-  ]
+  "note": "Sample hook layout; copy to hooks/hooks.json or adapt for your Cursor hook schema",
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "sh ./hooks/mcp-health-check.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "sh ./hooks/validate-odoo-paths.sh"
+      }
+    ]
+  }
 }

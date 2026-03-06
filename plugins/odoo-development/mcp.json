@@ -2,7 +2,7 @@
   "mcpServers": {
     "odoo-knowledge": {
       "type": "streamable-http",
-      "url": "http://192.168.29.55:8090/mcp",
+      "url": "http://127.0.0.1:8090/mcp",
       "alwaysAllow": [
         "search_odoo_codebase",
         "read_odoo_file",
