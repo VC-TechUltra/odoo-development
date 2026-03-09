@@ -1,12 +1,138 @@
 ---
-description: Odoo frontend and OWL standards for web client work, assets, components, and version-aware patterns. Use for JS, XML templates, and OWL tasks.
+description: Odoo frontend and OWL standards for web client work, assets, components, and version-aware patterns. Use for JS, XML templates, and OWL tasks across versions 14-19.
 globs: ["**/*.js", "**/*.ts", "**/*.xml", "**/*.scss", "**/static/src/**"]
 alwaysApply: false
 ---
 
 # Odoo OWL Rule
 
-- Detect target Odoo version before proposing OWL code.
-- For Odoo 18/19, verify frontend conventions via MCP development guidelines before generating code.
-- Keep components small and registry usage explicit.
-- Align assets with the module manifest and bundle declarations.
+## Version Detection (CRITICAL)
+- Detect target Odoo version FIRST
+- OWL availability: v14 (NO OWL), v15 (OWL 1.x), v16-18 (OWL 2.x), v19+ (OWL 3.x)
+- Check __manifest__.py or version key for version confirmation
+- Use MCP to verify Odoo version and available services when possible
+
+## Version-Specific Rules
+
+### Odoo 14 - Legacy JavaScript Only
+- NO OWL framework available
+- Use odoo.define() for module registration
+- Use Widget.extend() for component-like patterns
+- Events dict for DOM event binding: { 'click .btn': 'onClick' }
+- Legacy AJAX rpc for server communication
+- No ES6 - use ES5 JavaScript
+- Templates in <t t-name=""> XML files
+
+### Odoo 15 - OWL 1.x
+- OWL framework introduced but legacy JS still works
+- odoo.define() with owl.hooks for component lifecycle
+- Templates use owl="1" attribute
+- owl.Component, owl.Hooks available
+- Transition period - prefer legacy unless OWL specifically needed
+- Legacy Widget still supported
+
+### Odoo 16-18 - OWL 2.x (Current Standard)
+- ES6 modules with /** @odoo-module **/ annotation
+- import { Component, useState, useEffect, useRef } from "@odoo/owl"
+- useService() for services (orm, action, notification)
+- useSetupAutofocus() for form focus management
+- Static props for class definitions: static template = ...
+- Props type checking via static props
+- XML templates with t-name and proper asset loading
+- Asset bundles in __manifest__.py
+
+### Odoo 19+ - OWL 3.x
+- Full static properties required for all class definitions
+- Full TypeScript support with .ts files
+- Type hints for props, state, and services
+- New hooks: useVisible, useIntersectionObserver
+- Enhanced reactivity system
+- Strict component definition patterns
+
+## Asset Management
+
+### Manifest Bundle Declaration
+```python
+'assets': {
+    'web.assets_backend': [
+        'module_name/static/src/js/components/**/*.js',
+        'module_name/static/src/xml/**/*.xml',
+    ],
+}
+```
+
+### Module Registration
+- /** @odoo-module **/ required for ES6 modules
+- Component must be exported as default
+- Template XML must be in assets bundle
+
+## Component Patterns
+
+### Basic OWL 2.x Component
+```javascript
+/** @odoo-module **/
+import { Component, useState } from "@odoo/owl";
+
+export class MyComponent extends Component {
+    static template = "my_module.MyComponent";
+    static props = ["title", "onSave"];
+
+    setup() {
+        this.state = useState({ count: 0 });
+    }
+
+    increment() {
+        this.state.count++;
+    }
+}
+```
+
+### Service Usage
+```javascript
+import { useService } from "@odoo/owl";
+
+setup() {
+    this.orm = useService("orm");
+    this.notification = useService("notification");
+}
+```
+
+## XML Template Conventions
+
+### Odoo 14-15 Legacy
+```xml
+<t t-name="module.component">
+    <div class="my_class">
+        <button t-on-click="on_click">Click</button>
+    </div>
+</t>
+```
+
+### OWL Templates (v16+)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="module.MyComponent" owl="1">
+        <div class="o_my_component">
+            <span t-esc="props.title"/>
+            <button t-on-click="increment">Count: <t t-esc="state.count"/></button>
+        </div>
+    </t>
+</templates>
+```
+
+## Best Practices
+- Keep components small and focused
+- Use registry pattern for component discovery
+- Separate concerns: components, services, utils
+- Always verify Odoo version before selecting patterns
+- Use MCP to verify schema, XML IDs, and services
+- Follow existing repository patterns before introducing new ones
+- TypeScript preferred for Odoo 19+
+- Keep changes minimal and upgrade-safe
+
+## Security Considerations
+- Never expose sensitive data in templates
+- Use proper access rights checks via ORM
+- Sanitize user inputs in t-esc contexts
+- Follow Odoo's XSS prevention guidelines
