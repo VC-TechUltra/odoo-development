@@ -6,7 +6,7 @@
     "name": "TechUltra Solutions Pvt Ltd"
   },
   "license": "MIT",
-  "homepage": "https://github.com/VC-TechUltra/odoo-development",
+  "homepage": "https://techultrasolutions.com",
   "repository": "https://github.com/VC-TechUltra/odoo-development/tree/main/plugins/odoo-development",
   "skills": "./skills/",
   "commands": "./commands/",
