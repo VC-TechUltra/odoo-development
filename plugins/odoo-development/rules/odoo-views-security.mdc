@@ -1,13 +1,323 @@
 ---
-description: Odoo XML, actions, menus, ACLs, and record-rule standards with MCP-first XML ID verification. Use for XML and security tasks.
+description: Odoo XML views, actions, menus, ACLs, and record-rule standards with MCP-first XML ID verification. Use for XML and security tasks across versions 14-19.
 globs: ["**/*.xml", "**/security/*.csv", "**/security/*.xml"]
 alwaysApply: false
 ---
 
 # Odoo Views and Security Rule
 
-- Use inherited views with minimal XPath.
-- Verify XML IDs with MCP before referencing them.
-- Distinguish ACLs, record rules, and groups clearly.
-- Do not broaden access accidentally.
-- For Odoo 18/19 Community and Enterprise, validate `allowed_company_ids`, multi-company behavior, and Enterprise-only assumptions through MCP-guided source knowledge.
+## Version Detection (CRITICAL)
+- Detect Odoo version FIRST for XML work
+- attrs/states syntax: v14-16 (attrs works), v17+ (attrs REMOVED)
+
+## XML View Version Rules
+
+### Odoo 14-16
+- attrs syntax works: attrs="{'invisible': [('state', '=', 'draft')]}"
+- states syntax works: states="draft,done"
+- Can use both styles
+
+### Odoo 17+ (attrs/states REMOVED)
+- Use inline expressions: invisible="state == 'draft'"
+- No attrs or states attributes allowed
+
+### Expression Conversion
+| Old (attrs) | New (v17+) |
+|-------------|------------|
+| [('state','=','draft')] | state == 'draft' |
+| [('field','=',False)] | not field |
+| ['&', A, B] | A and B |
+
+## XML View Structure
+
+### View Types
+- `form` - Editable form view
+- `tree` - List view (kanban, list, tree)
+- `kanban` - Kanban board view
+- `graph` - Graph/chart view
+- `pivot` - Pivot table view
+- `calendar` - Calendar view
+- `search` - Search view
+- `qweb` - QWeb templates
+
+### Common View Attributes
+- `name` - Unique identifier
+- `model` - Related model
+- `priority` - View precedence (lower = higher priority)
+- `arch` - View architecture (contains field definitions)
+- `groups_id` - Restrict to specific groups
+
+### Field Definitions
+```xml
+<field name="name" />
+<field name="partner_id" />
+<field name="state" invisible="1" />
+<field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}" />
+```
+
+### Inherited Views
+```xml
+<record id="view_form_extended" model="ir.ui.view">
+    <field name="name">account.move.form.extended</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='line_ids']" position="after">
+            <field name="notes" />
+        </xpath>
+    </field>
+</record>
+```
+
+### XPath Best Practices
+- Use stable attributes: `expr="//field[@name='line_ids']"`
+- Avoid position attributes when possible
+- Use position="inside/after/replace/attributes"
+
+## Window Actions
+
+### Action Types
+- `ir.actions.act_window` - Form/List actions
+- `ir.actions.act_url` - URL actions
+- `ir.actions.act_server` - Server actions
+- `ir.actions.client` - Client actions
+
+### Action Definition
+```xml
+<record id="action_account_move" model="ir.actions.act_window">
+    <field name="name">Journal Entries</field>
+    <field name="res_model">account.move</field>
+    <field name="view_mode">tree,form</field>
+    <field name="context">{'search_default_posted': 1}</field>
+    <field name="domain">[('state', '=', 'posted')]</field>
+</record>
+```
+
+### Context Variables
+- `active_model` - Current model
+- `active_id` - Current record ID
+- `active_ids` - Multiple selected IDs
+- `time` - Time module access
+
+## Menu Items
+
+### Menu Structure
+```xml
+<menuitem id="menu_account_root"
+          name="Accounting"
+          sequence="10"
+          web_icon="account,static/description/icon.png"/>
+
+<menuitem id="menu_account_journals"
+          name="Journals"
+          parent="menu_account_root"
+          action="action_account_journal"
+          sequence="10"/>
+```
+
+### Menu Attributes
+- `id` - Unique XML ID
+- `name` - Display name
+- `parent` - Parent menu XML ID
+- `action` - Related action XML ID
+- `sequence` - Display order
+- `groups_id` - Group restrictions
+- `web_icon` - Icon path (Odoo 14+)
+
+## Security - ACLs (Access Control Lists)
+
+### ACL Definition (XML)
+```xml
+<record id="aclr_account_move" model="ir.acl">
+    <field name="name">account.move.read</field>
+    <field name="model_id" ref="model_account_move"/>
+    <field name="group_id" ref="account.group_account_invoice"/>
+    <field name="perm_read">1</field>
+    <field name="perm_write">0</field>
+    <field name="perm_create">0</field>
+    <field name="perm_unlink">0</field>
+</record>
+```
+
+### ACL Definition (CSV)
+```
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+aclr_account_move,account.move.read,model_account_move,group_account_user,1,0,0,0
+```
+
+### Permission Hierarchy
+- `admin` group: full access (no ACL needed)
+- Specific group: granular permissions
+- No group = public access (use carefully)
+
+## Security - Record Rules
+
+### Record Rule Definition
+```xml
+<record id="account_move_rule" model="ir.rule">
+    <field name="name">account.move: multi-company</field>
+    <field name="model_id" ref="model_account_move"/>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+</record>
+```
+
+### Domain Force Evaluation
+- `[(4, ref('group_id'))]` - Add to many2many
+- `[(6, 0, [ref('group_id')])]` - Replace many2many
+- Multi-company: `[('company_id', 'in', company_ids)]`
+- User-based: `[('user_id', '=', user.id)]`
+
+### Record Rule Types
+1. **Global** - Applies to all users (use sparingly)
+2. **Group-specific** - Applies to selected groups only
+
+## Security - Groups
+
+### Group Definition
+```xml
+<record id="group_account_invoice" model="res.groups">
+    <field name="name">Invoice</field>
+    <field name="category_id" ref="base.module_category_accounting"/>
+    <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+</record>
+```
+
+### Implied Groups (Inheritance)
+- Users inherit permissions from implied groups
+- Order matters for permission hierarchy
+- Use sparingly to avoid permission creep
+
+## Multi-Company Security
+
+### Company Field
+- Add `company_id` field to model: `company_id = fields.Many2one('res.company')`
+
+### Multi-Company Rules (v14-16)
+```python
+domain_force = "[('company_id', 'in', company_ids)]"
+```
+
+### Multi-Company Rules (v17+)
+```python
+domain_force = "[('company_id', 'in', allowed_company_ids)]"
+```
+
+### Company-Dependent Fields
+```python
+company_id = fields.Many2one('res.company',
+    'Company',
+    default=lambda self: self.env.company,
+    index=True,
+    required=True)
+```
+
+## MCP-First XML ID Verification
+
+### Before Referencing XML IDs
+1. Use MCP to search for existing XML IDs
+2. Verify model, view type, and context
+3. Check if XML ID is in base or a module
+4. Confirm XML ID exists in target version
+
+### Common Pitfalls
+- Guessing XML IDs without verification
+- Using Enterprise-only XML IDs in Community
+- Assuming view inheritance exists
+- Hardcoding XML IDs from other modules
+
+### Safe Practices
+- Always verify XML ID with MCP
+- Use `ref` attribute in XML
+- Check module dependencies
+- Test in target version
+
+## Security Best Practices
+
+### Do
+- Use minimal XPath for inheritance
+- Restrict ACLs to specific groups
+- Use record rules for data isolation
+- Verify XML IDs before referencing
+- Test multi-company scenarios
+
+### Don't
+- Grant full access to `base.group_user`
+- Use global rules unnecessarily
+- Broadly open access "for testing"
+- Assume users need access
+- Mix ACLs and record rules
+
+## View Architecture Patterns
+
+### Form View
+```xml
+<field name="arch" type="xml">
+    <form string="Move">
+        <sheet>
+            <group>
+                <field name="date"/>
+                <field name="ref"/>
+            </group>
+            <notebook>
+                <page string="Lines" name="lines">
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="account_id"/>
+                            <field name="debit"/>
+                            <field name="credit"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </sheet>
+    </form>
+</field>
+```
+
+### Search View
+```xml
+<field name="arch" type="xml">
+    <search string="Moves">
+        <field name="ref"/>
+        <field name="partner_id"/>
+        <filter string="Posted" name="posted" domain="[('state', '=', 'posted')]"/>
+        <group expand="0" name="groupby">
+            <filter string="Partner" name="partner" context="{'group_by': 'partner_id'}"/>
+        </group>
+    </search>
+</field>
+```
+
+## Version-Specific Notes
+
+### Odoo 14
+- attrs/states supported
+- CSV security files supported
+- Web client standard
+
+### Odoo 15
+- attrs/states supported
+- Improved kanban views
+- Studio features stable
+
+### Odoo 16
+- attrs/states still works
+- Studio integration
+- Performance improvements
+
+### Odoo 17
+- attrs/states REMOVED
+- New expression syntax required
+- allowed_company_ids replaces company_ids
+- Modern OWL-based views
+
+### Odoo 18
+- attrs/states REMOVED
+- Further OWL adoption
+- New studio features
+
+### Odoo 19
+- Latest version
+- attrs/states REMOVED
+- Check MCP for latest patterns

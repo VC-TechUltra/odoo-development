@@ -1,15 +1,47 @@
 ---
-description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and MCP-first verification. Use for Python and module work.
+description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and MCP-first verification. Use for Python and module work across versions 14-19.
 globs: ["**/*.py", "**/__manifest__.py", "**/__init__.py"]
 alwaysApply: false
 ---
 
 # Odoo Core Rule
 
-- Detect Odoo version first.
-- Search the repository and use MCP before proposing framework-specific code.
-- For Odoo 18/19 Community and Enterprise, always validate schema and dependencies through MCP.
-- Do not invent fields, comodels, XML IDs, method names, or dependencies.
-- Prefer batch-safe ORM code.
-- Avoid unnecessary sudo().
-- Keep manifests, imports, security, views, and tests aligned.
+## Version Detection (CRITICAL)
+- Detect Odoo version FIRST before writing any code
+- Check __manifest__.py for version string
+- Look for version indicators: @api.multi (v14), track_visibility (v14), tracking=True (v15+), Command class (v16+)
+
+## Version-Specific Rules
+
+### Odoo 14
+- @api.multi is DEPRECATED but works
+- Use track_visibility='onchange' for field tracking
+- Tuple syntax for x2many
+
+### Odoo 15
+- @api.multi REMOVED - will cause errors
+- Use tracking=True instead of track_visibility
+
+### Odoo 16
+- Use Command class for x2many operations
+- @api.model_create_multi recommended
+
+### Odoo 17+
+- @api.model_create_multi mandatory
+- No attrs in views - use inline expressions
+
+### Odoo 18+
+- _check_company_auto = True
+- Type hints recommended
+
+### Odoo 19
+- Type hints mandatory
+- SQL() builder mandatory
+
+## General Rules
+- Search repository and use MCP before proposing framework-specific code
+- Validate schema and dependencies through MCP
+- Do not invent fields, comodels, XML IDs, method names, or dependencies
+- Prefer batch-safe ORM code
+- Avoid unnecessary sudo()
+- Keep manifests, imports, security, views, and tests aligned
