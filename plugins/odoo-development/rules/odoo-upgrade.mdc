@@ -1,12 +1,50 @@
 ---
-description: Odoo migration and upgrade guardrails with Odoo 18/19 CE/EE MCP-first validation. Use for upgrade tasks and deprecated-pattern cleanup.
+description: Odoo migration and upgrade guardrails with MCP-first validation for all versions (14-19). Use for upgrade tasks and deprecated-pattern cleanup.
 globs: ["**/*.py", "**/*.xml", "**/*.js"]
 alwaysApply: false
 ---
 
 # Odoo Upgrade Rule
 
-- State source version, target version, impacted modules, and likely risk areas first.
-- Preserve external IDs and business semantics where possible.
-- For Odoo 18/19 Community and Enterprise, verify breaking changes with MCP before proposing replacements.
-- Prefer incremental patches over broad rewrites.
+## Migration Paths
+- 14 → 15: @api.multi removed, track_visibility → tracking
+- 15 → 16: Command class introduced, @api.model_create_multi
+- 16 → 17: attrs/states removed from views
+- 17 → 18: _check_company_auto, type hints recommended
+- 18 → 19: Type hints mandatory, SQL() builder mandatory
+
+## Version-Specific Breaking Changes
+
+### v14 → v15
+- REMOVE @api.multi decorators
+- Replace track_visibility with tracking=True
+
+### v15 → v16
+- Adopt Command class for x2many
+- Add @api.model_create_multi
+
+### v16 → v17
+- Replace ALL attrs with inline expressions
+- Remove ALL states attributes
+- Add @api.model_create_multi
+
+### v17 → v18
+- Add _check_company_auto = True
+- Add check_company=True on fields
+- Type hints recommended
+
+### v18 → v19
+- Type hints MANDATORY
+- SQL() builder MANDATORY
+
+## Upgrade Workflow
+1. State source version and target version
+2. Identify impacted modules
+3. Preserve external IDs and business semantics
+4. Apply incremental patches
+5. Verify breaking changes with MCP
+
+## Best Practices
+- Prefer incremental patches over broad rewrites
+- Test each migration step
+- Preserve XML IDs
