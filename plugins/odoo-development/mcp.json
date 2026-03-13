@@ -2,7 +2,7 @@
   "mcpServers": {
     "odoo-knowledge": {
       "type": "streamable-http",
-      "url": "http://127.0.0.1:8090/mcp",
+      "url": "http://192.168.29.55:8090/mcp",
       "alwaysAllow": [
         "search_odoo_codebase",
         "read_odoo_file",
@@ -10,9 +10,16 @@
         "get_odoo_xml_id_location",
         "get_model_dependencies",
         "get_odoo_development_guidelines",
-        "health_check",
+        "list_indexed_targets",
+        "find_model_file",
+        "find_method_definition",
+        "find_view_arch",
+        "find_inherited_views",
+        "find_xml_record",
+        "resolve_customization_target",
         "code_search",
-        "get_file_snippet"
+        "get_file_snippet",
+        "health_check"
       ]
     }
   }
