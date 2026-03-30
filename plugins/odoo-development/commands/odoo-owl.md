@@ -34,7 +34,7 @@ Ask user or detect from project:
 
 ### Step 2: Load Version-Specific Skill
 
-Read: odoo-development/skills/odoo-owl-components-{version}.md
+Read: skills/odoo-owl/odoo-owl-components-{version}.md
 
 ### Step 3: Gather Component Information
 
