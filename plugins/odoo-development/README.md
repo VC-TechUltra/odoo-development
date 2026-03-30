@@ -89,3 +89,7 @@ This repo is structured as a Cursor marketplace source. The marketplace manifest
 ```
 
 With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers the plugin at `plugins/odoo-development/`.
+
+## Performance and token efficiency
+
+For practical ways to reduce agent/context token usage (including drop-in token budget clauses), see `docs/token-optimization.md`.
