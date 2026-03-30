@@ -17,7 +17,7 @@ Implement security for Odoo modules including ACLs, record rules, groups, and mu
 ### Step 2: Load Version-Specific Security Guide
 
 ```
-Read: odoo-development/skills/odoo-security-guide-{version}.md
+Read: skills/odoo-security/odoo-security-guide-{version}.md
 ```
 
 ### Step 3: Generate Security Files

@@ -18,7 +18,7 @@ Create and manage tests for Odoo modules.
 ### Step 2: Load Testing Patterns
 
 ```
-Read: odoo-development/skills/odoo-test-patterns.md
+Read: skills/odoo-testing/odoo-test-patterns.md
 ```
 
 ### Step 3: Generate Test Files

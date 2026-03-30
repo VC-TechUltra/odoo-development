@@ -17,7 +17,7 @@ Always ask: "What Odoo version?" or check __manifest__.py
 | 15 | tracking=True, @api.multi removed |
 | 16 | Command class, @api.model_create_multi |
 | 17 | attrs removed, inline expressions |
-| 18 | _check_company_auto, type hints rec |
+| 18 | _check_company_auto, type hints recommended |
 | 19 | Type hints mandatory |
 
 ## 4. MCP Workflow

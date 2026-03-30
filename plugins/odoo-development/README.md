@@ -5,7 +5,7 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 ## How to use
 
 **Commands** (run in Agent Chat / Cmd+K):
-- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, or `/odoo-fix-traceback` in chat
+- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`, `/odoo-owl`, `/odoo-security`, or `/odoo-test` in chat
 - Or press `Ctrl+Shift+P` (Cmd+Shift+P on Mac) and type `odoo` to see commands
 
 **Skills** (apply automatically or invoke manually):
@@ -21,6 +21,15 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 - Rules for backend, XML/security, OWL, and upgrade safety
 - Plugin-local MCP config for Odoo code knowledge
 - Plugin-local hooks config
+
+
+## Documentation quality check
+
+Validate that `Read:` references used in command docs resolve to real files:
+
+```bash
+./scripts/validate-command-read-paths.sh
+```
 
 ## MCP configuration
 
