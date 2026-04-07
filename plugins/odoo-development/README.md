@@ -23,6 +23,15 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 - Plugin-local hooks config
 - Agents for code review, migration analysis, context gathering, skill finding, and query optimization
 
+
+## Documentation quality check
+
+Validate that `Read:` references used in command docs resolve to real files:
+
+```bash
+./scripts/validate-command-read-paths.sh
+```
+
 ## MCP configuration
 
 The plugin connects to the `odoo-knowledge` MCP server for codebase search, schema inspection, and development guidelines. By default it uses `http://127.0.0.1:8090/mcp`.
