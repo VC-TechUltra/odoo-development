@@ -13,7 +13,7 @@ description: Odoo development plugin for backend, migration, security, testing, 
 
 ## Capability Alignment (Synced with `README.md`)
 This skill reflects the plugin capability set documented in `plugins/odoo-development/README.md`:
-- **Commands:** `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`
+- **Commands:** `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`, `/odoo-security`, `/odoo-test`, `/odoo-owl`, `/odoo-optimize`
 - **Skills:** backend, migration, security, testing, troubleshooting, OWL, functional, orchestrator
 - **Rules:** core backend, XML/security, OWL, upgrade safety
 - **Hooks + MCP:** session health checks, path safety reminders, MCP-first guidance with fallback support
@@ -44,6 +44,7 @@ If steps 1-7 are partially unavailable, continue with local repository evidence 
 - Prefer `agents/odoo-upgrade-analyzer.md` for cross-version migration analysis.
 - Prefer `agents/odoo-context-gatherer.md` when implementation needs concise version-scoped context.
 - Prefer `agents/odoo-skill-finder.md` when only a minimal excerpt is needed.
+- Prefer `agents/odoo-query-optimizer.md` for ORM/query performance diagnosis and batching strategy.
 - For small, single-file tasks, direct execution is acceptable if version and risk checks are still enforced.
 
 ## End-to-End Examples

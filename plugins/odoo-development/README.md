@@ -5,7 +5,7 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 ## How to use
 
 **Commands** (run in Agent Chat / Cmd+K):
-- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, or `/odoo-fix-traceback` in chat
+- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`, `/odoo-security`, `/odoo-test`, `/odoo-owl`, or `/odoo-optimize` in chat
 - Or press `Ctrl+Shift+P` (Cmd+Shift+P on Mac) and type `odoo` to see commands
 
 **Skills** (apply automatically or invoke manually):
@@ -17,10 +17,11 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 
 ## Included capabilities
 - Skills for backend, security, migration, OWL, testing, troubleshooting, functional flows, and orchestration
-- Commands for module generation, review, migration, traceback fixing, and planning
+- Commands for planning, review, module generation, migration, traceback fixing, security checks, testing guidance, OWL work, and performance optimization
 - Rules for backend, XML/security, OWL, and upgrade safety
 - Plugin-local MCP config for Odoo code knowledge
 - Plugin-local hooks config
+- Agents for code review, migration analysis, context gathering, skill finding, and query optimization
 
 ## MCP configuration
 
@@ -65,9 +66,18 @@ For a stricter third pass, run a file-by-file doc audit:
 - `agents/odoo-context-gatherer.md`: treat as preferred pre-work for multi-file/ambiguous tasks
 - `commands/*.md`: verify listed commands still match shipped files
 
+## Agents
+
+The plugin includes:
+- `odoo-code-reviewer`
+- `odoo-upgrade-analyzer`
+- `odoo-context-gatherer`
+- `odoo-skill-finder`
+- `odoo-query-optimizer`
+
 ## Agent tools
 
-The plugin's agents (odoo-code-reviewer, odoo-upgrade-analyzer) use `Read`, `Glob`, `Grep`, `WebFetch`, and `WebSearch`. These should map to Cursor's built-in capabilities (file read, glob, grep, web fetch, web search). If an agent fails to use web capabilities, verify the tool names against Cursor's current [agent tools documentation](https://cursor.com/docs/agent/tools).
+The plugin's agents use `Read`, `Glob`, `Grep`, and where needed `WebFetch`/`WebSearch`. These should map to Cursor's built-in capabilities (file read, glob, grep, web fetch, web search). If an agent fails to use web capabilities, verify the tool names against Cursor's current [agent tools documentation](https://cursor.com/docs/agent/tools).
 
 ## Plugin structure
 - `.cursor-plugin/plugin.json`
