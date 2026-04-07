@@ -1,7 +1,7 @@
 ---
 name: odoo-context-gatherer
 description: |
-  Required before generating/modifying Odoo code.
+  Preferred pre-step before generating/modifying Odoo code, especially for multi-file or ambiguous tasks.
   Detect target Odoo version, gather only task-relevant patterns, and return compact context.
 tools:
   - Read
@@ -15,7 +15,7 @@ color: cyan
 
 Goal: collect minimal, **version-specific** context before implementation.
 
-## Workflow (mandatory)
+## Workflow (default)
 
 1. **Detect version first**
    - Use version provided by user, or inspect `__manifest__.py`.

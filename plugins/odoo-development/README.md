@@ -5,7 +5,7 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 ## How to use
 
 **Commands** (run in Agent Chat / Cmd+K):
-- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, or `/odoo-fix-traceback` in chat
+- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`, `/odoo-security`, `/odoo-test`, `/odoo-owl`, or `/odoo-optimize` in chat
 - Or press `Ctrl+Shift+P` (Cmd+Shift+P on Mac) and type `odoo` to see commands
 
 **Skills** (apply automatically or invoke manually):
@@ -17,10 +17,11 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 
 ## Included capabilities
 - Skills for backend, security, migration, OWL, testing, troubleshooting, functional flows, and orchestration
-- Commands for module generation, review, migration, traceback fixing, and planning
+- Commands for planning, review, module generation, migration, traceback fixing, security checks, testing guidance, OWL work, and performance optimization
 - Rules for backend, XML/security, OWL, and upgrade safety
 - Plugin-local MCP config for Odoo code knowledge
 - Plugin-local hooks config
+- Agents for code review, migration analysis, context gathering, skill finding, and query optimization
 
 ## MCP configuration
 
@@ -32,16 +33,18 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 "url": "http://your-server:8090/mcp"
 ```
 
-**With MCP:** Commands and skills use odoo-knowledge MCP for best results. Run `health_check` via MCP when connectivity is uncertain.
+**With MCP:** Commands and skills use odoo-knowledge MCP first/preferred for highest accuracy. Run `health_check` via MCP when connectivity is uncertain.
 
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 
 ## MCP policy
-This plugin is designed to use the `odoo-knowledge` MCP first for:
+This plugin is designed for an **MCP-first (preferred), fallback-capable** workflow. Prioritize MCP for:
 - Odoo 18 Community
 - Odoo 18 Enterprise
 - Odoo 19 Community
 - Odoo 19 Enterprise
+
+If MCP is unavailable, continue with local file search/read tools and clearly state assumptions and verification gaps.
 
 ## Hooks
 
@@ -54,9 +57,27 @@ The plugin registers two hooks via `hooks/hooks.json`:
 
 **Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
 
+
+## Documentation strict-pass checklist
+
+For a stricter third pass, run a file-by-file doc audit:
+- `SKILL.md`: keep capability inventory synchronized with this README and include concrete review/migration/traceback flows
+- `agents/odoo-code-reviewer.md`: use preference wording rather than hard-lock invocation language
+- `agents/odoo-context-gatherer.md`: treat as preferred pre-work for multi-file/ambiguous tasks
+- `commands/*.md`: verify listed commands still match shipped files
+
+## Agents
+
+The plugin includes:
+- `odoo-code-reviewer`
+- `odoo-upgrade-analyzer`
+- `odoo-context-gatherer`
+- `odoo-skill-finder`
+- `odoo-query-optimizer`
+
 ## Agent tools
 
-The plugin's agents (odoo-code-reviewer, odoo-upgrade-analyzer) use `Read`, `Glob`, `Grep`, `WebFetch`, and `WebSearch`. These should map to Cursor's built-in capabilities (file read, glob, grep, web fetch, web search). If an agent fails to use web capabilities, verify the tool names against Cursor's current [agent tools documentation](https://cursor.com/docs/agent/tools).
+The plugin's agents use `Read`, `Glob`, `Grep`, and where needed `WebFetch`/`WebSearch`. These should map to Cursor's built-in capabilities (file read, glob, grep, web fetch, web search). If an agent fails to use web capabilities, verify the tool names against Cursor's current [agent tools documentation](https://cursor.com/docs/agent/tools).
 
 ## Plugin structure
 - `.cursor-plugin/plugin.json`
