@@ -32,16 +32,18 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 "url": "http://your-server:8090/mcp"
 ```
 
-**With MCP:** Commands and skills use odoo-knowledge MCP for best results. Run `health_check` via MCP when connectivity is uncertain.
+**With MCP:** Commands and skills use odoo-knowledge MCP first/preferred for highest accuracy. Run `health_check` via MCP when connectivity is uncertain.
 
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 
 ## MCP policy
-This plugin is designed to use the `odoo-knowledge` MCP first for:
+This plugin is designed for an **MCP-first (preferred), fallback-capable** workflow. Prioritize MCP for:
 - Odoo 18 Community
 - Odoo 18 Enterprise
 - Odoo 19 Community
 - Odoo 19 Enterprise
+
+If MCP is unavailable, continue with local file search/read tools and clearly state assumptions and verification gaps.
 
 ## Hooks
 
@@ -53,6 +55,15 @@ The plugin registers two hooks via `hooks/hooks.json`:
 | `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
 
 **Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
+
+
+## Documentation strict-pass checklist
+
+For a stricter third pass, run a file-by-file doc audit:
+- `SKILL.md`: keep capability inventory synchronized with this README and include concrete review/migration/traceback flows
+- `agents/odoo-code-reviewer.md`: use preference wording rather than hard-lock invocation language
+- `agents/odoo-context-gatherer.md`: treat as preferred pre-work for multi-file/ambiguous tasks
+- `commands/*.md`: verify listed commands still match shipped files
 
 ## Agent tools
 
