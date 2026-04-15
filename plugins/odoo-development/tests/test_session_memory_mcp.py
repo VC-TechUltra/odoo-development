@@ -33,6 +33,32 @@ class SessionMemoryMcpTests(unittest.TestCase):
         self.assertIn("error", response)
         self.assertIn("Unknown tool", response["error"]["message"])
 
+
+    def test_tools_call_success_content_shape(self):
+        original = module.run_store
+        try:
+            module.run_store = lambda command, params: {"status": "ok", "command": command, "params": params}
+            response = module.handle_request(
+                {
+                    "jsonrpc": "2.0",
+                    "id": 4,
+                    "method": "tools/call",
+                    "params": {"name": "memory_put", "arguments": {"key": "k", "value": "v"}},
+                }
+            )
+            self.assertIn("result", response)
+            content = response["result"]["content"]
+            self.assertEqual(content[0]["type"], "text")
+            parsed = json.loads(content[0]["text"])
+            self.assertEqual(parsed["status"], "ok")
+            self.assertEqual(parsed["command"], "put")
+        finally:
+            module.run_store = original
+
+    def test_initialized_notification_returns_none(self):
+        response = module.handle_request({"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}})
+        self.assertIsNone(response)
+
     def test_initialize_response_shape(self):
         response = module.handle_request({"jsonrpc": "2.0", "id": 3, "method": "initialize", "params": {}})
         self.assertEqual(response["result"]["serverInfo"]["name"], "session-memory-local")

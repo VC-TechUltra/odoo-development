@@ -143,6 +143,33 @@ class SessionMemoryStoreTests(unittest.TestCase):
         payload = json.loads(proc.stdout)
         self.assertEqual(payload["status"], "error")
 
+
+    def test_oversized_content_rejected(self) -> None:
+        big_value = "x" * 3001
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(STORE),
+                "put",
+                "--workspace",
+                self.workspace,
+                "--branch",
+                "main",
+                "--session-id",
+                "s1",
+                "--key",
+                "note",
+                "--value",
+                big_value,
+            ],
+            env=self.env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        payload = json.loads(proc.stdout)
+        self.assertEqual(payload["status"], "error")
+
     def test_branch_isolation(self) -> None:
         self.run_store("put", "--workspace", self.workspace, "--branch", "main", "--session-id", "s1", "--key", "k", "--value", "v1")
         self.run_store("put", "--workspace", self.workspace, "--branch", "feature", "--session-id", "s1", "--key", "k", "--value", "v2")

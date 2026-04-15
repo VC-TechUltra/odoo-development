@@ -42,7 +42,8 @@ def session_memory_status() -> dict:
     try:
         out = subprocess.check_output(cmd, stderr=subprocess.STDOUT, timeout=10)
         payload = json.loads(out.decode("utf-8"))
-        return {"name": "session-memory-local", "status": "ok", "detail": payload.get("db", "unknown")}
+        detail = f"{payload.get('db', 'unknown')} (schema={payload.get('schema_version', 'unknown')})"
+        return {"name": "session-memory-local", "status": "ok", "detail": detail}
     except Exception as exc:
         return {"name": "session-memory-local", "status": "degraded", "detail": str(exc)}
 
@@ -73,6 +74,7 @@ def odoo_knowledge_status(offline: bool) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--offline", action="store_true", help="Skip remote odoo-knowledge network probe")
+    parser.add_argument("--strict-local", action="store_true", help="Fail only on core local components (python + session-memory-local)")
     args = parser.parse_args()
 
     checks = [
@@ -82,7 +84,11 @@ def main() -> int:
         odoo_knowledge_status(args.offline),
     ]
 
-    failed = [c for c in checks if c["status"] == "degraded"]
+    if args.strict_local:
+        failed = [c for c in checks if c["status"] == "degraded" and c["name"] in {"python", "session-memory-local"}]
+    else:
+        failed = [c for c in checks if c["status"] == "degraded"]
+
     payload = {"status": "ok" if not failed else "degraded", "checks": checks}
     print(json.dumps(payload))
     return 0 if not failed else 2

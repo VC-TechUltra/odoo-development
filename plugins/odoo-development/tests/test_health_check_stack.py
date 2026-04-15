@@ -23,7 +23,21 @@ class HealthCheckStackTests(unittest.TestCase):
         names = {c["name"] for c in payload["checks"]}
         self.assertIn("python", names)
         self.assertIn("session-memory-local", names)
+        mem_check = next(c for c in payload["checks"] if c["name"] == "session-memory-local")
+        self.assertIn("schema=", mem_check["detail"])
 
+
+
+    def test_strict_local_ignores_optional_tool_absence(self):
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), "--offline", "--strict-local"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0)
+        payload = json.loads(proc.stdout)
+        self.assertEqual(payload["status"], "ok")
 
 if __name__ == "__main__":
     unittest.main()
