@@ -21,6 +21,38 @@
         "get_file_snippet",
         "health_check"
       ]
+    },
+    "repo-graph-local": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "./scripts/run-repo-graph-mcp.sh"
+      ],
+      "alwaysAllow": [
+        "health_check",
+        "build",
+        "update",
+        "status",
+        "context",
+        "find",
+        "changed"
+      ]
+    },
+    "session-memory-local": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "./scripts/run-session-memory-mcp.sh"
+      ],
+      "alwaysAllow": [
+        "health_check",
+        "session_init",
+        "memory_put",
+        "memory_list",
+        "memory_summary",
+        "namespace_info",
+        "memory_clear"
+      ]
     }
   }
 }
