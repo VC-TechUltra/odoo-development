@@ -5,7 +5,7 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 ## How to use
 
 **Commands** (run in Agent Chat / Cmd+K):
-- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`, `/odoo-security`, `/odoo-test`, `/odoo-owl`, or `/odoo-optimize` in chat
+- Type `/odoo-plan`, `/odoo-review`, `/odoo-module`, `/odoo-migrate`, `/odoo-fix-traceback`, `/odoo-security`, `/odoo-test`, `/odoo-owl`, `/odoo-optimize`, `/odoo-session-start`, `/odoo-session-summary`, `/odoo-session-clear`, `/odoo-repo-reindex`, or `/odoo-health-check` in chat
 - Or press `Ctrl+Shift+P` (Cmd+Shift+P on Mac) and type `odoo` to see commands
 
 **Skills** (apply automatically or invoke manually):
@@ -17,7 +17,7 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 
 ## Included capabilities
 - Skills for backend, security, migration, OWL, testing, troubleshooting, functional flows, and orchestration
-- Commands for planning, review, module generation, migration, traceback fixing, security checks, testing guidance, OWL work, and performance optimization
+- Commands for planning, review, module generation, migration, traceback fixing, security checks, testing guidance, OWL work, performance optimization, and session/repo lifecycle controls
 - Rules for backend, XML/security, OWL, and upgrade safety
 - Plugin-local MCP config for Odoo code knowledge
 - Plugin-local hooks config
@@ -34,7 +34,7 @@ Validate that `Read:` references used in command docs resolve to real files:
 
 ## MCP configuration
 
-The plugin connects to the `odoo-knowledge` MCP server for codebase search, schema inspection, and development guidelines. By default it uses `http://127.0.0.1:8090/mcp`.
+The plugin connects to the `odoo-knowledge` MCP server for codebase search, schema inspection, and development guidelines. By default it uses `http://192.168.29.55:8099/mcp`.
 
 **To change the URL:** Edit `mcp.json` in the plugin directory and update the `url` field under `mcpServers.odoo-knowledge`. For example, to use a remote server:
 
@@ -57,15 +57,24 @@ If MCP is unavailable, continue with local file search/read tools and clearly st
 
 ## Hooks
 
-The plugin registers two hooks via `hooks/hooks.json`:
+The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `sessionStart` | `mcp-health-check.sh` | Injects MCP-first workflow context at session start, reminding the agent to use odoo-knowledge MCP first and run `health_check` when connectivity is uncertain. |
+| `sessionStart` | `session-start-bootstrap.sh` | Runs cross-platform bootstrap checks (Python range, local tool setup), emits local runtime status, and reminds the agent to use repo-graph-local first for local context before Odoo MCP verification. |
+| `sessionStart` | `mcp-health-check.sh` | Injects MCP-first workflow context at session start and advises health verification when connectivity is uncertain. |
 | `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
 
 **Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
 
+
+
+## Local bootstrap policy
+
+- On first setup, the bootstrap flow asks for an install/cache base path and stores it under user-home config.
+- Subsequent sessions run silent checks and auto-install/update for local tooling.
+- Python runtime selection policy: choose the highest locally available version within **3.10 to 3.12**.
+- For `code-review-graph`, the plugin prefers the latest version; if smoke test fails, it falls back to the last-known-good version and continues in degraded mode.
 
 ## Documentation strict-pass checklist
 

@@ -21,6 +21,22 @@
         "get_file_snippet",
         "health_check"
       ]
+    },
+    "repo-graph-local": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "./scripts/run-repo-graph-mcp.sh"
+      ],
+      "alwaysAllow": [
+        "health_check",
+        "build",
+        "update",
+        "status",
+        "context",
+        "find",
+        "changed"
+      ]
     }
   }
 }
