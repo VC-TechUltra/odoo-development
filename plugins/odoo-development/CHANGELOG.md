@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Added `namespace_info` session-memory tool and CLI command for branch/workspace/session namespace inspection.
+- Added `scripts/test-session-memory-store.sh` smoke test to validate init/list/namespace-info/clear lifecycle.
+- Added automatic expired-namespace GC on memory store startup.
 - Added local `session-memory-local` MCP server wiring with stdio wrapper and minimal MCP tool surface (`session_init`, `memory_put`, `memory_list`, `memory_summary`, `memory_clear`).
 - Added file-backed session memory store (`scripts/session_memory_store.py`) with workspace+branch+session namespace scoping and 48h TTL initialization support.
 - Extended session start hook to initialize session memory namespace automatically at startup.

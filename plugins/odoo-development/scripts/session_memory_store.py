@@ -71,6 +71,7 @@ def connect() -> sqlite3.Connection:
     PLUGIN_HOME.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     ensure_db(conn)
+    gc_expired(conn)
     return conn
 
 
@@ -190,6 +191,9 @@ def main() -> int:
     p_clear = sub.add_parser("clear")
     add_common(p_clear)
 
+    p_ns = sub.add_parser("namespace-info")
+    add_common(p_ns)
+
     sub.add_parser("gc")
     sub.add_parser("health")
 
@@ -210,6 +214,25 @@ def main() -> int:
     if args.command == "init":
         payload = upsert_namespace(conn, ns, args.ttl_hours)
         print(json.dumps({"status": "ok", **payload}))
+        return 0
+
+
+    if args.command == "namespace-info":
+        row = conn.execute(
+            "SELECT workspace, branch, session_id, expires_at FROM namespaces WHERE namespace_key=?",
+            (ns.key,),
+        ).fetchone()
+        if row:
+            print(json.dumps({
+                "status": "ok",
+                "namespace_key": ns.key,
+                "workspace": row[0],
+                "branch": row[1],
+                "session_id": row[2],
+                "expires_at": row[3],
+            }))
+        else:
+            print(json.dumps({"status": "missing", "namespace_key": ns.key}))
         return 0
 
     upsert_namespace(conn, ns, DEFAULT_TTL_HOURS)

@@ -50,6 +50,7 @@
         "memory_put",
         "memory_list",
         "memory_summary",
+        "namespace_info",
         "memory_clear"
       ]
     }

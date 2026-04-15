@@ -76,6 +76,19 @@ TOOLS = [
         },
     },
     {
+        "name": "namespace_info",
+        "description": "Get metadata for current namespace",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "workspace": {"type": "string"},
+                "branch": {"type": "string"},
+                "session_id": {"type": "string"}
+            },
+            "additionalProperties": False,
+        },
+    },
+    {
         "name": "memory_clear",
         "description": "Clear current namespace memory",
         "inputSchema": {
@@ -168,6 +181,8 @@ def handle_request(req: dict) -> dict | None:
                 result = run_store("list", arguments)
             elif name == "memory_summary":
                 result = run_store("summary", arguments)
+            elif name == "namespace_info":
+                result = run_store("namespace-info", arguments)
             elif name == "memory_clear":
                 result = run_store("clear", arguments)
             else:

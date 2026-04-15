@@ -76,6 +76,15 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Python runtime selection policy: choose the highest locally available version within **3.10 to 3.12**.
 - For `code-review-graph`, the plugin prefers the latest version; if smoke test fails, it falls back to the last-known-good version and continues in degraded mode.
 
+
+## Local memory validation
+
+Run the session memory smoke test:
+
+```bash
+./scripts/test-session-memory-store.sh
+```
+
 ## Documentation strict-pass checklist
 
 For a stricter third pass, run a file-by-file doc audit:
