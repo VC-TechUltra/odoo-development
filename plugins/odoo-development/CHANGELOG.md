@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Added local `session-memory-local` MCP server wiring with stdio wrapper and minimal MCP tool surface (`session_init`, `memory_put`, `memory_list`, `memory_summary`, `memory_clear`).
+- Added file-backed session memory store (`scripts/session_memory_store.py`) with workspace+branch+session namespace scoping and 48h TTL initialization support.
+- Extended session start hook to initialize session memory namespace automatically at startup.
 - Added bootstrap scripts for silent local tool setup with first-run path selection and Python 3.10-3.12 auto-selection.
 - Added `repo-graph-local` MCP wiring and launcher wrapper for code-review-graph stdio mode.
 - Added session lifecycle commands (`/odoo-session-start`, `/odoo-session-summary`, `/odoo-session-clear`, `/odoo-repo-reindex`, `/odoo-health-check`).

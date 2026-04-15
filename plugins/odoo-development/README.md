@@ -19,7 +19,7 @@ Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, ho
 - Skills for backend, security, migration, OWL, testing, troubleshooting, functional flows, and orchestration
 - Commands for planning, review, module generation, migration, traceback fixing, security checks, testing guidance, OWL work, performance optimization, and session/repo lifecycle controls
 - Rules for backend, XML/security, OWL, and upgrade safety
-- Plugin-local MCP config for Odoo code knowledge
+- Plugin-local MCP config for Odoo knowledge + local repo graph + session memory
 - Plugin-local hooks config
 - Agents for code review, migration analysis, context gathering, skill finding, and query optimization
 
@@ -42,7 +42,7 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 "url": "http://your-server:8090/mcp"
 ```
 
-**With MCP:** Commands and skills use odoo-knowledge MCP first/preferred for highest accuracy. Run `health_check` via MCP when connectivity is uncertain.
+**With MCP:** Commands and skills prefer `repo-graph-local` for local context minimization, verify with `odoo-knowledge`, and store session-scoped notes via `session-memory-local`. Run `health_check` when connectivity is uncertain.
 
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 

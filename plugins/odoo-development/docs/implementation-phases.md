@@ -6,14 +6,14 @@
 - Freeze user-home config/data location
 - Freeze fallback behavior (latest -> LKG -> degraded continuation)
 
-## Phase 1 — Foundation (in progress)
+## Phase 1 — Foundation (completed)
 - Add cross-platform bootstrap scripts
 - Add session start bootstrap hook
 - Add repo graph MCP launcher wrapper
 - Add session/repo lifecycle commands
 - Update docs for setup and runtime behavior
 
-## Phase 2 — Session memory MCP integration
+## Phase 2 — Session memory MCP integration (in progress)
 - Add `session-memory-local` MCP server process and tool contract
 - Namespace by workspace + branch + session id
 - Persist across restart with TTL 48h and manual clear

@@ -37,6 +37,21 @@
         "find",
         "changed"
       ]
+    },
+    "session-memory-local": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "./scripts/run-session-memory-mcp.sh"
+      ],
+      "alwaysAllow": [
+        "health_check",
+        "session_init",
+        "memory_put",
+        "memory_list",
+        "memory_summary",
+        "memory_clear"
+      ]
     }
   }
 }
