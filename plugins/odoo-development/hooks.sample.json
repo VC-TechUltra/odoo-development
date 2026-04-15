@@ -4,6 +4,9 @@
   "hooks": {
     "sessionStart": [
       {
+        "command": "sh ./hooks/session-start-bootstrap.sh"
+      },
+      {
         "command": "sh ./hooks/mcp-health-check.sh"
       }
     ],
