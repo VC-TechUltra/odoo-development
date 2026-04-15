@@ -19,7 +19,6 @@ MAX_VALUE_LEN = 2000
 SENSITIVE_MARKERS = ("password", "token", "secret", "api_key", "private_key", "authorization")
 PLUGIN_HOME = Path(os.environ.get("CURSOR_ODOO_CONFIG_DIR", Path.home() / ".cursor-odoo-development"))
 DB_PATH = PLUGIN_HOME / "session-memory.db"
-SCHEMA_VERSION = "1"
 
 
 @dataclass
@@ -67,8 +66,6 @@ def ensure_db(conn: sqlite3.Connection) -> None:
         """
     )
     conn.execute("CREATE INDEX IF NOT EXISTS idx_memory_namespace_created ON memory_entries(namespace_key, created_at DESC)")
-    conn.execute("CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
-    conn.execute("INSERT OR REPLACE INTO meta(key, value) VALUES (?, ?)", ("schema_version", SCHEMA_VERSION))
     conn.commit()
 
 
@@ -221,8 +218,7 @@ def main() -> int:
         return 0
 
     if args.command == "health":
-        schema_version = conn.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
-        print(json.dumps({"status": "ok", "db": str(DB_PATH), "schema_version": schema_version[0] if schema_version else "unknown"}))
+        print(json.dumps({"status": "ok", "db": str(DB_PATH)}))
         return 0
 
     ns = resolve_namespace(args)

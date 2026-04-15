@@ -80,6 +80,7 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Health checks now include session-memory schema version metadata for compatibility diagnostics.
 
 
+
 ## Local memory validation
 
 Run the session memory smoke test:

@@ -42,8 +42,7 @@ def session_memory_status() -> dict:
     try:
         out = subprocess.check_output(cmd, stderr=subprocess.STDOUT, timeout=10)
         payload = json.loads(out.decode("utf-8"))
-        detail = f"{payload.get('db', 'unknown')} (schema={payload.get('schema_version', 'unknown')})"
-        return {"name": "session-memory-local", "status": "ok", "detail": detail}
+        return {"name": "session-memory-local", "status": "ok", "detail": payload.get("db", "unknown")}
     except Exception as exc:
         return {"name": "session-memory-local", "status": "degraded", "detail": str(exc)}
 

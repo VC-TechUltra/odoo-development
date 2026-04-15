@@ -23,8 +23,6 @@ class HealthCheckStackTests(unittest.TestCase):
         names = {c["name"] for c in payload["checks"]}
         self.assertIn("python", names)
         self.assertIn("session-memory-local", names)
-        mem_check = next(c for c in payload["checks"] if c["name"] == "session-memory-local")
-        self.assertIn("schema=", mem_check["detail"])
 
 
 if __name__ == "__main__":
