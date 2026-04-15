@@ -77,6 +77,8 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - For `code-review-graph`, the plugin prefers the latest version; if smoke test fails, it falls back to the last-known-good version and continues in degraded mode.
 - Session memory intentionally refuses likely secret-bearing values (e.g., token/password/secret markers) and large payloads to reduce leakage risk.
 - Automated tests now run via `python -m unittest discover -q tests` in local/CI check runners.
+- Health checks now include session-memory schema version metadata for compatibility diagnostics.
+
 
 
 ## Local memory validation

@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added session memory schema metadata (`schema_version`) in the local SQLite store and surfaced it in health reporting.
+- Added unittest coverage for oversized-memory rejection and health schema detail assertions.
 - Added unit tests for MCP adapter request handling (`tests/test_session_memory_mcp.py`).
 - Added unit test for consolidated health checker JSON output (`tests/test_health_check_stack.py`).
 - Updated local check runners to execute full unittest discovery in `tests/`.
