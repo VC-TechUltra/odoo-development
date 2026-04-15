@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Expanded CI matrix to Ubuntu + Windows and Python 3.10/3.11/3.12 for plugin checks.
+- Added Windows local verification runner (`scripts/run-local-checks.ps1`) and PowerShell smoke test (`scripts/test-session-memory-store.ps1`).
+- Updated tests to use `sys.executable` for cross-platform interpreter compatibility.
 - Added automated unittest coverage for session memory namespace lifecycle and branch isolation (`tests/test_session_memory_store.py`).
 - Added consolidated local verification runner (`scripts/run-local-checks.sh`).
 - Added GitHub Actions workflow for plugin checks (`.github/workflows/odoo-plugin-checks.yml`).

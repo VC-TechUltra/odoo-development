@@ -92,6 +92,12 @@ Run the full local verification bundle:
 ./scripts/run-local-checks.sh
 ```
 
+On Windows/PowerShell:
+
+```powershell
+./scripts/run-local-checks.ps1
+```
+
 ## Documentation strict-pass checklist
 
 For a stricter third pass, run a file-by-file doc audit:

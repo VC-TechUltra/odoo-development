@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,7 +21,7 @@ class SessionMemoryStoreTests(unittest.TestCase):
 
     def run_store(self, *args: str) -> dict:
         out = subprocess.check_output(
-            ["python3", str(STORE), *args],
+            [sys.executable, str(STORE), *args],
             env=self.env,
         ).decode("utf-8")
         return json.loads(out)
