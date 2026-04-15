@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Added automated unittest coverage for session memory namespace lifecycle and branch isolation (`tests/test_session_memory_store.py`).
+- Added consolidated local verification runner (`scripts/run-local-checks.sh`).
+- Added GitHub Actions workflow for plugin checks (`.github/workflows/odoo-plugin-checks.yml`).
 - Added `namespace_info` session-memory tool and CLI command for branch/workspace/session namespace inspection.
 - Added `scripts/test-session-memory-store.sh` smoke test to validate init/list/namespace-info/clear lifecycle.
 - Added automatic expired-namespace GC on memory store startup.

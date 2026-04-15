@@ -85,6 +85,13 @@ Run the session memory smoke test:
 ./scripts/test-session-memory-store.sh
 ```
 
+
+Run the full local verification bundle:
+
+```bash
+./scripts/run-local-checks.sh
+```
+
 ## Documentation strict-pass checklist
 
 For a stricter third pass, run a file-by-file doc audit:

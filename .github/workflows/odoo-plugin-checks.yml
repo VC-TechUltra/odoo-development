@@ -1,0 +1,28 @@
+name: odoo-plugin-checks
+
+on:
+  push:
+    paths:
+      - 'plugins/odoo-development/**'
+      - '.github/workflows/odoo-plugin-checks.yml'
+  pull_request:
+    paths:
+      - 'plugins/odoo-development/**'
+      - '.github/workflows/odoo-plugin-checks.yml'
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugins/odoo-development
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run local checks
+        run: ./scripts/run-local-checks.sh
