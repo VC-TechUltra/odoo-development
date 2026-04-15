@@ -14,6 +14,7 @@
 - Update docs for setup and runtime behavior
 
 ## Phase 2 — Session memory MCP integration (completed)
+=======
 - Add `session-memory-local` MCP server process and tool contract
 - Namespace by workspace + branch + session id
 - Persist across restart with TTL 48h and manual clear
