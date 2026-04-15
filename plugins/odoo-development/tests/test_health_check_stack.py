@@ -27,5 +27,17 @@ class HealthCheckStackTests(unittest.TestCase):
         self.assertIn("schema=", mem_check["detail"])
 
 
+
+    def test_strict_local_ignores_optional_tool_absence(self):
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), "--offline", "--strict-local"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0)
+        payload = json.loads(proc.stdout)
+        self.assertEqual(payload["status"], "ok")
+
 if __name__ == "__main__":
     unittest.main()

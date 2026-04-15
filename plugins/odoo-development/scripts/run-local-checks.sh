@@ -15,4 +15,4 @@ bash -n \
 python3 -m unittest discover -q tests
 ./scripts/test-session-memory-store.sh
 ./scripts/validate-command-read-paths.sh
-python3 scripts/health_check_stack.py --offline || true
+python3 scripts/health_check_stack.py --offline --strict-local

@@ -13,8 +13,4 @@ if ($bash) {
 }
 
 pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/test-session-memory-store.ps1
-try {
-    python ./scripts/health_check_stack.py --offline
-} catch {
-    Write-Host "health_check_stack.py reported degraded status; continuing local checks"
-}
+python ./scripts/health_check_stack.py --offline --strict-local

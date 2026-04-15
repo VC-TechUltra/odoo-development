@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Added `--strict-local` mode to `health_check_stack.py` so local/CI checks fail only on core local components.
+- Updated check runners and docs to use strict-local health gating by default.
+- Added health-check test coverage for strict-local behavior.
 - Added MCP adapter tests for successful `tools/call` content shape and initialized-notification handling.
 - Updated implementation phase doc: Phase 2 completed, Phase 3 in progress.
 - Added session memory schema metadata (`schema_version`) in the local SQLite store and surfaced it in health reporting.

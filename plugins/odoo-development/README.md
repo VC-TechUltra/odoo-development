@@ -98,7 +98,7 @@ Run the full local verification bundle:
 Quick stack health check:
 
 ```bash
-python scripts/health_check_stack.py --offline
+python scripts/health_check_stack.py --offline --strict-local
 ```
 
 On Windows/PowerShell:

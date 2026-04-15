@@ -6,7 +6,7 @@ description: verify odoo-knowledge MCP, repo-graph-local MCP, and local bootstra
 Run a comprehensive health check.
 
 Primary flow:
-1. Execute `python scripts/health_check_stack.py` (or `--offline` for local-only checks).
+1. Execute `python scripts/health_check_stack.py` (or `--offline` for local-only checks, `--strict-local` for CI gating on core local components).
 2. Report status for:
    - Python runtime (3.10-3.12 policy)
    - `code-review-graph` availability
