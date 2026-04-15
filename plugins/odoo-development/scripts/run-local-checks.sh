@@ -12,6 +12,7 @@ bash -n \
   scripts/test-session-memory-store.sh \
   hooks/session-start-bootstrap.sh
 
-python3 -m unittest -q tests/test_session_memory_store.py
+python3 -m unittest discover -q tests
 ./scripts/test-session-memory-store.sh
 ./scripts/validate-command-read-paths.sh
+python3 scripts/health_check_stack.py --offline --strict-local

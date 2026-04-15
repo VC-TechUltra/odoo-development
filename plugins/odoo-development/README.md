@@ -75,6 +75,9 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Subsequent sessions run silent checks and auto-install/update for local tooling.
 - Python runtime selection policy: choose the highest locally available version within **3.10 to 3.12**.
 - For `code-review-graph`, the plugin prefers the latest version; if smoke test fails, it falls back to the last-known-good version and continues in degraded mode.
+- Session memory intentionally refuses likely secret-bearing values (e.g., token/password/secret markers) and large payloads to reduce leakage risk.
+- Automated tests now run via `python -m unittest discover -q tests` in local/CI check runners.
+- Health checks now include session-memory schema version metadata for compatibility diagnostics.
 
 
 ## Local memory validation
@@ -90,6 +93,12 @@ Run the full local verification bundle:
 
 ```bash
 ./scripts/run-local-checks.sh
+```
+
+Quick stack health check:
+
+```bash
+python scripts/health_check_stack.py --offline --strict-local
 ```
 
 On Windows/PowerShell:
@@ -150,6 +159,12 @@ This repo is structured as a Cursor marketplace source. The marketplace manifest
 ```
 
 With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers the plugin at `plugins/odoo-development/`.
+
+- Implementation status: local session-memory MCP integration is complete; hardening/rollout is in progress.
+
+## Troubleshooting
+
+For cross-platform failure diagnosis and remediation, see `docs/troubleshooting-matrix.md`.
 
 ## Performance and token efficiency
 

@@ -15,8 +15,11 @@ from pathlib import Path
 from typing import Iterable
 
 DEFAULT_TTL_HOURS = 48
+MAX_VALUE_LEN = 2000
+SENSITIVE_MARKERS = ("password", "token", "secret", "api_key", "private_key", "authorization")
 PLUGIN_HOME = Path(os.environ.get("CURSOR_ODOO_CONFIG_DIR", Path.home() / ".cursor-odoo-development"))
 DB_PATH = PLUGIN_HOME / "session-memory.db"
+SCHEMA_VERSION = "1"
 
 
 @dataclass
@@ -64,6 +67,8 @@ def ensure_db(conn: sqlite3.Connection) -> None:
         """
     )
     conn.execute("CREATE INDEX IF NOT EXISTS idx_memory_namespace_created ON memory_entries(namespace_key, created_at DESC)")
+    conn.execute("CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
+    conn.execute("INSERT OR REPLACE INTO meta(key, value) VALUES (?, ?)", ("schema_version", SCHEMA_VERSION))
     conn.commit()
 
 
@@ -115,6 +120,15 @@ def upsert_namespace(conn: sqlite3.Connection, ns: Namespace, ttl_hours: int = D
     return {"namespace_key": ns.key, "workspace": ns.workspace, "branch": ns.branch, "session_id": ns.session_id, "expires_at": expires}
 
 
+
+
+def validate_entry(key: str, value: str) -> None:
+    lowered = f"{key} {value}".lower()
+    if any(marker in lowered for marker in SENSITIVE_MARKERS):
+        raise ValueError("Refusing to store potentially sensitive content in session memory")
+    if len(value) > MAX_VALUE_LEN:
+        raise ValueError(f"Memory value exceeds max length ({MAX_VALUE_LEN})")
+
 def gc_expired(conn: sqlite3.Connection) -> int:
     ts = now_ts()
     keys = [r[0] for r in conn.execute("SELECT namespace_key FROM namespaces WHERE expires_at <= ?", (ts,)).fetchall()]
@@ -127,6 +141,7 @@ def gc_expired(conn: sqlite3.Connection) -> int:
 
 
 def put_entry(conn: sqlite3.Connection, ns: Namespace, key: str, value: str, kind: str = "note") -> dict:
+    validate_entry(key, value)
     ts = now_ts()
     conn.execute(
         "INSERT INTO memory_entries(namespace_key, kind, key, value, created_at) VALUES (?, ?, ?, ?, ?)",
@@ -206,7 +221,8 @@ def main() -> int:
         return 0
 
     if args.command == "health":
-        print(json.dumps({"status": "ok", "db": str(DB_PATH)}))
+        schema_version = conn.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
+        print(json.dumps({"status": "ok", "db": str(DB_PATH), "schema_version": schema_version[0] if schema_version else "unknown"}))
         return 0
 
     ns = resolve_namespace(args)
@@ -238,7 +254,11 @@ def main() -> int:
     upsert_namespace(conn, ns, DEFAULT_TTL_HOURS)
 
     if args.command == "put":
-        payload = put_entry(conn, ns, args.key, args.value, args.kind)
+        try:
+            payload = put_entry(conn, ns, args.key, args.value, args.kind)
+        except ValueError as exc:
+            print(json.dumps({"status": "error", "error": str(exc)}))
+            return 2
         print(json.dumps(payload))
         return 0
 
