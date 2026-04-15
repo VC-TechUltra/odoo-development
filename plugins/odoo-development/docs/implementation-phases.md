@@ -14,7 +14,6 @@
 - Update docs for setup and runtime behavior
 
 ## Phase 2 — Session memory MCP integration (completed)
-=======
 - Add `session-memory-local` MCP server process and tool contract
 - Namespace by workspace + branch + session id
 - Persist across restart with TTL 48h and manual clear
@@ -23,4 +22,4 @@
 - Add diagnostics and richer health checks
 - Expand unit/integration coverage for MCP wrappers and health contracts
 - Add branch switch auto-rotation verification
-- Add cross-platform acceptance checks and troubleshooting matrix
+- Add cross-platform acceptance checks and troubleshooting matrix (completed)

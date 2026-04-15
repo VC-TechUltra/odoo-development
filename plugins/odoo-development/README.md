@@ -80,7 +80,6 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Health checks now include session-memory schema version metadata for compatibility diagnostics.
 
 
-
 ## Local memory validation
 
 Run the session memory smoke test:
@@ -162,6 +161,10 @@ This repo is structured as a Cursor marketplace source. The marketplace manifest
 With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers the plugin at `plugins/odoo-development/`.
 
 - Implementation status: local session-memory MCP integration is complete; hardening/rollout is in progress.
+
+## Troubleshooting
+
+For cross-platform failure diagnosis and remediation, see `docs/troubleshooting-matrix.md`.
 
 ## Performance and token efficiency
 

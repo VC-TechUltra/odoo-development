@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added cross-platform troubleshooting matrix doc for local MCP/session-memory failures (`docs/troubleshooting-matrix.md`).
+- Linked troubleshooting guidance in README and marked troubleshooting matrix milestone complete in phase plan.
 - Added `--strict-local` mode to `health_check_stack.py` so local/CI checks fail only on core local components.
 - Updated check runners and docs to use strict-local health gating by default.
 - Added health-check test coverage for strict-local behavior.
