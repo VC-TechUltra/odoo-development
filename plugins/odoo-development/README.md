@@ -79,6 +79,7 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Automated tests now run via `python -m unittest discover -q tests` in local/CI check runners.
 - Health checks now include session-memory schema version metadata for compatibility diagnostics.
 - Branch-switch namespace rotation is now covered by an automated verifier (`scripts/verify_branch_rotation.py`).
+- MCP stdio behavior is now validated with an end-to-end integration test (`tests/test_session_memory_mcp_integration.py`).
 
 
 ## Local memory validation
