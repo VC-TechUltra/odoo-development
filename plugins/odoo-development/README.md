@@ -80,6 +80,7 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Health checks now include session-memory schema version metadata for compatibility diagnostics.
 - Branch-switch namespace rotation is now covered by an automated verifier (`scripts/verify_branch_rotation.py`).
 - MCP stdio behavior is now validated with an end-to-end integration test (`tests/test_session_memory_mcp_integration.py`).
+- Health check JSON now includes machine-readable remediation fields (`code`, `recommended_action`) per component.
 
 
 ## Local memory validation
@@ -162,7 +163,7 @@ This repo is structured as a Cursor marketplace source. The marketplace manifest
 
 With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers the plugin at `plugins/odoo-development/`.
 
-- Implementation status: local session-memory MCP integration is complete; hardening/rollout is in progress.
+- Implementation status: local session-memory MCP integration and rollout hardening are complete.
 
 ## Troubleshooting
 

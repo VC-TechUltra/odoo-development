@@ -5,6 +5,8 @@
 2. If degraded, run `./scripts/run-local-checks.sh` (or `./scripts/run-local-checks.ps1`).
 3. Apply the fix for the first failing component from the matrix below.
 
+Each health check now includes a machine-readable `code` and `recommended_action` field to support deterministic remediation automation.
+
 ## Matrix
 
 | Symptom | Likely cause | Verification | Resolution |

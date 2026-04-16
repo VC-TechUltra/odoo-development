@@ -18,7 +18,7 @@
 - Namespace by workspace + branch + session id
 - Persist across restart with TTL 48h and manual clear
 
-## Phase 3 — Hardening and rollout (in progress)
+## Phase 3 — Hardening and rollout (completed)
 - Add diagnostics and richer health checks
 - Expand unit/integration coverage for MCP wrappers and health contracts (completed)
 - Add branch switch auto-rotation verification (completed)

@@ -25,6 +25,8 @@ class HealthCheckStackTests(unittest.TestCase):
         self.assertIn("session-memory-local", names)
         mem_check = next(c for c in payload["checks"] if c["name"] == "session-memory-local")
         self.assertIn("schema=", mem_check["detail"])
+        self.assertIn("code", mem_check)
+        self.assertIn("recommended_action", mem_check)
 
 
 
@@ -38,6 +40,7 @@ class HealthCheckStackTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
         payload = json.loads(proc.stdout)
         self.assertEqual(payload["status"], "ok")
+        self.assertEqual(payload["mode"], "strict-local")
 
 if __name__ == "__main__":
     unittest.main()
