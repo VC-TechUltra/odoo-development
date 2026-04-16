@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Marked Phase 3 hardening/rollout complete in implementation tracking docs and README status.
 - Enhanced `health_check_stack.py` output with machine-readable `code` and `recommended_action` per check, plus mode/failure counts.
 - Added/updated health-check tests to validate strict-local mode metadata and remediation fields.
 - Added end-to-end MCP stdio integration test for `session_memory_mcp.py` (initialize/tools/list/tools/call health_check).

@@ -163,7 +163,7 @@ This repo is structured as a Cursor marketplace source. The marketplace manifest
 
 With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers the plugin at `plugins/odoo-development/`.
 
-- Implementation status: local session-memory MCP integration is complete; hardening/rollout is in progress.
+- Implementation status: local session-memory MCP integration and rollout hardening are complete.
 
 ## Troubleshooting
 
