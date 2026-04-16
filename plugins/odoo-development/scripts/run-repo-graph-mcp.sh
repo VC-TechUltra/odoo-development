@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
 CONFIG_DIR="${CURSOR_ODOO_CONFIG_DIR:-${HOME}/.cursor-odoo-development}"
 CONFIG_FILE="${CONFIG_DIR}/config.env"
 
@@ -15,4 +18,5 @@ if command -v code-review-graph >/dev/null 2>&1; then
   exec code-review-graph serve --transport stdio
 fi
 
+cd "${PLUGIN_ROOT}"
 exec "$PYTHON_BIN" -m code_review_graph serve --transport stdio

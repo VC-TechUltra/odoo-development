@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 set -eu
 
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+PLUGIN_ROOT=$(CDPATH= cd -- "${SCRIPT_DIR}/.." && pwd)
+
 BOOTSTRAP_JSON=''
 MEMORY_JSON=''
 WORKSPACE_PATH="${CURSOR_WORKSPACE_PATH:-$(pwd)}"
@@ -14,18 +17,18 @@ fi
 case "$(uname -s 2>/dev/null || echo unknown)" in
   MINGW*|MSYS*|CYGWIN*)
     if command -v pwsh >/dev/null 2>&1; then
-      BOOTSTRAP_JSON=$(pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/bootstrap-env.ps1 2>/dev/null || true)
+      BOOTSTRAP_JSON=$(pwsh -NoProfile -ExecutionPolicy Bypass -File "${PLUGIN_ROOT}/scripts/bootstrap-env.ps1" 2>/dev/null || true)
     elif command -v powershell >/dev/null 2>&1; then
-      BOOTSTRAP_JSON=$(powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/bootstrap-env.ps1 2>/dev/null || true)
+      BOOTSTRAP_JSON=$(powershell -NoProfile -ExecutionPolicy Bypass -File "${PLUGIN_ROOT}/scripts/bootstrap-env.ps1" 2>/dev/null || true)
     fi
     ;;
   *)
-    BOOTSTRAP_JSON=$(./scripts/bootstrap-env.sh 2>/dev/null || true)
+    BOOTSTRAP_JSON=$("${PLUGIN_ROOT}/scripts/bootstrap-env.sh" 2>/dev/null || true)
     ;;
 esac
 
-if [ -x ./scripts/session_memory_store.py ]; then
-  MEMORY_JSON=$(./scripts/session_memory_store.py init --workspace "$WORKSPACE_PATH" --branch "$BRANCH" --session-id "$SESSION_ID" --ttl-hours 48 2>/dev/null || true)
+if [ -x "${PLUGIN_ROOT}/scripts/session_memory_store.py" ]; then
+  MEMORY_JSON=$("${PLUGIN_ROOT}/scripts/session_memory_store.py" init --workspace "$WORKSPACE_PATH" --branch "$BRANCH" --session-id "$SESSION_ID" --ttl-hours 48 2>/dev/null || true)
 fi
 
 if [ -n "$BOOTSTRAP_JSON" ] || [ -n "$MEMORY_JSON" ]; then
