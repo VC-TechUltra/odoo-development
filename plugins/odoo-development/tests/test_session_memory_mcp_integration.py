@@ -33,6 +33,33 @@ def read_message(proc: subprocess.Popen) -> dict:
 
 
 class SessionMemoryMcpIntegrationTests(unittest.TestCase):
+    def test_invalid_header_returns_parse_error_and_server_recovers(self):
+        proc = subprocess.Popen(
+            [sys.executable, str(SERVER)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        try:
+            proc.stdin.write(b"Content-Length: abc\r\n\r\n")
+            proc.stdin.flush()
+
+            resp_error = read_message(proc)
+            self.assertIn("error", resp_error)
+            self.assertEqual(resp_error["error"]["code"], -32700)
+
+            write_message(proc, {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
+            resp_init = read_message(proc)
+            self.assertEqual(resp_init["id"], 1)
+            self.assertIn("result", resp_init)
+        finally:
+            proc.terminate()
+            try:
+                proc.communicate(timeout=5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.communicate(timeout=5)
+
     def test_initialize_list_and_health_tool(self):
         proc = subprocess.Popen(
             [sys.executable, str(SERVER)],

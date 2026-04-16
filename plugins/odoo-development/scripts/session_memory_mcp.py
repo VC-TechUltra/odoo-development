@@ -107,6 +107,7 @@ TOOLS = [
 
 def read_message() -> dict | None:
     content_length = None
+    parse_error: ValueError | None = None
     while True:
         line = sys.stdin.buffer.readline()
         if not line:
@@ -115,11 +116,20 @@ def read_message() -> dict | None:
         if not line:
             break
         if line.lower().startswith("content-length:"):
-            content_length = int(line.split(":", 1)[1].strip())
+            raw_length = line.split(":", 1)[1].strip()
+            try:
+                content_length = int(raw_length)
+            except ValueError as exc:
+                parse_error = ValueError("Invalid Content-Length header")
+    if parse_error is not None:
+        raise parse_error
     if content_length is None:
         return None
     body = sys.stdin.buffer.read(content_length)
-    return json.loads(body.decode("utf-8"))
+    try:
+        return json.loads(body.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("Invalid JSON-RPC payload") from exc
 
 
 def write_message(payload: dict) -> None:
@@ -159,6 +169,10 @@ def success_response(request_id, result: dict) -> dict:
 
 def error_response(request_id, message: str) -> dict:
     return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32000, "message": message}}
+
+
+def parse_error_response(message: str) -> dict:
+    return {"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": message}}
 
 
 def handle_request(req: dict) -> dict | None:
@@ -214,7 +228,11 @@ def handle_request(req: dict) -> dict | None:
 
 def main() -> int:
     while True:
-        request = read_message()
+        try:
+            request = read_message()
+        except ValueError as exc:
+            write_message(parse_error_response(str(exc)))
+            continue
         if request is None:
             return 0
         response = handle_request(request)
