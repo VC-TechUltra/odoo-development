@@ -17,3 +17,5 @@ if ($bash) {
 & ./scripts/test-session-memory-store.ps1
 python ./scripts/verify_branch_rotation.py
 python ./scripts/health_check_stack.py --offline --strict-local
+python ./scripts/export_health_report.py --offline --strict-local --output ./artifacts/health-local.json
+if (-not (Test-Path ./artifacts/health-local.json)) { throw "health report export missing" }
