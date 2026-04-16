@@ -78,6 +78,7 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Session memory intentionally refuses likely secret-bearing values (e.g., token/password/secret markers) and large payloads to reduce leakage risk.
 - Automated tests now run via `python -m unittest discover -q tests` in local/CI check runners.
 - Health checks now include session-memory schema version metadata for compatibility diagnostics.
+- Branch-switch namespace rotation is now covered by an automated verifier (`scripts/verify_branch_rotation.py`).
 
 
 ## Local memory validation

@@ -13,4 +13,5 @@ if ($bash) {
 }
 
 pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/test-session-memory-store.ps1
+python ./scripts/verify_branch_rotation.py
 python ./scripts/health_check_stack.py --offline --strict-local

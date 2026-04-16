@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Added branch rotation verifier (`scripts/verify_branch_rotation.py`) and automated test coverage (`tests/test_branch_rotation_verifier.py`).
+- Updated phase plan to mark branch switch auto-rotation verification complete.
 - Added cross-platform troubleshooting matrix doc for local MCP/session-memory failures (`docs/troubleshooting-matrix.md`).
 - Linked troubleshooting guidance in README and marked troubleshooting matrix milestone complete in phase plan.
 - Added `--strict-local` mode to `health_check_stack.py` so local/CI checks fail only on core local components.

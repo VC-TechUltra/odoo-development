@@ -21,5 +21,5 @@
 ## Phase 3 — Hardening and rollout (in progress)
 - Add diagnostics and richer health checks
 - Expand unit/integration coverage for MCP wrappers and health contracts
-- Add branch switch auto-rotation verification
+- Add branch switch auto-rotation verification (completed)
 - Add cross-platform acceptance checks and troubleshooting matrix (completed)
