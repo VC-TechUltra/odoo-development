@@ -175,6 +175,12 @@ def resolve_namespace(args: argparse.Namespace) -> Namespace:
         session_id=args.session_id or detect_session_id(),
     )
 
+def positive_int(raw: str) -> int:
+    value = int(raw)
+    if value < 1:
+        raise argparse.ArgumentTypeError("value must be >= 1")
+    return value
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Session memory local store")
@@ -187,7 +193,7 @@ def main() -> int:
 
     p_init = sub.add_parser("init")
     add_common(p_init)
-    p_init.add_argument("--ttl-hours", type=int, default=DEFAULT_TTL_HOURS)
+    p_init.add_argument("--ttl-hours", type=positive_int, default=DEFAULT_TTL_HOURS)
 
     p_put = sub.add_parser("put")
     add_common(p_put)
@@ -197,11 +203,11 @@ def main() -> int:
 
     p_list = sub.add_parser("list")
     add_common(p_list)
-    p_list.add_argument("--limit", type=int, default=20)
+    p_list.add_argument("--limit", type=positive_int, default=20)
 
     p_summary = sub.add_parser("summary")
     add_common(p_summary)
-    p_summary.add_argument("--limit", type=int, default=20)
+    p_summary.add_argument("--limit", type=positive_int, default=20)
 
     p_clear = sub.add_parser("clear")
     add_common(p_clear)
