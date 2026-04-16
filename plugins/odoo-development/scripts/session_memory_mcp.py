@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 SCRIPT = Path(__file__).with_name("session_memory_store.py")
+STORE_TIMEOUT_SECONDS = 15
 
 TOOLS = [
     {
@@ -131,11 +132,25 @@ def write_message(payload: dict) -> None:
 def run_store(command: str, params: dict) -> dict:
     args = [sys.executable, str(SCRIPT), command]
     for key in ("workspace", "branch", "session_id", "key", "value", "kind", "limit", "ttl_hours"):
-      if key in params and params[key] is not None:
-          cli_key = "--" + key.replace("_", "-")
-          args.extend([cli_key, str(params[key])])
-    out = subprocess.check_output(args, stderr=subprocess.STDOUT)
-    return json.loads(out.decode("utf-8"))
+        if key in params and params[key] is not None:
+            cli_key = "--" + key.replace("_", "-")
+            args.extend([cli_key, str(params[key])])
+    proc = subprocess.run(
+        args,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=STORE_TIMEOUT_SECONDS,
+    )
+    output = (proc.stdout or proc.stderr or "").strip()
+    if proc.returncode != 0:
+        raise RuntimeError(output or f"store command failed with exit {proc.returncode}")
+    if not output:
+        raise RuntimeError("store command returned no output")
+    try:
+        return json.loads(output)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"store command returned invalid JSON: {output}") from exc
 
 
 def success_response(request_id, result: dict) -> dict:
@@ -189,9 +204,8 @@ def handle_request(req: dict) -> dict | None:
                 return error_response(req_id, f"Unknown tool: {name}")
 
             return success_response(req_id, {"content": [{"type": "text", "text": json.dumps(result)}]})
-        except subprocess.CalledProcessError as exc:
-            message = exc.output.decode("utf-8", errors="replace") if exc.output else str(exc)
-            return error_response(req_id, message)
+        except subprocess.TimeoutExpired:
+            return error_response(req_id, f"Store command timed out after {STORE_TIMEOUT_SECONDS}s")
         except Exception as exc:
             return error_response(req_id, str(exc))
 
