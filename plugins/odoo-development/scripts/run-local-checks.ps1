@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
+Set-Location (Split-Path -Parent $PSScriptRoot)
+
 python -m py_compile scripts/session_memory_store.py scripts/session_memory_mcp.py
 
 python -m unittest discover -q tests
