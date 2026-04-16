@@ -98,3 +98,11 @@ If MCP is unavailable, continue with `Read`/`Glob`/`Grep`, and clearly label ass
 - Do not trade correctness/security for speed.
 - Do not suggest schema/index changes without evidence.
 - Avoid speculative optimization when no hotspot evidence is present.
+
+## Token Efficiency Constraints
+
+- First-pass report target: <= 220 tokens unless user requests detailed tuning.
+- First-pass hotspot cap: top 3 hotspots only.
+- Snippet cap: max 2 snippets initially.
+- Context budget: inspect up to 3 files before asking for more evidence.
+- Prefer bullet diffs over long narrative paragraphs.

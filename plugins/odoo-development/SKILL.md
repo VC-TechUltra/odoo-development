@@ -46,6 +46,7 @@ If steps 1-7 are partially unavailable, continue with local repository evidence 
 - Prefer `agents/odoo-skill-finder.md` when only a minimal excerpt is needed.
 - Prefer `agents/odoo-query-optimizer.md` for ORM/query performance diagnosis and batching strategy.
 - For small, single-file tasks, direct execution is acceptable if version and risk checks are still enforced.
+- Token goal default: keep first pass concise (roughly 220-260 tokens), cap snippets (max 2), and expand only when user asks.
 
 ## End-to-End Examples
 

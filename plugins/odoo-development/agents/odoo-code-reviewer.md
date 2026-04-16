@@ -55,6 +55,14 @@ This agent can:
 5. Suggest improvements and fixes
 6. Compare against official Odoo patterns
 
+## Token Efficiency Constraints
+
+- First-pass response target: <= 220 tokens unless user requests deep detail.
+- First-pass findings cap: 5 highest-impact items (Critical + Warning combined).
+- Snippet cap: max 2 code snippets initially.
+- Read budget: inspect up to 3 files first; expand only when blocked.
+- Avoid repeating checklist text in the final report; include only violated items.
+
 ## Review Process
 
 ### Step 1: Version Detection
