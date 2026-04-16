@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# Local plugin runtime/cache artifacts
+.cursor-odoo-development/
+session-memory.db
