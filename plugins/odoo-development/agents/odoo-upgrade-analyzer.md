@@ -56,6 +56,14 @@ This agent can:
 5. Provide step-by-step migration plans
 6. Estimate upgrade complexity
 
+## Token Efficiency Constraints
+
+- First-pass output target: <= 240 tokens unless user asks for a full migration dossier.
+- First-pass scope: top 5 breaking/deprecated items only.
+- Snippet cap: max 2 code blocks in the initial response.
+- Context budget: load only path-relevant migration docs first (single hop per version jump).
+- Keep one concise checklist; avoid duplicating recommendations across sections.
+
 ## Analysis Process
 
 ### Step 1: Identify Version Jump

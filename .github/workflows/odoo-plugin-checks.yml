@@ -40,3 +40,18 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: ./scripts/run-local-checks.ps1
+
+      - name: Export health report
+        if: always()
+        run: |
+          python ./scripts/export_health_report.py \
+            --offline \
+            --strict-local \
+            --output ./artifacts/health-${{ runner.os }}-py${{ matrix.python-version }}.json
+
+      - name: Upload health report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-${{ runner.os }}-py${{ matrix.python-version }}
+          path: plugins/odoo-development/artifacts/health-${{ runner.os }}-py${{ matrix.python-version }}.json

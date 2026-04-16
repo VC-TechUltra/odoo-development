@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+cd "${PLUGIN_ROOT}"
+
 python3 -m py_compile \
   scripts/session_memory_store.py \
   scripts/session_memory_mcp.py
@@ -17,3 +21,5 @@ python3 -m unittest discover -q tests
 python3 scripts/verify_branch_rotation.py
 ./scripts/validate-command-read-paths.sh
 python3 scripts/health_check_stack.py --offline --strict-local
+python3 scripts/export_health_report.py --offline --strict-local --output ./artifacts/health-local.json
+test -s ./artifacts/health-local.json

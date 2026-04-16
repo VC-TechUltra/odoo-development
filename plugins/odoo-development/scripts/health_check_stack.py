@@ -47,6 +47,41 @@ def binary_status(name: str) -> dict:
         return mk_check(name, "ok", path, "BINARY_OK", "No action needed")
     return mk_check(name, "degraded", "not-found", "BINARY_NOT_FOUND", f"Install {name} or rerun bootstrap")
 
+def bootstrap_prereq_status() -> dict:
+    config_dir = Path(os.environ.get("CURSOR_ODOO_CONFIG_DIR", str(Path.home() / ".cursor-odoo-development")))
+    issues: list[str] = []
+    actions: list[str] = []
+
+    try:
+        subprocess.check_output([sys.executable, "-m", "pip", "--version"], stderr=subprocess.STDOUT, timeout=5)
+    except Exception:
+        issues.append("pip-unavailable")
+        actions.append("Install/enable pip for the selected Python runtime")
+
+    try:
+        config_dir.mkdir(parents=True, exist_ok=True)
+        if not os.access(config_dir, os.W_OK):
+            raise PermissionError("not writable")
+    except Exception:
+        issues.append(f"config-not-writable:{config_dir}")
+        actions.append("Set CURSOR_ODOO_CONFIG_DIR to a writable path")
+
+    if not issues:
+        return mk_check(
+            "bootstrap-prereqs",
+            "ok",
+            f"pip+config-ok ({config_dir})",
+            "BOOTSTRAP_PREREQS_OK",
+            "No action needed",
+        )
+    return mk_check(
+        "bootstrap-prereqs",
+        "degraded",
+        ", ".join(issues),
+        "BOOTSTRAP_PREREQS_MISSING",
+        "; ".join(actions),
+    )
+
 
 def session_memory_status() -> dict:
     cmd = [sys.executable, str(ROOT / "scripts" / "session_memory_store.py"), "health"]
@@ -109,6 +144,7 @@ def main() -> int:
 
     checks = [
         python_status(),
+        bootstrap_prereq_status(),
         binary_status("code-review-graph"),
         session_memory_status(),
         odoo_knowledge_status(args.offline),

@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
+Set-Location (Split-Path -Parent $PSScriptRoot)
+
 python -m py_compile scripts/session_memory_store.py scripts/session_memory_mcp.py
 
 python -m unittest discover -q tests
@@ -12,6 +14,8 @@ if ($bash) {
     bash ./scripts/validate-command-read-paths.sh
 }
 
-pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/test-session-memory-store.ps1
+& ./scripts/test-session-memory-store.ps1
 python ./scripts/verify_branch_rotation.py
 python ./scripts/health_check_stack.py --offline --strict-local
+python ./scripts/export_health_report.py --offline --strict-local --output ./artifacts/health-local.json
+if (-not (Test-Path ./artifacts/health-local.json)) { throw "health report export missing" }

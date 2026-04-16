@@ -22,6 +22,7 @@ class HealthCheckStackTests(unittest.TestCase):
         self.assertIn("checks", payload)
         names = {c["name"] for c in payload["checks"]}
         self.assertIn("python", names)
+        self.assertIn("bootstrap-prereqs", names)
         self.assertIn("session-memory-local", names)
         mem_check = next(c for c in payload["checks"] if c["name"] == "session-memory-local")
         self.assertIn("schema=", mem_check["detail"])

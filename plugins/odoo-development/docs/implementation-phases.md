@@ -23,3 +23,4 @@
 - Expand unit/integration coverage for MCP wrappers and health contracts (completed)
 - Add branch switch auto-rotation verification (completed)
 - Add cross-platform acceptance checks and troubleshooting matrix (completed)
+- Validate health report artifact export in local check runners (completed)

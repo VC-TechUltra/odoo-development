@@ -81,6 +81,7 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 - Branch-switch namespace rotation is now covered by an automated verifier (`scripts/verify_branch_rotation.py`).
 - MCP stdio behavior is now validated with an end-to-end integration test (`tests/test_session_memory_mcp_integration.py`).
 - Health check JSON now includes machine-readable remediation fields (`code`, `recommended_action`) per component.
+- CI now exports per-matrix health JSON artifacts via `scripts/export_health_report.py` for easier post-failure diagnosis.
 
 
 ## Local memory validation

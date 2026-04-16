@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added `scripts/export_health_report.py` and CI artifact upload for per-matrix health JSON diagnostics.
 - Marked Phase 3 hardening/rollout complete in implementation tracking docs and README status.
 - Enhanced `health_check_stack.py` output with machine-readable `code` and `recommended_action` per check, plus mode/failure counts.
 - Added/updated health-check tests to validate strict-local mode metadata and remediation fields.

@@ -181,6 +181,50 @@ class SessionMemoryStoreTests(unittest.TestCase):
         self.assertNotIn("v2", main_summary["summary"])
         self.assertIn("v2", feature_summary["summary"])
 
+    def test_invalid_ttl_rejected(self) -> None:
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(STORE),
+                "init",
+                "--workspace",
+                self.workspace,
+                "--branch",
+                "main",
+                "--session-id",
+                "s1",
+                "--ttl-hours",
+                "0",
+            ],
+            env=self.env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("value must be >= 1", proc.stderr)
+
+    def test_invalid_limit_rejected(self) -> None:
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(STORE),
+                "list",
+                "--workspace",
+                self.workspace,
+                "--branch",
+                "main",
+                "--session-id",
+                "s1",
+                "--limit",
+                "0",
+            ],
+            env=self.env,
+            capture_output=True,
+            text=True,
+        )
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("value must be >= 1", proc.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
