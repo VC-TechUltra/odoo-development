@@ -8,7 +8,14 @@ import os
 import pathlib
 import platform
 import subprocess
+import sys
 import time
+
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+PLUGIN_ROOT = SCRIPT_DIR.parent
+sys.path.insert(0, str(PLUGIN_ROOT / "scripts"))
+
+from workspace_scope import detect_branch, resolve_effective_root
 
 
 def _run_json_command(cmd: list[str]) -> dict | None:
@@ -38,29 +45,6 @@ def _run_json_command(cmd: list[str]) -> dict | None:
         if isinstance(value, dict):
             return value
     return None
-
-
-def _detect_workspace() -> str:
-    return os.environ.get("CURSOR_WORKSPACE_PATH") or os.getcwd()
-
-
-def _detect_branch(workspace_path: str) -> str:
-    branch = os.environ.get("CURSOR_GIT_BRANCH")
-    if branch:
-        return branch
-    try:
-        completed = subprocess.run(
-            ["git", "-C", workspace_path, "rev-parse", "--abbrev-ref", "HEAD"],
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
-        return "unknown"
-
-    candidate = (completed.stdout or "").strip()
-    return candidate or "unknown"
 
 
 def _bootstrap_status(plugin_root: pathlib.Path) -> dict | None:
@@ -107,12 +91,11 @@ def _memory_status(plugin_root: pathlib.Path, workspace_path: str, branch: str, 
 
 
 def main() -> int:
-    script_dir = pathlib.Path(__file__).resolve().parent
-    plugin_root = script_dir.parent
-
-    workspace_path = _detect_workspace()
+    plugin_root = PLUGIN_ROOT
+    effective_root = resolve_effective_root()
+    workspace_path = str(effective_root)
     session_id = os.environ.get("CURSOR_SESSION_ID") or f"session-{int(time.time())}"
-    branch = _detect_branch(workspace_path)
+    branch = detect_branch(effective_root)
 
     bootstrap = _bootstrap_status(plugin_root) or {
         "status": "degraded",
@@ -137,6 +120,10 @@ def main() -> int:
             "hookEventName": "sessionStart",
             "bootstrap": bootstrap,
             "sessionMemory": memory,
+            "effectiveScope": {
+                "workspace": workspace_path,
+                "branch": branch,
+            },
         },
     }
     print(json.dumps(payload))

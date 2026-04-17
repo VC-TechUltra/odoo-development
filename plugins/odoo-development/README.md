@@ -47,14 +47,17 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 ### Repo graph workspace resolution (single repo, monorepo, nested folders)
 
 `repo-graph-local` resolves its index root in this order:
-1. `CURSOR_REPO_GRAPH_ROOT` (explicit override)
-2. Git top-level for `CURSOR_WORKSPACE_PATH` (or current working directory)
-3. `CURSOR_WORKSPACE_PATH` (or current working directory) as a plain folder tree
+1. `CURSOR_ACTIVE_REPO_PATH` (active repo override; best for multi-repo workspaces)
+2. `CURSOR_REPO_GRAPH_ROOT` (explicit override)
+3. Git top-level for `CURSOR_WORKSPACE_PATH` (or current working directory)
+4. `CURSOR_WORKSPACE_PATH` (or current working directory) as a plain folder tree
 
 This allows one setup to work for:
 - single repositories,
 - monorepos (workspace inside one large Git root),
 - non-repo or mixed nested folder structures.
+
+`session-memory-local` now uses the same effective root and branch detection defaults, so graph DB and session memory stay aligned to the same repo scope in multi-repo development flows.
 
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 

@@ -1,18 +1,14 @@
 from __future__ import annotations
 
-import importlib.util
 import os
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+import sys
 
-
-SCRIPT_PATH = Path(__file__).resolve().parents[1] / "scripts" / "run-repo-graph-mcp.py"
-_spec = importlib.util.spec_from_file_location("run_repo_graph_mcp", SCRIPT_PATH)
-assert _spec and _spec.loader
-launcher = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(launcher)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import workspace_scope
 
 
 class RepoGraphLauncherResolutionTests(unittest.TestCase):
@@ -28,7 +24,7 @@ class RepoGraphLauncherResolutionTests(unittest.TestCase):
             try:
                 os.environ["CURSOR_WORKSPACE_PATH"] = str(workspace)
                 os.environ["CURSOR_REPO_GRAPH_ROOT"] = str(override)
-                resolved = launcher._resolve_repo_graph_root()
+                resolved = workspace_scope.resolve_effective_root()
                 self.assertEqual(resolved, override.resolve())
             finally:
                 if prev_workspace is None:
@@ -50,7 +46,7 @@ class RepoGraphLauncherResolutionTests(unittest.TestCase):
             try:
                 os.environ["CURSOR_WORKSPACE_PATH"] = str(workspace)
                 os.environ.pop("CURSOR_REPO_GRAPH_ROOT", None)
-                resolved = launcher._resolve_repo_graph_root()
+                resolved = workspace_scope.resolve_effective_root()
                 self.assertEqual(resolved, workspace.resolve())
             finally:
                 if prev_workspace is None:
@@ -77,7 +73,7 @@ class RepoGraphLauncherResolutionTests(unittest.TestCase):
             try:
                 os.environ["CURSOR_WORKSPACE_PATH"] = str(nested)
                 os.environ.pop("CURSOR_REPO_GRAPH_ROOT", None)
-                resolved = launcher._resolve_repo_graph_root()
+                resolved = workspace_scope.resolve_effective_root()
                 self.assertEqual(resolved, repo.resolve())
             finally:
                 if prev_workspace is None:
@@ -88,6 +84,41 @@ class RepoGraphLauncherResolutionTests(unittest.TestCase):
                     os.environ.pop("CURSOR_REPO_GRAPH_ROOT", None)
                 else:
                     os.environ["CURSOR_REPO_GRAPH_ROOT"] = prev_override
+
+    def test_active_repo_path_precedence(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            workspace = Path(tmp) / "workspace"
+            active = Path(tmp) / "repo-b"
+            workspace.mkdir()
+            active.mkdir()
+
+            prev_workspace = os.environ.get("CURSOR_WORKSPACE_PATH")
+            prev_override = os.environ.get("CURSOR_REPO_GRAPH_ROOT")
+            prev_active = os.environ.get("CURSOR_ACTIVE_REPO_PATH")
+            try:
+                os.environ["CURSOR_WORKSPACE_PATH"] = str(workspace)
+                os.environ["CURSOR_REPO_GRAPH_ROOT"] = str(workspace)
+                os.environ["CURSOR_ACTIVE_REPO_PATH"] = str(active)
+                resolved = workspace_scope.resolve_effective_root()
+                self.assertEqual(resolved, active.resolve())
+            finally:
+                if prev_workspace is None:
+                    os.environ.pop("CURSOR_WORKSPACE_PATH", None)
+                else:
+                    os.environ["CURSOR_WORKSPACE_PATH"] = prev_workspace
+                if prev_override is None:
+                    os.environ.pop("CURSOR_REPO_GRAPH_ROOT", None)
+                else:
+                    os.environ["CURSOR_REPO_GRAPH_ROOT"] = prev_override
+                if prev_active is None:
+                    os.environ.pop("CURSOR_ACTIVE_REPO_PATH", None)
+                else:
+                    os.environ["CURSOR_ACTIVE_REPO_PATH"] = prev_active
+
+    def test_branch_defaults_to_workspace_for_non_git(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            branch = workspace_scope.detect_branch(Path(tmp))
+            self.assertEqual(branch, "workspace")
 
 
 if __name__ == "__main__":

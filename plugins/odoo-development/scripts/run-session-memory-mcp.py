@@ -8,6 +8,8 @@ import pathlib
 import shlex
 import sys
 
+from workspace_scope import detect_branch, resolve_effective_root
+
 
 def _load_config_env() -> None:
     config_dir = pathlib.Path(
@@ -42,6 +44,10 @@ def _load_config_env() -> None:
 
 def main() -> int:
     _load_config_env()
+    effective_root = resolve_effective_root()
+    os.environ.setdefault("CURSOR_REPO_GRAPH_EFFECTIVE_ROOT", str(effective_root))
+    os.environ["CURSOR_WORKSPACE_PATH"] = str(effective_root)
+    os.environ.setdefault("CURSOR_GIT_BRANCH", detect_branch(effective_root))
     plugin_root = pathlib.Path(__file__).resolve().parents[1]
     python_bin = os.environ.get("PYTHON_BIN") or sys.executable or "python"
     target = plugin_root / "scripts" / "session_memory_mcp.py"

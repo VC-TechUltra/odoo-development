@@ -4,14 +4,16 @@
 from __future__ import annotations
 
 import os
-import pathlib
 import shlex
 import shutil
-import subprocess
 import sys
+
+from workspace_scope import resolve_effective_root
 
 
 def _load_config_env() -> None:
+    import pathlib
+
     config_dir = pathlib.Path(
         os.environ.get("CURSOR_ODOO_CONFIG_DIR", pathlib.Path.home() / ".cursor-odoo-development")
     )
@@ -42,55 +44,9 @@ def _load_config_env() -> None:
         os.environ.setdefault(key, value)
 
 
-def _find_git_toplevel(path: pathlib.Path) -> pathlib.Path | None:
-    try:
-        completed = subprocess.run(
-            ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-    except (FileNotFoundError, OSError, subprocess.TimeoutExpired):
-        return None
-
-    if completed.returncode != 0:
-        return None
-
-    top = (completed.stdout or "").strip()
-    if not top:
-        return None
-
-    candidate = pathlib.Path(top).expanduser()
-    if candidate.is_dir():
-        return candidate.resolve()
-    return None
-
-
-def _detect_workspace() -> pathlib.Path:
-    workspace = pathlib.Path(os.environ.get("CURSOR_WORKSPACE_PATH") or os.getcwd()).expanduser()
-    if workspace.exists():
-        return workspace.resolve()
-    return pathlib.Path(os.getcwd()).resolve()
-
-
-def _resolve_repo_graph_root() -> pathlib.Path:
-    override = os.environ.get("CURSOR_REPO_GRAPH_ROOT")
-    if override:
-        override_path = pathlib.Path(override).expanduser()
-        if override_path.is_dir():
-            return override_path.resolve()
-
-    workspace = _detect_workspace()
-    git_toplevel = _find_git_toplevel(workspace)
-    if git_toplevel:
-        return git_toplevel
-    return workspace
-
-
 def main() -> int:
     _load_config_env()
-    graph_root = _resolve_repo_graph_root()
+    graph_root = resolve_effective_root()
     os.environ.setdefault("CURSOR_REPO_GRAPH_EFFECTIVE_ROOT", str(graph_root))
     os.chdir(graph_root)
 

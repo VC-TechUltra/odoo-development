@@ -2,9 +2,10 @@
 
 `repo-graph-local` is launched by `scripts/run-repo-graph-mcp.py` and determines the effective graph root with this precedence:
 
-1. `CURSOR_REPO_GRAPH_ROOT` (explicit directory override)
-2. Git top-level of `CURSOR_WORKSPACE_PATH` (or process working directory)
-3. `CURSOR_WORKSPACE_PATH` (or process working directory) as-is
+1. `CURSOR_ACTIVE_REPO_PATH` (active repo override for multi-repo workspaces)
+2. `CURSOR_REPO_GRAPH_ROOT` (explicit directory override)
+3. Git top-level of `CURSOR_WORKSPACE_PATH` (or process working directory)
+4. `CURSOR_WORKSPACE_PATH` (or process working directory) as-is
 
 ## Why this works across layouts
 
@@ -14,19 +15,22 @@
 
 ## Optional override
 
-Set `CURSOR_REPO_GRAPH_ROOT` when you want a specific folder to be used regardless of current workspace location.
+Set `CURSOR_ACTIVE_REPO_PATH` when switching between multiple repos under one parent workspace.  
+Set `CURSOR_REPO_GRAPH_ROOT` for a broader static override when you want one fixed root.
 
 Examples:
 
 - macOS/Linux:
   ```bash
+  export CURSOR_ACTIVE_REPO_PATH=/path/to/current-repo
   export CURSOR_REPO_GRAPH_ROOT=/path/to/parent-workspace
   ```
 - Windows PowerShell:
   ```powershell
+  $env:CURSOR_ACTIVE_REPO_PATH = "D:\\workspace\\repo-a"
   $env:CURSOR_REPO_GRAPH_ROOT = "D:\\workspace"
   ```
 
 ## Recommendation for multi-repo parent workspaces
 
-If you keep many repos under one parent folder, open that parent as your Cursor workspace when you want cross-repo graph context, or set `CURSOR_REPO_GRAPH_ROOT` to that parent for the session.
+If you keep many repos under one parent folder, open that parent as your Cursor workspace for broad context and set `CURSOR_ACTIVE_REPO_PATH` per active repo so both `repo-graph-local` and `session-memory-local` resolve to the same scope.
