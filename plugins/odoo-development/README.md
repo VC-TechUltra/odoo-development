@@ -44,6 +44,21 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 
 **With MCP:** Commands and skills prefer `repo-graph-local` for local context minimization, verify with `odoo-knowledge`, and store session-scoped notes via `session-memory-local`. Run `health_check` when connectivity is uncertain.
 
+### Repo graph workspace resolution (single repo, monorepo, nested folders)
+
+`repo-graph-local` resolves its index root in this order:
+1. `CURSOR_ACTIVE_REPO_PATH` (active repo override; best for multi-repo workspaces)
+2. `CURSOR_REPO_GRAPH_ROOT` (explicit override)
+3. Git top-level for `CURSOR_WORKSPACE_PATH` (or current working directory)
+4. `CURSOR_WORKSPACE_PATH` (or current working directory) as a plain folder tree
+
+This allows one setup to work for:
+- single repositories,
+- monorepos (workspace inside one large Git root),
+- non-repo or mixed nested folder structures.
+
+`session-memory-local` now uses the same effective root and branch detection defaults, so graph DB and session memory stay aligned to the same repo scope in multi-repo development flows.
+
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 
 ## MCP policy
@@ -61,11 +76,11 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `sessionStart` | `session-start-bootstrap.sh` | Runs cross-platform bootstrap checks (Python range, local tool setup), emits local runtime status, and reminds the agent to use repo-graph-local first for local context before Odoo MCP verification. |
-| `sessionStart` | `mcp-health-check.sh` | Injects MCP-first workflow context at session start and advises health verification when connectivity is uncertain. |
-| `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
+| `sessionStart` | `session-start-bootstrap.py` | Runs cross-platform bootstrap checks (Python range, local tool setup), emits local runtime status, and reminds the agent to use repo-graph-local first for local context before Odoo MCP verification. |
+| `sessionStart` | `mcp-health-check.py` | Injects MCP-first workflow context at session start and advises health verification when connectivity is uncertain. |
+| `beforeShellExecution` | `validate-odoo-paths.py` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
 
-**Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
+Hook commands in `hooks/hooks.json` and local MCP stdio launchers in `mcp.json` now use Python entrypoints, so they no longer require `sh` to be available on Windows.
 
 
 
@@ -169,6 +184,7 @@ With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers 
 ## Troubleshooting
 
 For cross-platform failure diagnosis and remediation, see `docs/troubleshooting-matrix.md`.
+For workspace/root selection behavior in single-repo, monorepo, and nested-folder layouts, see `docs/repo-graph-workspace.md`.
 
 ## Performance and token efficiency
 
