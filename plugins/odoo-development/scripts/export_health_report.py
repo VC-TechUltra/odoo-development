@@ -27,7 +27,17 @@ def main() -> int:
         cmd.append("--strict-local")
 
     proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
-    payload = json.loads(proc.stdout)
+    try:
+        payload = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        payload = {
+            "status": "degraded",
+            "mode": "unknown",
+            "checks": [],
+            "failed_count": 1,
+            "error": "HEALTH_CHECK_OUTPUT_INVALID_JSON",
+            "detail": proc.stdout.strip() or proc.stderr.strip() or "no output",
+        }
     payload["exit_code"] = proc.returncode
 
     out = Path(args.output)
