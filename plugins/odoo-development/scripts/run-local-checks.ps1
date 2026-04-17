@@ -1,0 +1,21 @@
+$ErrorActionPreference = 'Stop'
+
+Set-Location (Split-Path -Parent $PSScriptRoot)
+
+python -m py_compile scripts/session_memory_store.py scripts/session_memory_mcp.py
+
+python -m unittest discover -q tests
+
+# shell scripts may not be executable on Windows runners; validate via bash if available
+$bash = Get-Command bash -ErrorAction SilentlyContinue
+if ($bash) {
+    bash -n scripts/bootstrap-env.sh scripts/run-repo-graph-mcp.sh scripts/run-session-memory-mcp.sh scripts/test-session-memory-store.sh hooks/session-start-bootstrap.sh
+    bash ./scripts/test-session-memory-store.sh
+    bash ./scripts/validate-command-read-paths.sh
+}
+
+& ./scripts/test-session-memory-store.ps1
+python ./scripts/verify_branch_rotation.py
+python ./scripts/health_check_stack.py --offline --strict-local
+python ./scripts/export_health_report.py --offline --strict-local --output ./artifacts/health-local.json
+if (-not (Test-Path ./artifacts/health-local.json)) { throw "health report export missing" }
