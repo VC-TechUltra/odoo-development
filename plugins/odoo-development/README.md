@@ -44,6 +44,18 @@ The plugin connects to the `odoo-knowledge` MCP server for codebase search, sche
 
 **With MCP:** Commands and skills prefer `repo-graph-local` for local context minimization, verify with `odoo-knowledge`, and store session-scoped notes via `session-memory-local`. Run `health_check` when connectivity is uncertain.
 
+### Repo graph workspace resolution (single repo, monorepo, nested folders)
+
+`repo-graph-local` resolves its index root in this order:
+1. `CURSOR_REPO_GRAPH_ROOT` (explicit override)
+2. Git top-level for `CURSOR_WORKSPACE_PATH` (or current working directory)
+3. `CURSOR_WORKSPACE_PATH` (or current working directory) as a plain folder tree
+
+This allows one setup to work for:
+- single repositories,
+- monorepos (workspace inside one large Git root),
+- non-repo or mixed nested folder structures.
+
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 
 ## MCP policy
@@ -169,6 +181,7 @@ With `pluginRoot: "plugins"` and `source: "odoo-development"`, Cursor discovers 
 ## Troubleshooting
 
 For cross-platform failure diagnosis and remediation, see `docs/troubleshooting-matrix.md`.
+For workspace/root selection behavior in single-repo, monorepo, and nested-folder layouts, see `docs/repo-graph-workspace.md`.
 
 ## Performance and token efficiency
 
