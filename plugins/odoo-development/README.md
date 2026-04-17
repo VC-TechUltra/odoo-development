@@ -61,11 +61,11 @@ The plugin registers session bootstrap + safety hooks via `hooks/hooks.json`:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `sessionStart` | `session-start-bootstrap.sh` | Runs cross-platform bootstrap checks (Python range, local tool setup), emits local runtime status, and reminds the agent to use repo-graph-local first for local context before Odoo MCP verification. |
-| `sessionStart` | `mcp-health-check.sh` | Injects MCP-first workflow context at session start and advises health verification when connectivity is uncertain. |
-| `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
+| `sessionStart` | `session-start-bootstrap.py` | Runs cross-platform bootstrap checks (Python range, local tool setup), emits local runtime status, and reminds the agent to use repo-graph-local first for local context before Odoo MCP verification. |
+| `sessionStart` | `mcp-health-check.py` | Injects MCP-first workflow context at session start and advises health verification when connectivity is uncertain. |
+| `beforeShellExecution` | `validate-odoo-paths.py` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
 
-**Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
+Hook commands in `hooks/hooks.json` and local MCP stdio launchers in `mcp.json` now use Python entrypoints, so they no longer require `sh` to be available on Windows.
 
 
 

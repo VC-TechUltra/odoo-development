@@ -24,9 +24,9 @@
     },
     "repo-graph-local": {
       "type": "stdio",
-      "command": "sh",
+      "command": "python",
       "args": [
-        "./scripts/run-repo-graph-mcp.sh"
+        "./scripts/run-repo-graph-mcp.py"
       ],
       "alwaysAllow": [
         "health_check",
@@ -40,9 +40,9 @@
     },
     "session-memory-local": {
       "type": "stdio",
-      "command": "sh",
+      "command": "python",
       "args": [
-        "./scripts/run-session-memory-mcp.sh"
+        "./scripts/run-session-memory-mcp.py"
       ],
       "alwaysAllow": [
         "health_check",
