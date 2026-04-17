@@ -3,15 +3,15 @@
   "hooks": {
     "sessionStart": [
       {
-        "command": "sh ./hooks/session-start-bootstrap.sh"
+        "command": "python ./hooks/session-start-bootstrap.py"
       },
       {
-        "command": "sh ./hooks/mcp-health-check.sh"
+        "command": "python ./hooks/mcp-health-check.py"
       }
     ],
     "beforeShellExecution": [
       {
-        "command": "sh ./hooks/validate-odoo-paths.sh"
+        "command": "python ./hooks/validate-odoo-paths.py"
       }
     ]
   }
