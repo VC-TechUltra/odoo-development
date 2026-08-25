@@ -8,7 +8,7 @@
 ## New in v17+
 ```python
 # Use allowed_company_ids in v17+
-domain = [('company_id', 'in', allowed_company_ids)]
+domain = [('company_id', 'in', company_ids)]
 ```
 
 ## Checklist

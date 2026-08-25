@@ -6,11 +6,13 @@ description: odoo backend patterns for models, fields, computed logic, onchange,
 # Odoo Backend
 
 ## Core policy
-- Detect target Odoo version first.
+- Detect target Odoo version first (check __manifest__.py or use ${ODOO_VERSION}).
 - Prefer repository patterns and MCP-backed facts over guesses.
 - For Odoo 18 and 19 Community and Enterprise, always verify schema, dependencies, and version guidance with MCP before suggesting framework-specific backend code.
 
 ## MCP-first workflow
+When odoo-knowledge MCP is available: use it first. When MCP is unavailable: use built-in tools—proceed, do not block.
+
 1. `health_check` when MCP reachability is uncertain.
 2. `search_odoo_codebase` or `code_search` for similar patterns.
 3. `read_odoo_file` or `get_file_snippet` for exact source context.
@@ -19,35 +21,35 @@ description: odoo backend patterns for models, fields, computed logic, onchange,
 6. `get_model_dependencies` before changing manifests or cross-module integrations.
 7. `get_odoo_development_guidelines` for Odoo 18/19 CE/EE framework guidance.
 
-## Included knowledge files
-- `field-type-reference.md`
-- `computed-field-patterns.md`
-- `constraint-patterns.md`
-- `onchange-dynamic-patterns.md`
-- `inheritance-patterns.md`
-- `context-environment-patterns.md`
-- `controller-api-patterns.md`
-- `cron-automation-patterns.md`
-- `error-handling-patterns.md`
-- `odoo-model-patterns.md`
-- `odoo-model-patterns-all.md`
-- `odoo-model-patterns-17.md`
-- `odoo-model-patterns-18.md`
-- `odoo-model-patterns-19.md`
-- `odoo-model-patterns-17-18.md`
-- `odoo-model-patterns-18-19.md`
-- `odoo-module-generator.md`
-- `odoo-module-generator-all.md`
-- `odoo-module-generator-17.md`
-- `odoo-module-generator-18.md`
-- `odoo-module-generator-19.md`
-- `odoo-module-generator-17-18.md`
-- `odoo-module-generator-18-19.md`
-- `common-module-templates.md`
-- `module-generation-example.md`
-- `attachment-binary-patterns.md`
-- `import-export-patterns.md`
-- `logging-debugging-patterns.md`
-- `workflow-orchestrator.md`
+## Version-specific knowledge
+After detecting the target Odoo version, load the appropriate version file:
+
+**Model patterns:** `skills/odoo-backend/odoo-model-patterns-{version}.md`
+- Available: 14, 15, 16, 17, 18, 19, 14-15, 15-16, 16-17, 17-18, 18-19
+
+**Module generator:** `skills/odoo-backend/odoo-module-generator-{version}.md`
+- Available: 14, 15, 16, 17, 18, 19, 17-18, 18-19
+
+Use transition files (e.g., 17-18, 18-19) when working on upgrades between adjacent versions.
+
+## General patterns (version-agnostic)
+Load these as needed without version suffixes:
+- `skills/odoo-backend/field-type-reference.md`
+- `skills/odoo-backend/computed-field-patterns.md`
+- `skills/odoo-backend/constraint-patterns.md`
+- `skills/odoo-backend/onchange-dynamic-patterns.md`
+- `skills/odoo-backend/inheritance-patterns.md`
+- `skills/odoo-backend/controller-api-patterns.md`
+- `skills/odoo-backend/cron-automation-patterns.md`
+- `skills/odoo-backend/common-module-templates.md`
+- `skills/odoo-backend/module-generation-example.md`
+- `skills/odoo-backend/attachment-binary-patterns.md`
+- `skills/odoo-backend/import-export-patterns.md`
+
+## Troubleshooting patterns
+For error handling, logging, and context management, see:
+- `skills/odoo-troubleshooting/error-handling-patterns.md`
+- `skills/odoo-troubleshooting/logging-debugging-patterns.md`
+- `skills/odoo-troubleshooting/context-environment-patterns.md`
 
 Read only the files relevant to the current task to keep context lean.

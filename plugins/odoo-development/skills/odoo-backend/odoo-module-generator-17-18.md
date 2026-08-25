@@ -191,7 +191,7 @@ class MyModel(models.Model):
 ### Security Rule Update
 
 ```xml
-<!-- v18: Use allowed_company_ids -->
+<!-- v18: Multi-company record rule -->
 <record id="rule_my_model_company" model="ir.rule">
     <field name="name">My Model: Multi-Company</field>
     <field name="model_id" ref="model_my_model"/>
@@ -199,7 +199,7 @@ class MyModel(models.Model):
     <field name="domain_force">[
         '|',
         ('company_id', '=', False),
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
@@ -256,7 +256,6 @@ const records = await this.orm.searchRead(
 - [ ] Verify field visibility with company rules
 
 ### Security (XML)
-- [ ] Update record rules to use `allowed_company_ids`
 - [ ] Test multi-company access scenarios
 - [ ] Verify cross-company data isolation
 

@@ -6,11 +6,14 @@ description: odoo frontend and owl patterns for components, assets, qweb, widget
 # Odoo Owl
 
 ## Core policy
-- Detect target Odoo version first.
+- Detect target Odoo version first (check __manifest__.py or use ${ODOO_VERSION}).
+- OWL versions differ significantly: v14 (no OWL), v15 (OWL 1.x), v16-18 (OWL 2.x), v19+ (OWL 3.x).
 - Prefer repository patterns and MCP-backed facts over guesses.
 - For Odoo 18 and 19 Community and Enterprise, use MCP development guidance before proposing OWL, registry, or asset-bundle patterns.
 
 ## MCP-first workflow
+When odoo-knowledge MCP is available: use it first. When MCP is unavailable: use built-in tools—proceed, do not block.
+
 1. `health_check` when MCP reachability is uncertain.
 2. `search_odoo_codebase` or `code_search` for similar patterns.
 3. `read_odoo_file` or `get_file_snippet` for exact source context.
@@ -19,18 +22,20 @@ description: odoo frontend and owl patterns for components, assets, qweb, widget
 6. `get_model_dependencies` before changing manifests or cross-module integrations.
 7. `get_odoo_development_guidelines` for Odoo 18/19 CE/EE framework guidance.
 
-## Included knowledge files
-- `odoo-owl-components.md`
-- `odoo-owl-components-all.md`
-- `odoo-owl-components-17.md`
-- `odoo-owl-components-18.md`
-- `odoo-owl-components-19.md`
-- `odoo-owl-components-17-18.md`
-- `odoo-owl-components-18-19.md`
-- `assets-bundling-patterns.md`
-- `qweb-template-patterns.md`
-- `widget-field-patterns.md`
-- `website-integration-patterns.md`
-- `dashboard-kpi-patterns.md`
+## Version-specific knowledge
+After detecting the target Odoo version, load the appropriate version file:
+
+**OWL components:** `skills/odoo-owl/odoo-owl-components-{version}.md`
+- Available: 14, 15, 16, 17, 18, 19, 14-15, 15-16, 17-18, 18-19
+
+Use transition files (e.g., 17-18, 18-19) when working on upgrades between adjacent versions.
+
+## General patterns (version-agnostic)
+Load these as needed:
+- `skills/odoo-owl/assets-bundling-patterns.md`
+- `skills/odoo-owl/qweb-template-patterns.md`
+- `skills/odoo-owl/widget-field-patterns.md`
+- `skills/odoo-owl/website-integration-patterns.md`
+- `skills/odoo-owl/dashboard-kpi-patterns.md`
 
 Read only the files relevant to the current task to keep context lean.

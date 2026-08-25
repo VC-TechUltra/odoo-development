@@ -94,8 +94,7 @@ Legend: ✅ = Supported, ⚠️ DEP = Deprecated, ⚠️ REC = Recommended, ✅ 
 
 | Pattern | v14 | v15 | v16 | v17 | v18 | v19 |
 |---------|-----|-----|-----|-----|-----|-----|
-| `company_ids` in rules | ✅ | ✅ | ✅ | ⚠️ DEP | ❌ REM | ❌ |
-| `allowed_company_ids` | ➖ | ➖ | ➖ | ✅ | ✅ | ✅ |
+| `company_ids` in rules | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `user.company_id` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `user.company_ids` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
@@ -165,7 +164,7 @@ Legend: ✅ = Supported, ⚠️ DEP = Deprecated, ⚠️ REC = Recommended, ✅ 
 2. Add `check_company=True` to fields
 3. Start using `SQL()` builder
 4. Add type hints to methods
-5. Use `allowed_company_ids` in rules
+5. Context key `allowed_company_ids` available for business logic
 
 ### v18 → v19
 1. **MUST** add type hints everywhere

@@ -6,11 +6,13 @@ description: odoo troubleshooting patterns for tracebacks, runtime failures, xml
 # Odoo Troubleshooting
 
 ## Core policy
-- Detect target Odoo version first.
+- Detect target Odoo version first (check __manifest__.py or use ${ODOO_VERSION}).
 - Prefer repository patterns and MCP-backed facts over guesses.
 - For Odoo 18 and 19 Community and Enterprise, verify the failing model, XML ID, dependency, or framework behavior through MCP before suggesting a fix.
 
 ## MCP-first workflow
+When odoo-knowledge MCP is available: use it first. When MCP is unavailable: use built-in tools—proceed, do not block.
+
 1. `health_check` when MCP reachability is uncertain.
 2. `search_odoo_codebase` or `code_search` for similar patterns.
 3. `read_odoo_file` or `get_file_snippet` for exact source context.
@@ -19,10 +21,11 @@ description: odoo troubleshooting patterns for tracebacks, runtime failures, xml
 6. `get_model_dependencies` before changing manifests or cross-module integrations.
 7. `get_odoo_development_guidelines` for Odoo 18/19 CE/EE framework guidance.
 
-## Included knowledge files
-- `odoo-troubleshooting-guide.md`
-- `logging-debugging-patterns.md`
-- `error-handling-patterns.md`
-- `context-environment-patterns.md`
+## Troubleshooting patterns
+Load these as needed:
+- `skills/odoo-troubleshooting/odoo-troubleshooting-guide.md` - General troubleshooting workflows
+- `skills/odoo-troubleshooting/logging-debugging-patterns.md` - Logging and debugging techniques
+- `skills/odoo-troubleshooting/error-handling-patterns.md` - Error handling patterns
+- `skills/odoo-troubleshooting/context-environment-patterns.md` - Context and environment management
 
 Read only the files relevant to the current task to keep context lean.

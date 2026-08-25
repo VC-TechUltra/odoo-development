@@ -105,7 +105,7 @@ Prompt: "Show how company_id field is defined in base models"
 
 # Multi-company record rule
 URL: https://raw.githubusercontent.com/odoo/odoo/18.0/addons/sale/security/sale_security.xml
-Prompt: "Show the multi-company record rule using allowed_company_ids"
+Prompt: "Show the multi-company record rule using company_ids magic variable"
 ```
 
 ---
@@ -321,7 +321,7 @@ Before generating code, verify these patterns:
 | Company handling | _check_company_auto, check_company | sale_order.py |
 | SQL queries | String vs SQL() builder | sale_order.py |
 | OWL imports | owl.tags vs @odoo/owl | hooks.js |
-| Record rules | domain syntax, allowed_company_ids | sale_security.xml |
+| Record rules | domain syntax, company_ids | sale_security.xml |
 
 ---
 

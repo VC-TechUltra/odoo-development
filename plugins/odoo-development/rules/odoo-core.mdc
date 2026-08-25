@@ -35,8 +35,8 @@ alwaysApply: false
 - Type hints recommended
 
 ### Odoo 19
-- Type hints mandatory
-- SQL() builder mandatory
+- Type hints strongly recommended
+- SQL() builder recommended for security
 
 ## General Rules
 - Search repository and use MCP before proposing framework-specific code

@@ -199,7 +199,7 @@ Review each component category:
 - Check `check_company` on fields
 - Recommend type hints
 - Recommend SQL builder
-- Verify `allowed_company_ids` in rules
+- Verify `company_ids` in rules
 
 ### Odoo 19
 - Error if no type hints

@@ -424,9 +424,9 @@ class MyModel(models.Model):
     company_id = fields.Many2one('res.company', index=True)
     partner_id = fields.Many2one('res.partner', check_company=True)
 
-    # Company-aware search (v18 pattern)
+    # Company-aware search (uses company_ids from context)
     def _search_company_records(self):
-        # Uses allowed_company_ids automatically
+        # Uses company filtering automatically
         return self.search([('state', '=', 'active')])
 ```
 

@@ -122,7 +122,7 @@ class MyModel(models.Model):
     <field name="name">My Model: Multi-company</field>
     <field name="model_id" ref="model_my_model"/>
     <field name="domain_force">[
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
