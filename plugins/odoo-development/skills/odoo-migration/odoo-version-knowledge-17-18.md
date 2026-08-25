@@ -68,7 +68,15 @@ class MyModel(models.Model):
     account_id = fields.Many2one('account.account', check_company=True)
 ```
 
-## Record Rules: allowed_company_ids
+## Multi-Company Context
+
+v18 adds `allowed_company_ids` to context for business logic:
+```python
+# In business logic
+allowed_companies = self.env.context.get('allowed_company_ids', [])
+```
+
+**Note:** For record rules, use `company_ids` magic variable (all versions).
 
 ### v18 Record Rule Pattern
 ```xml
@@ -76,7 +84,7 @@ class MyModel(models.Model):
     <field name="name">My Model: Multi-company</field>
     <field name="model_id" ref="model_my_model"/>
     <field name="domain_force">[
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
@@ -253,7 +261,6 @@ https://raw.githubusercontent.com/odoo/odoo/18.0/addons/sale/models/sale_order.p
 
 - [ ] Add `_check_company_auto = True` to multi-company models
 - [ ] Add `check_company=True` to relational fields
-- [ ] Update record rules to use `allowed_company_ids`
 - [ ] Start migrating raw SQL to `SQL()` builder
 - [ ] Add type hints to new/modified methods
 - [ ] Review and test multi-company scenarios

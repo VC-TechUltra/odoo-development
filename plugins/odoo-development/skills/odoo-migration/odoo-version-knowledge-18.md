@@ -50,10 +50,18 @@ def calculate_total(self, include_tax: bool = True) -> float:
     return sum(self.mapped('amount'))
 ```
 
-### allowed_company_ids in Record Rules
+### Multi-Company Context
+
+v18 adds `allowed_company_ids` to context for business logic:
+```python
+# In business logic
+allowed_companies = self.env.context.get('allowed_company_ids', [])
+```
+
+**Note:** For record rules, continue using `company_ids` magic variable:
 ```xml
 <field name="domain_force">[
-    ('company_id', 'in', allowed_company_ids)
+    ('company_id', 'in', company_ids)
 ]</field>
 ```
 
@@ -63,7 +71,6 @@ def calculate_total(self, include_tax: bool = True) -> float:
 |---------|--------|-------------|----------|
 | Raw SQL strings | Deprecated | `SQL()` builder | v19 |
 | Methods without type hints | Deprecated | Add type hints | v19 |
-| `company_ids` in rules | Deprecated | `allowed_company_ids` | - |
 
 ## v18 Required Patterns
 
@@ -150,7 +157,7 @@ access_my_model_manager,my.model.manager,model_my_model,group_manager,1,1,1,1
     <field name="domain_force">[
         '|',
         ('company_id', '=', False),
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
@@ -220,7 +227,7 @@ When developing for Odoo 18.0:
 - [ ] Add type hints to method signatures
 - [ ] Use `@api.model_create_multi` for create methods
 - [ ] Use direct `invisible`/`readonly` in views
-- [ ] Use `allowed_company_ids` in record rules
+- [ ] Use `company_ids` magic variable in record rules
 - [ ] Include `tracking=True` for audited fields
 - [ ] Use OWL 2.x patterns for frontend
 

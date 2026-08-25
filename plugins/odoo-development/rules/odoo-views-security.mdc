@@ -33,20 +33,29 @@ alwaysApply: false
 
 ## Security - Record Rules
 
-### Multi-Company Domain (version-sensitive)
-- v14-16: `[('company_id', 'in', company_ids)]`
-- v17+: `[('company_id', 'in', allowed_company_ids)]` (preferred)
-- Both reference the context variable, not a field name
+### Multi-Company Domain
 
-### Record Rule Definition
+**All versions** use `company_ids` in record rule domains:
+
 ```xml
 <record id="model_rule" model="ir.rule">
     <field name="name">my.model: multi-company</field>
     <field name="model_id" ref="model_my_model"/>
-    <field name="domain_force">[('company_id', 'in', allowed_company_ids)]</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     <field name="groups" eval="[(4, ref('base.group_user'))]"/>
 </record>
 ```
+
+For shareable records (optional company):
+```xml
+<record id="model_rule" model="ir.rule">
+    <field name="name">my.model: multi-company</field>
+    <field name="model_id" ref="model_my_model"/>
+    <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+</record>
+```
+
+**Note:** `company_ids` is the ir.rule magic variable (companies user can access). Do not confuse with `allowed_company_ids`, which is a context key used in business logic: `self.env.context.get('allowed_company_ids')`.
 
 ## Command Class (v16+)
 

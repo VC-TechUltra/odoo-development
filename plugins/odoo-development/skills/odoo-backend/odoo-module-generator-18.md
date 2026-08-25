@@ -505,7 +505,7 @@ access_{model_name}_line_manager,{model_name}.line.manager,model_{module_name}_{
         <field name="domain_force">[
             '|',
             ('company_id', '=', False),
-            ('company_id', 'in', allowed_company_ids)
+            ('company_id', 'in', company_ids)
         ]</field>
     </record>
 </odoo>
@@ -644,7 +644,7 @@ When generating a v18 module, ensure:
 - [ ] Type hints on all fields: `name: str = fields.Char(...)`
 - [ ] `@api.model_create_multi` for create methods
 - [ ] Direct `invisible`/`readonly` in views (no `attrs`)
-- [ ] `allowed_company_ids` in record rules
+- [ ] `company_ids` magic variable in record rules
 - [ ] `SQL()` builder for raw SQL queries
 - [ ] `tracking=True` for tracked fields
 - [ ] Proper OWL 2.x component syntax
@@ -659,5 +659,5 @@ When generating an Odoo 18.0 module:
 3. **Always add** type hints to fields
 4. **Always use** `@api.model_create_multi` for create
 5. **Never use** `attrs` in views
-6. **Use** `allowed_company_ids` in multi-company rules
+6. **Use** `company_ids` magic variable in multi-company rules
 7. **Use** `SQL()` builder for any raw SQL

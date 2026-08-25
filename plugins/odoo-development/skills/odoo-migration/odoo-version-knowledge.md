@@ -70,7 +70,6 @@
 | `check_company` | On fields | Field-level validation |
 | Type hints | Recommended | Better IDE support |
 | `SQL()` builder | Recommended | Safer SQL queries |
-| `allowed_company_ids` | In rules | New variable name |
 
 ### v18 → v19
 | Component | Change | Impact |
@@ -158,7 +157,6 @@ When you see these in logs, the code needs updating:
 | `@api.multi is deprecated` | v14 | Remove decorator |
 | `track_visibility is deprecated` | v15 | Use `tracking=True` |
 | `attrs is deprecated` | v16 | Use direct attributes |
-| `company_ids will be renamed` | v17 | Use `allowed_company_ids` |
 
 ## AI Agent Version Workflow
 

@@ -32,7 +32,9 @@ access_my_model_manager,my.model.manager,model_my_model,base.group_system,1,1,1,
 
 ## Record Rules
 
-### Multi-Company (version-sensitive)
+### Multi-Company Rules
+
+**All versions** use `company_ids` in record rule domains:
 
 **v14-16:**
 ```xml
@@ -43,16 +45,25 @@ access_my_model_manager,my.model.manager,model_my_model,base.group_system,1,1,1,
 </record>
 ```
 
-**v17+:** (prefer `allowed_company_ids`)
+**v17+ (same syntax):**
 ```xml
 <record id="my_model_comp_rule" model="ir.rule">
     <field name="name">my.model: multi-company</field>
     <field name="model_id" ref="model_my_model"/>
-    <field name="domain_force">[('company_id', 'in', allowed_company_ids)]</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
 </record>
 ```
 
-Note: Both `company_ids` and `allowed_company_ids` work in v17+, but `allowed_company_ids` is preferred.
+**For shareable records (optional company):**
+```xml
+<record id="my_model_comp_rule" model="ir.rule">
+    <field name="name">my.model: multi-company</field>
+    <field name="model_id" ref="model_my_model"/>
+    <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+</record>
+```
+
+**Note:** `company_ids` is the ir.rule magic variable. Do not confuse with `allowed_company_ids`, which is a context key for business logic.
 
 ## Security Groups
 
@@ -70,8 +81,8 @@ Note: Both `company_ids` and `allowed_company_ids` work in v17+, but `allowed_co
 - Standard ACL patterns
 
 ### Odoo 17+
-- Enhanced multi-company support
-- allowed_company_ids in context
+- Enhanced multi-company support with `_check_company_auto`
+- `allowed_company_ids` available in context for business logic
 
 ### Odoo 18+
 - _check_company_auto = True

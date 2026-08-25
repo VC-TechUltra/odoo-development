@@ -292,7 +292,7 @@ Upgrade our custom CRM module from Odoo 16.0 to 17.0
 1. Parse structured input
 2. Load v18 patterns
 3. Generate complete module skeleton with:
-   - Multi-company record rules using `allowed_company_ids`
+   - Multi-company record rules using `company_ids` magic variable
    - `_check_company_auto = True` on models
    - Advanced security groups
    - Type hints on methods

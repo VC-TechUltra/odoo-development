@@ -102,7 +102,6 @@ Analyze each module component against migration guides.
 - Menu structure changes
 
 ### 3. Security Analysis
-- Record rule variable changes (`company_ids` → `allowed_company_ids`)
 - New security features (`_check_company_auto`, `check_company`)
 - Group definition changes
 
@@ -263,7 +262,6 @@ def migrate(cr, version):
 ### 17 → 18
 | Change | Detection | Fix |
 |--------|-----------|-----|
-| `allowed_company_ids` | Search for `company_ids` in rules | Update variable name |
 | `_check_company_auto` | Models with company_id | Add to class |
 
 ### 18 → 19

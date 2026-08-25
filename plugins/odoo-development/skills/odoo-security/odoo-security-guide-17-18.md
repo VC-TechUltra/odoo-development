@@ -11,7 +11,6 @@
 
 | Component | v17 | v18 | Migration Required |
 |-----------|-----|-----|-------------------|
-| Multi-company | `company_ids` | `allowed_company_ids` | Recommended |
 | Company check | Manual domain | `_check_company_auto` | Recommended |
 | Field company | Manual validation | `check_company=True` | Recommended |
 | Type hints | Optional | Recommended | Optional |
@@ -51,15 +50,14 @@ The v17 to v18 migration for security is relatively smooth. Most changes are new
     <field name="domain_force">[
         '|',
         ('company_id', '=', False),
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
 
 **Migration Script:**
 ```python
-# Find and replace in XML files
-# company_ids → allowed_company_ids (in record rule domains)
+# No changes needed in record rules - company_ids works in all versions
 ```
 
 ### 2. Model Company Validation
@@ -215,7 +213,6 @@ internal_notes = fields.Text(groups='my_module.group_manager')
 
 ## Migration Checklist
 
-- [ ] Update record rules: `company_ids` → `allowed_company_ids`
 - [ ] Add `_check_company_auto = True` to multi-company models
 - [ ] Add `check_company=True` to relational fields
 - [ ] Remove manual company validation constraints
@@ -281,4 +278,3 @@ Check these files in the Odoo repository for v18 patterns:
 - `odoo/models.py` - `_check_company_auto` implementation
 - `odoo/fields.py` - `check_company` parameter
 - `odoo/tools/sql.py` - `SQL` builder class
-- `addons/base/models/ir_rule.py` - `allowed_company_ids` usage

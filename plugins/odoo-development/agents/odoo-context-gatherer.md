@@ -199,7 +199,7 @@ Return a structured context document in this EXACT format:
 - `check_company=True` on fields
 - Type hints recommended
 - `SQL()` builder recommended
-- `allowed_company_ids` in record rules
+- Context key `allowed_company_ids` available for business logic
 
 ### Odoo 19
 - Type hints strongly recommended (required for core/contrib modules)

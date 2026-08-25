@@ -475,7 +475,7 @@ class EquipmentItem(models.Model):
     <record id="equipment_item_rule_company" model="ir.rule">
         <field name="name">Equipment Item: Multi-company</field>
         <field name="model_id" ref="model_equipment_item"/>
-        <field name="domain_force">[('company_id', 'in', allowed_company_ids)]</field>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
 </odoo>
 ```
@@ -578,7 +578,7 @@ class TestEquipmentItem(TestEquipmentCommon):
     "Using @api.model_create_multi for batch record creation (required in v17+)",
     "Using inline visibility expressions in views (attrs removed in v17)",
     "Using check_company=True on relational fields for cross-company validation (v18 pattern)",
-    "Using allowed_company_ids in record rules (v18 pattern)",
+    "Using company_ids magic variable in record rules (standard pattern)",
     "Using btree_not_null index type for serial_number (v16+ optimization)"
   ]
 }

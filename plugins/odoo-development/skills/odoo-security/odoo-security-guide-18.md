@@ -54,7 +54,7 @@ access_custom_model_manager,custom.model.manager,model_custom_model,custom_modul
 ### Multi-Company Rule (v18 Pattern)
 
 ```xml
-<!-- v18: Use allowed_company_ids for multi-company -->
+<!-- v18: Multi-company record rule -->
 <record id="rule_custom_model_company" model="ir.rule">
     <field name="name">Custom Model: Multi-Company</field>
     <field name="model_id" ref="model_custom_model"/>
@@ -62,7 +62,7 @@ access_custom_model_manager,custom.model.manager,model_custom_model,custom_modul
     <field name="domain_force">[
         '|',
         ('company_id', '=', False),
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
@@ -404,7 +404,7 @@ access_audit_auditor,audit.auditor,model_custom_audit_log,custom_module.group_au
         <field name="domain_force">[
             '|',
             ('company_id', '=', False),
-            ('company_id', 'in', allowed_company_ids)
+            ('company_id', 'in', company_ids)
         ]</field>
     </record>
 
@@ -431,7 +431,7 @@ access_audit_auditor,audit.auditor,model_custom_audit_log,custom_module.group_au
 - [ ] All models have `ir.model.access.csv` entries
 - [ ] Multi-company models use `_check_company_auto = True`
 - [ ] Relational fields use `check_company=True` where appropriate
-- [ ] Record rules use `allowed_company_ids` for multi-company
+- [ ] Record rules use `company_ids` magic variable
 - [ ] Views use direct `invisible` attribute (not `attrs`)
 - [ ] SQL queries use `SQL()` builder
 - [ ] Type hints on all relational fields
@@ -445,7 +445,7 @@ When generating Odoo 18.0 security code:
 
 1. **Always use** `_check_company_auto = True` for multi-company models
 2. **Always use** `check_company=True` on relational fields referencing company-scoped models
-3. **Use** `allowed_company_ids` in record rule domains
+3. **Use** `company_ids` magic variable in record rule domains
 4. **Use** direct `invisible` attribute in views, not `attrs`
 5. **Use** `SQL()` builder for any raw SQL queries
 6. **Add** type hints to all relational fields
