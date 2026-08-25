@@ -1,6 +1,6 @@
 ---
 description: Odoo frontend and OWL standards for web client work, assets, components, and version-aware patterns. Use for JS, XML templates, and OWL tasks across versions 14-19.
-globs: ["**/*.js", "**/*.ts", "**/*.xml", "**/*.scss", "**/static/src/**"]
+globs: ["**/static/src/**/*.js", "**/static/src/**/*.ts", "**/static/src/**/*.xml", "**/static/src/**/*.scss"]
 alwaysApply: false
 ---
 
@@ -45,7 +45,6 @@ alwaysApply: false
 - Full static properties required for all class definitions
 - Full TypeScript support with .ts files
 - Type hints for props, state, and services
-- New hooks: useVisible, useIntersectionObserver
 - Enhanced reactivity system
 - Strict component definition patterns
 
@@ -89,7 +88,7 @@ export class MyComponent extends Component {
 
 ### Service Usage
 ```javascript
-import { useService } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 setup() {
     this.orm = useService("orm");

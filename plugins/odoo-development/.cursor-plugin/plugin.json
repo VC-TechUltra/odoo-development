@@ -14,5 +14,15 @@
   "agents": "./agents/",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./mcp.json",
-  "logo": "./assets/logo.svg"
+  "logo": "./assets/logo.svg",
+  "variables": {
+    "ODOO_VERSION": {
+      "description": "Target Odoo version (14-19). Auto-detected from nearest __manifest__.py or defaults to 18.",
+      "default": "18"
+    },
+    "ODOO_MCP_URL": {
+      "description": "URL for odoo-knowledge MCP server. Change this to match your MCP server location.",
+      "default": "http://127.0.0.1:8090/mcp"
+    }
+  }
 }

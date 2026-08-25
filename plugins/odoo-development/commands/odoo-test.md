@@ -17,13 +17,11 @@ Create and manage tests for Odoo modules.
 
 ### Step 2: Load Testing Patterns
 
-```
 Read: skills/odoo-testing/odoo-test-patterns.md
-```
-
-### Step 3: Generate Test Files
 
 ## Test File Structure
+
+Use `TransactionCase` for standard model testing:
 
 ```python
 from odoo.tests.common import TransactionCase
@@ -45,13 +43,7 @@ class TestMyModel(TransactionCase):
         self.assertEqual(record.total, 100)
 ```
 
-## Test Types
-
-### TransactionCase
-For standard model testing.
-
-### HttpCase
-For HTTP controller testing.
+Use `HttpCase` for HTTP controller testing:
 
 ```python
 from odoo.tests import HttpCase
@@ -76,26 +68,10 @@ odoo-bin test -d my_db -m my_module
 coverage run --source=my_module odoo-bin test -d my_db -m my_module
 ```
 
-### Python
-```bash
-# Using odoo instance
-./odoo-bin test -d db_name -i my_module
-```
-
-## Version-Specific
-
-### Odoo 14-16
-- Standard test patterns
-- CommonTransactionCase available
-
-### Odoo 17+
-- Enhanced assert methods
-- Record CRUD helpers
-
 ## Instructions
 1. Determine test type needed
-2. Load testing patterns
-3. Generate test file in tests/
+2. Load testing patterns from skills/odoo-testing/odoo-test-patterns.md
+3. Generate test file in tests/ directory
 4. Include setup and teardown
 5. Add assertions for expected behavior
 6. Document how to run tests

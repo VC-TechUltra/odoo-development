@@ -83,38 +83,39 @@ Analyze the task description to identify ALL required domains. Map keywords to s
 
 | Keywords | Domain | Skill Files to Load |
 |----------|--------|---------------------|
-| field, char, integer, float, boolean, selection, text, html | Fields | `field-type-reference.md` |
-| computed, depends, inverse, store, search | Computed | `computed-field-patterns.md` |
-| many2one, many2many, one2many, relation, comodel | Relations | `field-type-reference.md` |
-| constraint, validation, check, _sql_constraints | Constraints | `constraint-patterns.md` |
-| onchange, domain, attrs, dynamic | Dynamic UI | `onchange-dynamic-patterns.md` |
-| view, form, tree, kanban, search, list | Views | `xml-view-patterns.md` |
-| security, access, rule, group, ir.model.access | Security | `odoo-security-guide.md` |
-| OWL, component, JavaScript, widget | Frontend | `odoo-owl-components.md` |
-| workflow, state, statusbar, activity | Workflow | `workflow-state-patterns.md` |
-| report, QWeb, PDF, print | Reports | `report-patterns.md` |
-| wizard, transient, dialog | Wizards | `wizard-patterns.md` |
-| cron, scheduled, automation, ir.cron | Automation | `cron-automation-patterns.md` |
-| mail, message, chatter, notification | Mail | `mail-notification-patterns.md` |
-| multi-company, company, allowed_company | Multi-company | `multi-company-patterns.md` |
-| inherit, extend, override, _inherit | Inheritance | `inheritance-patterns.md` |
-| controller, http, api, rest, json | Controllers | `controller-api-patterns.md` |
-| manifest, module, depends | Module | `odoo-module-generator.md` |
-| test, unittest | Testing | `odoo-test-patterns.md` |
+| field, char, integer, float, boolean, selection, text, html | Fields | `skills/odoo-backend/field-type-reference.md` |
+| computed, depends, inverse, store, search | Computed | `skills/odoo-backend/computed-field-patterns.md` |
+| many2one, many2many, one2many, relation, comodel | Relations | `skills/odoo-backend/field-type-reference.md` |
+| constraint, validation, check, _sql_constraints | Constraints | `skills/odoo-backend/constraint-patterns.md` |
+| onchange, domain, attrs, dynamic | Dynamic UI | `skills/odoo-backend/onchange-dynamic-patterns.md` |
+| view, form, tree, kanban, search, list | Views | `skills/xml-view-patterns.md` |
+| security, access, rule, group, ir.model.access | Security | `skills/odoo-security/odoo-security-guide-{version}.md` |
+| OWL, component, JavaScript, widget | Frontend | `skills/odoo-owl/odoo-owl-components-{version}.md` |
+| workflow, state, statusbar, activity | Workflow | `skills/odoo-functional/workflow-patterns.md` |
+| report, QWeb, PDF, print | Reports | `skills/odoo-functional/reporting-patterns.md` |
+| wizard, transient, dialog | Wizards | `skills/odoo-functional/wizard-patterns.md` |
+| cron, scheduled, automation, ir.cron | Automation | `skills/odoo-backend/cron-automation-patterns.md` |
+| mail, message, chatter, notification | Mail | `skills/odoo-functional/mail-notification-patterns.md` |
+| multi-company, company, allowed_company | Multi-company | `skills/odoo-security/multi-company-patterns.md` |
+| inherit, extend, override, _inherit | Inheritance | `skills/odoo-backend/inheritance-patterns.md` |
+| controller, http, api, rest, json | Controllers | `skills/odoo-backend/controller-api-patterns.md` |
+| manifest, module, depends | Module | `skills/odoo-backend/odoo-module-generator-{version}.md` |
+| test, unittest | Testing | `skills/odoo-testing/odoo-test-patterns.md` |
 
 ### Step 3: Pattern Gathering (MANDATORY)
 
 For EACH identified domain:
 
-1. **Read the skill file** from `${CLAUDE_PLUGIN_ROOT}/skills/`
+1. **Read the skill file** from `skills/{skill-dir}/` in the plugin directory
 2. **Extract version-specific patterns** for the detected version
 3. **Note breaking changes** and deprecations for this version
 4. **Include copy-paste ready code snippets**
 
 **Version-specific skill file naming:**
-- General pattern: `skills/{pattern}.md`
-- Version-specific: `skills/{pattern}-{version}.md` (if exists)
-- Always check `skills/odoo-version-knowledge.md` for breaking changes
+- General pattern: `skills/{skill-dir}/{pattern}.md`
+- Version-specific: `skills/{skill-dir}/{pattern}-{version}.md` (if exists)
+- Example: `skills/odoo-backend/odoo-model-patterns-18.md`
+- Always check `skills/odoo-migration/odoo-version-knowledge-{version}.md` for breaking changes
 
 ### Step 4: Compile Context Output (MANDATORY)
 
@@ -201,8 +202,8 @@ Return a structured context document in this EXACT format:
 - `allowed_company_ids` in record rules
 
 ### Odoo 19
-- Full type annotations REQUIRED
-- `SQL()` builder REQUIRED (no raw SQL)
+- Type hints strongly recommended (required for core/contrib modules)
+- `SQL()` builder recommended for security (raw SQL still works but discouraged)
 - SQL constraints use `models.Constraint()` class
 - `groups_id` cannot be set in `res.users.create()`
 - OWL 3.x patterns
@@ -256,8 +257,8 @@ class MyModel(models.Model):
 3. Consider `compute_sudo=True` if computation needs elevated privileges
 
 ### Skill Files Consulted
-- `skills/computed-field-patterns.md` - computed field syntax and decorators
-- `skills/odoo-version-knowledge.md` - v18 type hint recommendations
+- `skills/odoo-backend/computed-field-patterns.md` - computed field syntax and decorators
+- `skills/odoo-migration/odoo-version-knowledge-18.md` - v18 type hint recommendations
 ```
 
 ## AGENT INSTRUCTIONS

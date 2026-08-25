@@ -32,7 +32,9 @@ access_my_model_manager,my.model.manager,model_my_model,base.group_system,1,1,1,
 
 ## Record Rules
 
-### Single Company
+### Multi-Company (version-sensitive)
+
+**v14-16:**
 ```xml
 <record id="my_model_comp_rule" model="ir.rule">
     <field name="name">my.model: multi-company</field>
@@ -41,7 +43,7 @@ access_my_model_manager,my.model.manager,model_my_model,base.group_system,1,1,1,
 </record>
 ```
 
-### Multi-company (v18+)
+**v17+:** (prefer `allowed_company_ids`)
 ```xml
 <record id="my_model_comp_rule" model="ir.rule">
     <field name="name">my.model: multi-company</field>
@@ -49,6 +51,8 @@ access_my_model_manager,my.model.manager,model_my_model,base.group_system,1,1,1,
     <field name="domain_force">[('company_id', 'in', allowed_company_ids)]</field>
 </record>
 ```
+
+Note: Both `company_ids` and `allowed_company_ids` work in v17+, but `allowed_company_ids` is preferred.
 
 ## Security Groups
 
