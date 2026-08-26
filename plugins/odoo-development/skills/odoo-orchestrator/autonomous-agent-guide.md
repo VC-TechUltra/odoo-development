@@ -155,14 +155,14 @@ AI agents should accept and parse these input parameters:
 │ VERSION 18.0:                                                       │
 │ - _check_company_auto = True                                        │
 │ - check_company=True on relational fields                           │
-│ - allowed_company_ids in record rules                               │
+│ - company_ids in record rules                                       │
 │ - SQL() builder recommended                                         │
 │ - Type hints recommended                                            │
 │ - OWL 2.x                                                           │
 │                                                                     │
 │ VERSION 19.0:                                                       │
 │ - Type hints MANDATORY                                              │
-│ - SQL() builder MANDATORY                                           │
+│ - SQL() builder available from v17; prefer it for new raw SQL                                           │
 │ - OWL 3.x                                                           │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -219,7 +219,7 @@ AI agents should accept and parse these input parameters:
 │ v17+: "def create(self, vals):" without _create_multi → ERROR       │
 │ v18+: Missing _check_company_auto → WARN                            │
 │ v19+: Missing type hints → ERROR                                    │
-│ v19+: Raw SQL without SQL() → ERROR                                 │
+│ v17+: SQL() builder preferred                                 │
 └─────────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -267,7 +267,7 @@ AI agents should accept and parse these input parameters:
 │                                                                     │
 │ 15→16: Check for tuple x2many → Command class                       │
 │ 16→17: Check for attrs= → direct attributes                         │
-│ 17→18: Check for company_ids → allowed_company_ids                  │
+│ 17→18: rule domains keep company_ids (no rename)                    │
 │ 18→19: Check for missing type hints                                 │
 └─────────────────────────────────────────────────────────────────────┘
                               │

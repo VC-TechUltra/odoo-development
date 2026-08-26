@@ -70,13 +70,13 @@
 | `check_company` | On fields | Field-level validation |
 | Type hints | Recommended | Better IDE support |
 | `SQL()` builder | Recommended | Safer SQL queries |
-| `allowed_company_ids` | In rules | New variable name |
+| `allowed_company_ids` | Context key | For business logic, not rule domains |
 
 ### v18 → v19
 | Component | Change | Impact |
 |-----------|--------|--------|
-| Type hints | Mandatory | Must annotate all |
-| `SQL()` builder | Mandatory | Required for raw SQL |
+| SQL constraints | `models.Constraint()` | Replaces `_sql_constraints` |
+| Type hints | Widely adopted (~41%) | Add to new code |
 | OWL | 3.x | Component changes |
 | Python | 3.12+ | Version requirement |
 
@@ -158,7 +158,7 @@ When you see these in logs, the code needs updating:
 | `@api.multi is deprecated` | v14 | Remove decorator |
 | `track_visibility is deprecated` | v15 | Use `tracking=True` |
 | `attrs is deprecated` | v16 | Use direct attributes |
-| `company_ids will be renamed` | v17 | Use `allowed_company_ids` |
+| (no such warning) | - | `company_ids` remains the rule variable |
 
 ## AI Agent Version Workflow
 

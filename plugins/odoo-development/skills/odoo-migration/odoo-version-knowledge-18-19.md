@@ -11,19 +11,19 @@
 
 | Category | Change | Impact |
 |----------|--------|--------|
-| SQL | `SQL()` builder **REQUIRED** | **CRITICAL** - All raw SQL |
-| Type Hints | **REQUIRED** for methods | High - Update all methods |
+| SQL | `SQL()` builder preferred (since v17) | Raw SQL still functions |
+| Type Hints | Widely adopted in v19 (~41% of methods) | Medium - add to new code |
 | SQL Constraints | `models.Constraint()` class **REQUIRED** | High - All SQL constraints |
 | res.users | `groups_id` cannot be set in create() | High - User creation code |
 | OWL | OWL 3.x replaces 2.x | High - Component rewrite |
 | Multi-Company | `_check_company_auto` required | High - All multi-company models |
 | Python | Python 3.12+ required | Medium - Check compatibility |
 
-## CRITICAL: SQL() Builder Required
+## SQL() Builder (available since v17)
 
 ### Before (v18) - Worked but discouraged
 ```python
-# String SQL - NO LONGER WORKS in v19
+# String SQL - still functions in v19; SQL() is preferred
 self.env.cr.execute("""
     SELECT id FROM my_model WHERE state = %s
 """, ('draft',))
@@ -33,7 +33,7 @@ self.env.cr.execute("""
 ```python
 from odoo.tools import SQL
 
-# MUST use SQL() builder
+# Preferred: SQL() builder
 self.env.cr.execute(SQL(
     "SELECT id FROM my_model WHERE state = %s",
     'draft'
@@ -454,12 +454,6 @@ https://raw.githubusercontent.com/odoo/odoo/master/odoo/models.py
 ```python
 from odoo.tools import SQL
 self.env.cr.execute(SQL("SELECT ...", param1, param2))
-```
-
-### Error: `Type hints required for public method`
-**Fix**: Add return type and parameter types:
-```python
-def my_method(self, param: str) -> bool:
 ```
 
 ### Error: `Props validation failed`

@@ -1,5 +1,5 @@
 ---
-description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and MCP-first verification. Use for Python and module work across versions 14-19.
+description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and index-verified existence checks. Use for Python and module work across versions 14-19.
 globs: ["**/*.py", "**/__manifest__.py", "**/__init__.py"]
 alwaysApply: false
 ---
@@ -36,11 +36,11 @@ alwaysApply: false
 
 ### Odoo 19
 - Type hints mandatory
-- SQL() builder mandatory
+- SQL() builder available from v17; prefer it for new raw SQL
 
 ## General Rules
-- Search repository and use MCP before proposing framework-specific code
-- Validate schema and dependencies through MCP
+- Use the odoo-development skills for patterns; search the repository for local conventions
+- Confirm a field or dependency exists through MCP before relying on it
 - Do not invent fields, comodels, XML IDs, method names, or dependencies
 - Prefer batch-safe ORM code
 - Avoid unnecessary sudo()

@@ -1,5 +1,5 @@
 ---
-description: Odoo XML views, actions, menus, ACLs, and record-rule standards with MCP-first XML ID verification. Use for XML and security tasks across versions 14-19.
+description: Odoo XML views, actions, menus, ACLs, and record-rule standards with index-verified XML IDs. Use for XML and security tasks across versions 14-19.
 globs: ["**/*.xml", "**/security/*.csv", "**/security/*.xml"]
 alwaysApply: false
 ---
@@ -200,7 +200,7 @@ domain_force = "[('company_id', 'in', company_ids)]"
 
 ### Multi-Company Rules (v17+)
 ```python
-domain_force = "[('company_id', 'in', allowed_company_ids)]"
+domain_force = "[('company_id', 'in', company_ids)]"
 ```
 
 ### Company-Dependent Fields
@@ -212,10 +212,10 @@ company_id = fields.Many2one('res.company',
     required=True)
 ```
 
-## MCP-First XML ID Verification
+## XML ID Verification
 
 ### Before Referencing XML IDs
-1. Use MCP to search for existing XML IDs
+1. Use MCP to confirm an XML ID exists before referencing it
 2. Verify model, view type, and context
 3. Check if XML ID is in base or a module
 4. Confirm XML ID exists in target version
@@ -227,7 +227,7 @@ company_id = fields.Many2one('res.company',
 - Hardcoding XML IDs from other modules
 
 ### Safe Practices
-- Always verify XML ID with MCP
+- Always confirm an XML ID exists with MCP before inheriting it
 - Use `ref` attribute in XML
 - Check module dependencies
 - Test in target version
@@ -309,7 +309,7 @@ company_id = fields.Many2one('res.company',
 ### Odoo 17
 - attrs/states REMOVED
 - New expression syntax required
-- allowed_company_ids replaces company_ids
+- Rule domains use company_ids; allowed_company_ids is a context key, not a rule variable
 - Modern OWL-based views
 
 ### Odoo 18
@@ -320,4 +320,4 @@ company_id = fields.Many2one('res.company',
 ### Odoo 19
 - Latest version
 - attrs/states REMOVED
-- Check MCP for latest patterns
+- Take patterns from the skills; use MCP to confirm what exists

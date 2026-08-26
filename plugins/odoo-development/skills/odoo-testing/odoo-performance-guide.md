@@ -204,7 +204,7 @@ self.env.cr.execute("""
     WHERE id IN %s
 """, ('done', tuple(order_ids)))
 
-# v18+: SQL() builder (REQUIRED in v19)
+# v17+: SQL() builder (preferred)
 from odoo.tools import SQL
 
 self.env.cr.execute(SQL(

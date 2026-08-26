@@ -128,7 +128,7 @@ def calculate_total(
 ### After (v18)
 ```xml
 <field name="domain_force">[
-    ('company_id', 'in', allowed_company_ids)
+    ('company_id', 'in', company_ids)
 ]</field>
 ```
 
@@ -138,7 +138,7 @@ def calculate_total(
 - [ ] Add `_check_company_auto = True` to model definition
 - [ ] Add `check_company=True` to relevant Many2one fields
 - [ ] Remove manual company validation constraints
-- [ ] Update record rules to use `allowed_company_ids`
+- [ ] Confirm record rules use `company_ids`
 
 ### For SQL Queries
 - [ ] Import `from odoo.tools import SQL`

@@ -234,7 +234,7 @@ class {ModelName}(models.Model):
         """Reset to draft."""
         self.write({'state': 'draft'})
 
-    # === SQL OPERATIONS (v19 - SQL() MANDATORY) === #
+    # === SQL OPERATIONS (SQL() builder, available since v17) === #
     def _get_report_data(self) -> list[dict[str, Any]]:
         """Use SQL builder for all raw SQL queries."""
         query = SQL(
@@ -510,7 +510,7 @@ registry.category("actions").add("{module_name}.{component_name}", {ComponentNam
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- v19: Uses allowed_company_ids -->
+    <!-- v19: rule domains use company_ids -->
     <record id="rule_{model_name}_company" model="ir.rule">
         <field name="name">{Model Name}: Multi-Company</field>
         <field name="model_id" ref="model_{module_name}_{model_name}"/>
@@ -518,7 +518,7 @@ registry.category("actions").add("{module_name}.{component_name}", {ComponentNam
         <field name="domain_force">[
             '|',
             ('company_id', '=', False),
-            ('company_id', 'in', allowed_company_ids)
+            ('company_id', 'in', company_ids)
         ]</field>
     </record>
 </odoo>
@@ -537,7 +537,7 @@ When generating a v19 module:
 - [ ] Use `@api.model_create_multi` for create
 - [ ] Use `Command` class for x2many
 - [ ] Use direct `invisible`/`readonly` in views
-- [ ] Use `allowed_company_ids` in record rules
+- [ ] Use `company_ids` in record rules
 - [ ] Use OWL 3.x patterns
 - [ ] Python 3.12+ compatible code
 

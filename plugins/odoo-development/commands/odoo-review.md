@@ -9,9 +9,9 @@ Review the selected Odoo code for correctness, security, maintainability, and up
 
 Before reviewing:
 - Detect version.
-- Use `search_odoo_codebase` or `code_search`.
-- Use `get_odoo_model_schema`, `get_odoo_xml_id_location`, and `get_model_dependencies` where relevant.
-- For Odoo 18/19 Community and Enterprise, validate version-specific concerns through MCP.
+- Review against the patterns in the odoo-development skills.
+- Escalate to MCP only to confirm a referenced field, XML ID, method override
+  or access rule actually exists in the target version.
 
 Output:
 - Critical

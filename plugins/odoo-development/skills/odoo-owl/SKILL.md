@@ -7,17 +7,28 @@ description: odoo frontend and owl patterns for components, assets, qweb, widget
 
 ## Core policy
 - Detect target Odoo version first.
-- Prefer repository patterns and MCP-backed facts over guesses.
-- For Odoo 18 and 19 Community and Enterprise, use MCP development guidance before proposing OWL, registry, or asset-bundle patterns.
+- Answer from this skill first; escalate to MCP only for existence checks.
+- For Odoo 18 and 19 Community and Enterprise, confirm with MCP that a referenced field, XML ID, dependency or access rule exists before relying on it.
 
-## MCP-first workflow
-1. `health_check` when MCP reachability is uncertain.
-2. `search_odoo_codebase` or `code_search` for similar patterns.
-3. `read_odoo_file` or `get_file_snippet` for exact source context.
-4. `get_odoo_model_schema` for fields, relations, inherited models, and edition-aware assumptions.
-5. `get_odoo_xml_id_location` before using or inheriting XML IDs.
-6. `get_model_dependencies` before changing manifests or cross-module integrations.
-7. `get_odoo_development_guidelines` for Odoo 18/19 CE/EE framework guidance.
+## Answering order
+**1. Answer from this skill.** Syntax, patterns, file shapes, conventions and
+documented version differences are covered here. Do not call MCP for these.
+
+**2. Escalate to MCP only for existence questions** - a claim about what is
+actually present in a given Odoo version:
+
+| Question | Tool |
+|---|---|
+| Does model X have field/method Y? | `get_odoo_model` |
+| Where is this XML ID, what inherits it? | `resolve_odoo_xml_id` |
+| What overrides this method? | `trace_odoo_method` |
+| What ACLs or record rules apply? | `get_odoo_security` |
+| Exact source of a known file range | `read_odoo_source_range` |
+| What changed between two versions? | `compare_odoo_versions` |
+
+When you know the file, prefer `read_odoo_source_range` over `get_odoo_model`
+(~50k tokens). Always pass `start_line`/`end_line`: a 20-line read is ~180
+tokens, but the default range is 200 lines (~2k).
 
 ## Included knowledge files
 - `odoo-owl-components.md`
@@ -32,5 +43,12 @@ description: odoo frontend and owl patterns for components, assets, qweb, widget
 - `widget-field-patterns.md`
 - `website-integration-patterns.md`
 - `dashboard-kpi-patterns.md`
+
+Legacy versions (Odoo 14-16). Odoo 14 and 15 predate the odoo-knowledge index (v16-v19) and are unverified; prefer MCP for anything current:
+- `odoo-owl-components-14.md`
+- `odoo-owl-components-14-15.md`
+- `odoo-owl-components-15.md`
+- `odoo-owl-components-15-16.md`
+- `odoo-owl-components-16.md`
 
 Read only the files relevant to the current task to keep context lean.

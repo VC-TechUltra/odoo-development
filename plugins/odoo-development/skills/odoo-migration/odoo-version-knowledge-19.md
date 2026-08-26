@@ -3,7 +3,7 @@
 ```
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  ODOO 19.0 KNOWLEDGE BASE                                                    ║
-║  Type hints mandatory, SQL() required, OWL 3.x                               ║
+║  Type hints partial, SQL() since v17, OWL 3.x                                ║
 ║  WARNING: v19 is in development - patterns may change                        ║
 ║  VERIFY: https://github.com/odoo/odoo/tree/master                            ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
@@ -69,7 +69,7 @@ def create_record(self, name: str, partner_id: int | None = None) -> 'MyModel':
     return self.create({'name': name, 'partner_id': partner_id})
 ```
 
-### SQL() Builder REQUIRED
+### SQL() Builder (available since v17)
 ```python
 from odoo.tools import SQL
 
@@ -173,7 +173,7 @@ export class MyComponent extends Component {
 ### New in Odoo 19 (Expected)
 - OWL 3.x framework
 - Mandatory type hints
-- SQL() builder required
+- SQL() builder available from v17; prefer it for new raw SQL
 - Enhanced performance
 - AI integrations
 - Improved mobile experience
@@ -484,7 +484,7 @@ def action_confirm(self) -> bool:
 # v18 (string queries worked)
 self.env.cr.execute("SELECT id FROM my_model WHERE state = %s", ['draft'])
 
-# v19 (SQL() required)
+# v17+ (SQL() builder preferred)
 from odoo.tools import SQL
 self.env.cr.execute(SQL("SELECT id FROM my_model WHERE state = %s", 'draft'))
 ```

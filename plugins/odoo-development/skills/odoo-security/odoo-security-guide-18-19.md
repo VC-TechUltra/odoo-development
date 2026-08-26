@@ -106,7 +106,6 @@ def convert_to_sql_builder(python_content):
     # This is a complex transformation that often requires manual review
     # Basic pattern detection
     if "self.env.cr.execute" in python_content and "SQL(" not in python_content:
-        print("WARNING: Found raw SQL execution. Manual migration to SQL() required.")
     return python_content
 ```
 

@@ -105,7 +105,7 @@ Prompt: "Show how company_id field is defined in base models"
 
 # Multi-company record rule
 URL: https://raw.githubusercontent.com/odoo/odoo/18.0/addons/sale/security/sale_security.xml
-Prompt: "Show the multi-company record rule using allowed_company_ids"
+Prompt: "Show the multi-company record rule using company_ids"
 ```
 
 ---
@@ -195,7 +195,7 @@ Prompt: "Show methods with type hints"
 ### v19 Patterns
 
 ```
-# SQL() required
+# SQL() builder, available since v17
 URL: https://raw.githubusercontent.com/odoo/odoo/master/odoo/sql_db.py
 Prompt: "Show that string SQL is deprecated/removed"
 
@@ -246,7 +246,7 @@ VERIFICATION_MATRIX = {
         "16": ("odoo/sql_db.py", "Show cr.execute with string SQL"),
         "17": ("odoo/sql_db.py", "Show cr.execute with string SQL"),
         "18": ("odoo/tools/sql.py", "Show SQL() builder recommended"),
-        "19": ("odoo/tools/sql.py", "Show SQL() builder required"),
+        "19": ("odoo/tools/sql.py", "Show SQL() builder"),
     },
 }
 ```
@@ -321,7 +321,7 @@ Before generating code, verify these patterns:
 | Company handling | _check_company_auto, check_company | sale_order.py |
 | SQL queries | String vs SQL() builder | sale_order.py |
 | OWL imports | owl.tags vs @odoo/owl | hooks.js |
-| Record rules | domain syntax, allowed_company_ids | sale_security.xml |
+| Record rules | domain syntax, company_ids | sale_security.xml |
 
 ---
 
@@ -343,6 +343,6 @@ ALWAYS verify when generating:
 - Model create methods (decorator changes between versions)
 - View visibility expressions (attrs removal in v17)
 - Multi-company patterns (v18+ requirements)
-- SQL queries (v19 SQL() requirement)
+- SQL queries (SQL() builder, since v17)
 - OWL components (major changes each version)
 ```

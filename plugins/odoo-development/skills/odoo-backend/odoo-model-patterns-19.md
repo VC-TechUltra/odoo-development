@@ -3,7 +3,7 @@
 ```
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  ODOO 19.0 ORM PATTERNS                                                      ║
-║  Type hints mandatory, SQL() required, OWL 3.x                               ║
+║  Type hints partial, SQL() since v17, OWL 3.x                                ║
 ║  WARNING: v19 is in development - patterns may change                        ║
 ║  VERIFY: https://github.com/odoo/odoo/tree/master/odoo/models.py             ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
@@ -15,7 +15,7 @@
 | Feature | Odoo 19.0 Pattern |
 |---------|-------------------|
 | Type hints | **MANDATORY** for public methods |
-| Raw SQL | **SQL() required** - string queries deprecated |
+| Raw SQL | `SQL()` preferred (since v17); string queries still work |
 | X2many commands | `Command` class |
 | Multi-company | `_check_company_auto` + `check_company=True` |
 | OWL | Version 3.x |
@@ -45,7 +45,7 @@ from odoo.tools import SQL
 # v18 (deprecated string queries):
 self.env.cr.execute("SELECT id FROM my_model WHERE state = %s", ['draft'])
 
-# v19 (REQUIRED SQL() builder):
+# v17+ (preferred - SQL() builder):
 self.env.cr.execute(SQL(
     "SELECT id FROM my_model WHERE state = %s",
     'draft'

@@ -1,5 +1,5 @@
 ---
-description: Odoo migration and upgrade guardrails with MCP-first validation for all versions (14-19). Use for upgrade tasks and deprecated-pattern cleanup.
+description: Odoo migration and upgrade guardrails with index-verified breaking changes for all versions (14-19). Use for upgrade tasks and deprecated-pattern cleanup.
 globs: ["**/*.py", "**/*.xml", "**/*.js"]
 alwaysApply: false
 ---
@@ -11,7 +11,7 @@ alwaysApply: false
 - 15 → 16: Command class introduced, @api.model_create_multi
 - 16 → 17: attrs/states removed from views
 - 17 → 18: _check_company_auto, type hints recommended
-- 18 → 19: Type hints mandatory, SQL() builder mandatory
+- 18 → 19: type hints adopted in v19 (partial); SQL() builder exists since v17
 
 ## Version-Specific Breaking Changes
 
@@ -35,14 +35,14 @@ alwaysApply: false
 
 ### v18 → v19
 - Type hints MANDATORY
-- SQL() builder MANDATORY
+- SQL() builder available from v17; prefer it for new raw SQL
 
 ## Upgrade Workflow
 1. State source version and target version
 2. Identify impacted modules
 3. Preserve external IDs and business semantics
 4. Apply incremental patches
-5. Verify breaking changes with MCP
+5. Confirm each breaking change against MCP before applying it
 
 ## Best Practices
 - Prefer incremental patches over broad rewrites

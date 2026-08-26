@@ -50,7 +50,7 @@ access_custom_model_manager,custom.model.manager,model_custom_model,custom_modul
 ### Multi-Company Rule (v19)
 
 ```xml
-<!-- v19: Enhanced multi-company with allowed_company_ids -->
+<!-- v19: multi-company rule - domains use company_ids -->
 <record id="rule_custom_model_company" model="ir.rule">
     <field name="name">Custom Model: Multi-Company</field>
     <field name="model_id" ref="model_custom_model"/>
@@ -58,7 +58,7 @@ access_custom_model_manager,custom.model.manager,model_custom_model,custom_modul
     <field name="domain_force">[
         '|',
         ('company_id', '=', False),
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
@@ -311,10 +311,10 @@ class AuditLog(models.Model):
 - [ ] All models have `ir.model.access.csv` entries
 - [ ] Use `_check_company_auto = True` for multi-company models
 - [ ] Use `check_company=True` on relational fields
-- [ ] Use `allowed_company_ids` in record rules
+- [ ] Use `company_ids` in record rules
 - [ ] Full type annotations on ALL fields
 - [ ] Full type annotations on ALL method signatures
-- [ ] Use `SQL()` builder for ALL raw SQL (mandatory)
+- [ ] Use `SQL()` builder for raw SQL (available since v17)
 - [ ] Views use direct `invisible` attribute
 - [ ] No `attrs` attribute in views
 
@@ -333,10 +333,10 @@ When generating Odoo 19.0 security code:
 
 1. **ALWAYS** add type hints to ALL fields
 2. **ALWAYS** add type hints to ALL method signatures
-3. **ALWAYS** use `SQL()` builder for raw SQL (mandatory)
+3. Prefer the `SQL()` builder for raw SQL (available since v17)
 4. **ALWAYS** use `_check_company_auto = True` for multi-company
 5. **ALWAYS** use `check_company=True` on relational fields
-6. **Use** `allowed_company_ids` in record rules
+6. **Use** `company_ids` in record rules
 7. **Use** direct `invisible` attribute (no `attrs`)
 8. **Use** Python 3.12+ features where appropriate
 9. **Verify** patterns against `master` branch of odoo/odoo GitHub

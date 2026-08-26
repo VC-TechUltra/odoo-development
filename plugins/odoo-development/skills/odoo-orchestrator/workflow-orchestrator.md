@@ -410,7 +410,7 @@ output = {
     ▼                   ▼
   Manual            _check_company_auto = True
   company           check_company = True
-  validation        allowed_company_ids in rules
+  validation        company_ids in rules
 ```
 
 ---

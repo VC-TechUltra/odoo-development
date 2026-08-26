@@ -122,7 +122,7 @@ class MyModel(models.Model):
     <field name="name">My Model: Multi-company</field>
     <field name="model_id" ref="model_my_model"/>
     <field name="domain_force">[
-        ('company_id', 'in', allowed_company_ids)
+        ('company_id', 'in', company_ids)
     ]</field>
 </record>
 ```
@@ -236,7 +236,6 @@ access_my_model_manager,my.model.manager,model_my_model,group_manager,1,1,1,1
 | `attrs attribute is no longer supported` | Using attrs in v17+ |
 | `create() takes 2 positional arguments` | Using single create() in v17+ |
 | `check_company failed` | Missing check_company in v18+ |
-| `SQL string query deprecated` | Using string SQL in v19 |
 
 ## Input Parameter Defaults
 

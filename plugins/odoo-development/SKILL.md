@@ -1,23 +1,25 @@
 ---
 name: odoo-development
-description: Odoo development plugin for backend, migration, security, testing, and troubleshooting. Use MCP-first workflow with version detection.
+description: Odoo development plugin for backend, migration, security, testing, and troubleshooting. Skill-first workflow with version detection; MCP confirms what exists in a version.
 ---
 
 # Odoo Development
 
 ## Core Policy
 - Detect target Odoo version first
-- Prefer MCP verification over guessing
-- For Odoo 18/19 CE/EE, use MCP to verify schema, XML IDs, dependencies, framework guidance
+- Answer from the skills; they cover syntax, patterns and version differences
+- Escalate to MCP only to confirm a field, method, XML ID, dependency or access
+  rule actually exists in the target version
 
-## MCP-First Workflow
-1. `health_check` - MCP reachability
-2. `search_odoo_codebase` / `code_search` - find patterns
-3. `read_odoo_file` / `get_file_snippet` - source context
-4. `get_odoo_model_schema` - fields, relations, edition-aware assumptions
-5. `get_odoo_xml_id_location` - XML ID inheritance
-6. `get_model_dependencies` - manifest/cross-module changes
-7. `get_odoo_development_guidelines` - Odoo 18/19 CE/EE guidance
+## Answering order
+1. Answer from the relevant skill - syntax, patterns, conventions, version differences.
+2. Escalate to MCP only to confirm what EXISTS in a version:
+   - field/method on a model -> `get_odoo_model`
+   - XML ID and its inheritors -> `resolve_odoo_xml_id`
+   - method overrides -> `trace_odoo_method`
+   - ACLs and record rules -> `get_odoo_security`
+   - known file range -> `read_odoo_source_range`
+   - cross-version diff -> `compare_odoo_versions`
 
 ## Skills Index
 

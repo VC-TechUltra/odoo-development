@@ -9,8 +9,10 @@ Plan an Odoo implementation before coding.
 
 Workflow:
 1. Confirm target version and edition.
-2. Use MCP to inspect similar patterns, schema, XML IDs, dependencies, and framework guidance.
-3. Produce a phased implementation plan.
+2. Take patterns and version differences from the odoo-development skills.
+3. Escalate to MCP only to confirm what exists: model fields (`get_odoo_model`),
+   XML IDs (`resolve_odoo_xml_id`), dependencies (`explain_odoo_dependencies`).
+4. Produce a phased implementation plan.
 
 Output:
 - Scope

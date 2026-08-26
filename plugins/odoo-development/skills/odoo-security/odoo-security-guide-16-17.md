@@ -7,10 +7,10 @@
 
 ## New in v17+
 ```python
-# Use allowed_company_ids in v17+
-domain = [('company_id', 'in', allowed_company_ids)]
+# Rule domains use company_ids (all versions)
+domain = [('company_id', 'in', company_ids)]
 ```
 
 ## Checklist
-- [ ] Update multi-company rules to use allowed_company_ids
+- [ ] Confirm multi-company rules use company_ids
 - [ ] Test ACL permissions
