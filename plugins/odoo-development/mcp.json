@@ -19,7 +19,9 @@
         "build_odoo_context",
         "compare_odoo_versions",
         "mcp_runtime_metrics",
-        "read_odoo_source_range"
+        "read_odoo_source_range",
+        "report_odoo_feedback",
+        "feedback_summary"
       ]
     }
   }
