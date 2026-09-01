@@ -523,3 +523,98 @@ def _cron_certification_expiry(self):
 6. **Activity scheduling** - Use activities for HR tasks
 7. **Audit trail** - Track changes to sensitive data
 8. **Integration** - Connect with payroll, expense, timesheet
+
+---
+
+## Core Model Reference Catalog (Index Ground-Truth)
+
+> Ground-truth structural catalog extracted from Odoo knowledge database. Use these exact field names and mixins without tool calls.
+
+### Model: `hr.employee`
+- **Inherited Mixins**: `"hr.employee"`, `['mail.thread.main.attachment', 'mail.activity.mixin', 'resource.mixin', 'avatar.mixin']`, `'hr.employee'`, `['hr.employee', 'pos.load.mixin']`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `name` | `Char` | `Employee Name` |
+| `user_id` | `Many2one` | `'res.users', 'Related User', store=True, readonly=False, domain="[('share', '=', False)]"` |
+| `department_id` | `Many2one` | `'hr.department', 'Department', check_company=True` |
+| `job_id` | `Many2one` | `'hr.job', 'Job Position', check_company=True` |
+| `parent_id` | `Many2one` | `'hr.employee', 'Manager / Supervisor'` |
+| `coach_id` | `Many2one` | `'hr.employee', 'Coach / Mentor'` |
+| `resource_id` | `Many2one` | `'resource.resource', required=True` |
+| `resource_calendar_id` | `Many2one` | `related='version_id.resource_calendar_id', inherited=True, index=` |
+| `user_partner_id` | `Many2one` | `related="user_id.partner_id", related_sudo=False, string="User's ` |
+| `share` | `Boolean` | `related="user_id.share"` |
+| `phone` | `Char` | `related="user_id.phone"` |
+| `im_status` | `Char` | `related="user_id.im_status"` |
+| `email` | `Char` | `related="user_id.email"` |
+| `last_activity` | `Date` | `compute="_compute_last_activity"` |
+| `last_activity_time` | `Char` | `compute="_compute_last_activity"` |
+| `show_hr_icon_display` | `Boolean` | `compute='_compute_presence_icon'` |
+| `newly_hired` | `Boolean` | `'Newly Hired', compute='_compute_newly_hired', search='_search_ne` |
+| `active` | `Boolean` | `'Active', related='resource_id.active', default=True, store=True,` |
+| `company_id` | `Many2one` | `'res.company', required=True, tracking=True` |
+| `company_country_id` | `Many2one` | `'res.country', 'Company Country', related='company_id.country_id'` |
+| `company_country_code` | `Char` | `related='company_country_id.code', depends=['company_country_id']` |
+| `work_phone` | `Char` | `'Work Phone', store=True, readonly=False, tracking=True, compute=` |
+| `mobile_phone` | `Char` | `'Work Mobile'` |
+| `work_email` | `Char` | `'Work Email', compute="_compute_work_contact_details", store=True` |
+| `work_contact_id` | `Many2one` | `'res.partner', 'Work Contact', copy=False, index='btree_not_null'` |
+| `legal_name` | `Char` | `compute='_compute_legal_name', store=True, readonly=False, groups` |
+| `is_user_active` | `Boolean` | `related='user_id.active', string="User's active", groups="hr.grou` |
+| `private_phone` | `Char` | `string="Private Phone", groups="hr.group_hr_user"` |
+| `private_email` | `Char` | `string="Private Email", groups="hr.group_hr_user"` |
+
+### Model: `hr.department`
+- **Inherited Mixins**: `['mail.thread', 'mail.activity.mixin']`, `'hr.department'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `name` | `Char` | `'Department Name', required=True, translate=True` |
+| `complete_name` | `Char` | `'Complete Name', compute='_compute_complete_name', recursive=True` |
+| `active` | `Boolean` | `'Active', default=True` |
+| `company_id` | `Many2one` | `'res.company', string='Company', compute="_compute_company_id", s` |
+| `parent_id` | `Many2one` | `'hr.department', string='Parent Department', index=True, check_co` |
+| `child_ids` | `One2many` | `'hr.department', 'parent_id', string='Child Departments'` |
+| `manager_id` | `Many2one` | `'hr.employee', string='Manager', tracking=True, domain="['|', ('c` |
+| `member_ids` | `One2many` | `'hr.employee', 'department_id', string='Members', readonly=True` |
+| `has_read_access` | `Boolean` | `search="_search_has_read_access", store=False, export_string_tran` |
+| `jobs_ids` | `One2many` | `'hr.job', 'department_id', string='Jobs'` |
+| `plan_ids` | `One2many` | `'mail.activity.plan', 'department_id'` |
+| `plans_count` | `Integer` | `compute='_compute_plan_count'` |
+| `note` | `Text` | `'Note'` |
+| `color` | `Integer` | `'Color Index'` |
+| `parent_path` | `Char` | `index=True` |
+| `expenses_to_approve_count` | `Integer` | `compute='_compute_expenses_to_approve_count', string='Expenses to` |
+| `display_name` | `Char` | `compute_sudo=True` |
+
+### Model: `hr.job`
+- **Inherited Mixins**: `["mail.alias.mixin", "hr.job", "mail.activity.mixin"]`, `"hr.job"`, `['mail.thread']`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `active` | `Boolean` | `default=True` |
+| `name` | `Char` | `string='Job Position', required=True, index='trigram', translate=` |
+| `sequence` | `Integer` | `default=10` |
+| `employee_ids` | `One2many` | `'hr.employee', 'job_id', string='Employees', groups='base.group_u` |
+| `description` | `Html` | `string='Job Description', sanitize_attributes=False` |
+| `requirements` | `Text` | `groups="hr_recruitment.group_hr_recruitment_interviewer,hr.group_` |
+| `allowed_user_ids` | `Many2many` | `'res.users', compute='_compute_allowed_user_ids', readonly=True` |
+| `department_id` | `Many2one` | `'hr.department', string='Department', check_company=True, trackin` |
+| `company_id` | `Many2one` | `'res.company', string='Company', default=lambda self: self.env.co` |
+| `contract_type_id` | `Many2one` | `'hr.contract.type', string='Employment Type', tracking=True` |
+| `expected_employees` | `Integer` | `groups="hr_recruitment.group_hr_recruitment_interviewer,hr.group_` |
+| `no_of_employee` | `Integer` | `groups="hr_recruitment.group_hr_recruitment_interviewer,hr.group_` |
+| `user_id` | `Many2one` | `groups="hr_recruitment.group_hr_recruitment_interviewer,hr.group_` |
+| `application_ids` | `One2many` | `'hr.applicant', 'job_id', "Job Applications", groups="hr_recruitm` |
+| `application_count` | `Integer` | `compute='_compute_application_count', string="Application Count",` |
+| `applicant_hired` | `Integer` | `compute='_compute_applicant_hired', string="Applicants Hired", gr` |
+| `document_ids` | `One2many` | `'ir.attachment', compute='_compute_document_ids', string="Documen` |
+| `documents_count` | `Integer` | `compute='_compute_document_ids', string="Document Count", groups=` |
+| `employee_count` | `Integer` | `compute='_compute_employee_count'` |
+| `alias_id` | `Many2one` | `help="Email alias for this job position. New emails will automati` |
+| `color` | `Integer` | `"Color Index"` |
+| `is_favorite` | `Boolean` | `compute='_compute_is_favorite', inverse='_inverse_is_favorite'` |
+| `favorite_user_ids` | `Many2many` | `'res.users', 'job_favorite_user_rel', 'job_id', 'user_id', defaul` |
+| `extended_interviewer_ids` | `Many2many` | `'res.users', 'hr_job_extended_interviewer_res_users', compute='_c` |
+| `industry_id` | `Many2one` | `'res.partner.industry', 'Industry', tracking=True, groups="hr_rec` |

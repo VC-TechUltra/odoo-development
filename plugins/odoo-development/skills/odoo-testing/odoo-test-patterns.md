@@ -405,101 +405,38 @@ class TestMyModelUI(HttpCase):
 ## Test Tags Reference
 
 | Tag | Meaning |
-|-----|---------|
-| `post_install` | Run after module installation |
-| `-at_install` | Don't run during installation |
-| `standard` | Standard test (default) |
-| `external` | Requires external services |
+|
+---
 
-## Version-Specific Test Patterns
-
-### v16+ with Command Class
+## Standard Test Setup & Demo XML IDs Catalog
 
 ```python
-def test_create_with_command(self):
-    """Test creation with Command class (v16+)"""
-    from odoo.fields import Command
+from odoo.tests.common import TransactionCase, tagged
 
-    record = self.env['my.model'].create({
-        'name': 'Command Test',
-        'line_ids': [
-            Command.create({'name': 'Line 1', 'quantity': 1}),
-            Command.create({'name': 'Line 2', 'quantity': 2}),
-        ],
-    })
-    self.assertEqual(len(record.line_ids), 2)
-```
-
-### v17+ Visibility Testing
-
-```python
-def test_view_visibility(self):
-    """Test view visibility conditions (v17+)"""
-    record = self.env['my.model'].create({
-        'name': 'Visibility Test',
-        'state': 'draft',
-    })
-
-    # Get form view
-    view = self.env['ir.ui.view'].search([
-        ('model', '=', 'my.model'),
-        ('type', '=', 'form'),
-    ], limit=1)
-
-    # In v17+, visibility uses Python expressions
-    # Test that the view renders correctly
-    fields_view = self.env['my.model'].get_views(
-        [(view.id, 'form')]
-    )['views']['form']
-    self.assertIn('invisible', str(fields_view))
-```
-
-### v18+ Multi-Company Testing
-
-```python
-def test_check_company_auto(self):
-    """Test automatic company checking (v18+)"""
-    # Create partner in different company
-    company2 = self.env['res.company'].create({'name': 'Company 2'})
-    partner_c2 = self.env['res.partner'].create({
-        'name': 'Partner C2',
-        'company_id': company2.id,
-    })
-
-    # Should raise if check_company=True
-    with self.assertRaises(Exception):
-        self.env['my.model'].create({
-            'name': 'Cross Company',
-            'company_id': self.company.id,
-            'partner_id': partner_c2.id,  # Different company
+@tagged('post_install', '-at_install')
+class TestCoreWorkflows(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.company = cls.env.ref('base.main_company')
+        cls.partner = cls.env['res.partner'].create({
+            'name': 'Test Customer',
+            'company_id': cls.company.id,
         })
+        cls.product = cls.env['product.product'].create({
+            'name': 'Test Service',
+            'type': 'service',
+            'list_price': 100.0,
+        })
+
+    def test_sale_to_invoice_flow(self):
+        order = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'order_line': [(0, 0, {
+                'product_id': self.product.id,
+                'product_uom_qty': 2.0,
+            })],
+        })
+        order.action_confirm()
+        self.assertEqual(order.state, 'sale')
 ```
-
-## Running Tests
-
-```bash
-# Run all tests for a module
-./odoo-bin -d testdb -i my_module --test-enable --stop-after-init
-
-# Run specific test class
-./odoo-bin -d testdb --test-tags my_module.TestMyModel
-
-# Run with coverage
-coverage run ./odoo-bin -d testdb -i my_module --test-enable --stop-after-init
-coverage report
-```
-
-## Test Generation Checklist
-
-For each model, generate tests for:
-
-- [ ] Basic CRUD operations (create, read, update, delete)
-- [ ] All computed fields
-- [ ] All constraints (Python and SQL)
-- [ ] State workflow transitions
-- [ ] Access rights by user group
-- [ ] Record rules (multi-company, ownership)
-- [ ] Onchange methods
-- [ ] Action methods (buttons)
-- [ ] Copy behavior
-- [ ] Batch operations

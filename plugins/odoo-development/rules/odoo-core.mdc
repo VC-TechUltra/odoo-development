@@ -1,47 +1,42 @@
 ---
-description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and index-verified existence checks. Use for Python and module work across versions 14-19.
+description: Odoo backend implementation standards for models, manifests, ORM usage, dependencies, and strict 3-tier retrieval hierarchy. Use for Python and module work across versions 14-19.
 globs: ["**/*.py", "**/__manifest__.py", "**/__init__.py"]
-alwaysApply: false
+alwaysApply: true
 ---
 
-# Odoo Core Rule
+# Odoo Core Rule & Retrieval Hierarchy
 
-## Version Detection (CRITICAL)
-- Detect Odoo version FIRST before writing any code
-- Check __manifest__.py for version string
-- Look for version indicators: @api.multi (v14), track_visibility (v14), tracking=True (v15+), Command class (v16+)
+## Strict 3-Tier Retrieval Hierarchy
 
-## Version-Specific Rules
+### 1. Tier 1 (Local Skills - Zero Tool Calls Mandatory)
+- All standard model definitions (`account.move`, `sale.order`, `stock.picking`, `res.partner`, `purchase.order`, `product.template`, `hr.employee`, etc.), their inherited mixins, fields, states, and XML IDs in `SKILL.md` and `skills/odoo-functional/*.md` are **FINAL, VERIFIED GROUND-TRUTH**.
+- **PROHIBITION**: DO NOT call MCP tools to "confirm", "double-check", or "verify" models, mixins, or fields that are already in the skill files. Answer IMMEDIATELY with 0 tool calls.
 
-### Odoo 14
-- @api.multi is DEPRECATED but works
-- Use track_visibility='onchange' for field tracking
-- Tuple syntax for x2many
+### 2. Tier 2 (Odoo MCP Knowledge Base - Fallback Only)
+- ONLY invoke MCP tools if:
+  1. The user explicitly requests exact source code lines (use `read_odoo_source_range`).
+  2. The user requests a multi-module method override graph (use `trace_odoo_method`).
+  3. An obscure model or method is COMPLETELY ABSENT from all skill files.
+- **Negative Knowledge Guard**: NEVER guess unlisted fields; escalate cleanly to Tier 2.
+- **Custom / Proprietary Fields**: If a field has a custom prefix (`x_` or `tus_`), search the CURRENT local workspace files using Grep before calling external tools.
 
-### Odoo 15
-- @api.multi REMOVED - will cause errors
-- Use tracking=True instead of track_visibility
+### 3. Tier 3 (Internet as Last Resort)
+- Only if absent from both Skills and Odoo MCP database. Enforce version constraints ("Odoo 18" OR "Odoo 19").
 
-### Odoo 16
-- Use Command class for x2many operations
-- @api.model_create_multi recommended
+## Version Detection & Defaulting Rules (CRITICAL)
+- **Automatic Manifest Detection**: If the user does NOT explicitly state the Odoo version in their prompt, inspect the nearest `__manifest__.py` file in the workspace:
+  - `'14.0.x'` -> Target Odoo 14
+  - `'15.0.x'` -> Target Odoo 15
+  - `'16.0.x'` -> Target Odoo 16
+  - `'17.0.x'` -> Target Odoo 17
+  - `'18.0.x'` -> Target Odoo 18
+  - `'19.0.x'` -> Target Odoo 19
+- **Defaulting Policy**: Only default to Odoo 19 if NO workspace manifest exists.
 
-### Odoo 17+
-- @api.model_create_multi mandatory
-- No attrs in views - use inline expressions
-
-### Odoo 18+
-- _check_company_auto = True
-- Type hints recommended
-
-### Odoo 19
-- Type hints mandatory
-- SQL() builder available from v17; prefer it for new raw SQL
-
-## General Rules
-- Use the odoo-development skills for patterns; search the repository for local conventions
-- Confirm a field or dependency exists through MCP before relying on it
-- Do not invent fields, comodels, XML IDs, method names, or dependencies
-- Prefer batch-safe ORM code
-- Avoid unnecessary sudo()
-- Keep manifests, imports, security, views, and tests aligned
+## Version-Specific Standards
+### Odoo 14: @api.multi is deprecated, track_visibility='onchange'
+### Odoo 15: @api.multi removed, use tracking=True
+### Odoo 16: Use Command class (Command.create, Command.update, Command.delete, Command.clear)
+### Odoo 17+: @api.model_create_multi mandatory; no attrs in XML views (use inline invisible/readonly/required)
+### Odoo 18+: _check_company_auto = True; Type hints recommended
+### Odoo 19: Type hints mandatory; use SQL() builder for raw SQL

@@ -1,0 +1,254 @@
+{
+  "summary": {
+    "total": 35,
+    "passed": 35,
+    "rate": 1.0
+  },
+  "results": [
+    {
+      "id": "TC-FUNC-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-002",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-003",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-004",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-005",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-006",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-007",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-008",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-009",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-010",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-functional",
+      "detail": "Verified in odoo-functional catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-BACK-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-backend",
+      "detail": "Verified in odoo-backend catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-BACK-002",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-backend",
+      "detail": "Verified in odoo-backend catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-BACK-003",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-backend",
+      "detail": "Verified in odoo-backend catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-BACK-004",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-backend",
+      "detail": "Verified in odoo-backend catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-BACK-005",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-backend",
+      "detail": "Verified in odoo-backend catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-BACK-006",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-backend",
+      "detail": "Verified in odoo-backend catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-SEC-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-security",
+      "detail": "Verified in odoo-security catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-SEC-002",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-security",
+      "detail": "Verified in odoo-security catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-SEC-003",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-security",
+      "detail": "Verified in odoo-security catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-SEC-004",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-security",
+      "detail": "Verified in odoo-security catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-OWL-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-owl",
+      "detail": "Verified in odoo-owl catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-OWL-002",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-owl",
+      "detail": "Verified in odoo-owl catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-OWL-003",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-owl",
+      "detail": "Verified in odoo-owl catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-OWL-004",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-owl",
+      "detail": "Verified in odoo-owl catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-MIGR-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-migration",
+      "detail": "Verified in odoo-migration catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-MIGR-002",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-migration",
+      "detail": "Verified in odoo-migration catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-MIGR-003",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-migration",
+      "detail": "Verified in odoo-migration catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-TEST-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-testing",
+      "detail": "Verified in odoo-testing catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-TEST-002",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-testing",
+      "detail": "Verified in odoo-testing catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-TROUBLE-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-troubleshooting",
+      "detail": "Verified in odoo-troubleshooting catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-ORCH-001",
+      "status": "PASS",
+      "tier": 1,
+      "domain": "odoo-orchestrator",
+      "detail": "Verified in odoo-orchestrator catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FALLBACK-001",
+      "status": "PASS",
+      "tier": 2,
+      "domain": "mcp-fallback",
+      "detail": "MCP fallback verified with read_odoo_source_range on live server."
+    },
+    {
+      "id": "TC-FALLBACK-002",
+      "status": "PASS",
+      "tier": 2,
+      "domain": "mcp-fallback",
+      "detail": "MCP fallback verified with trace_odoo_method on live server."
+    },
+    {
+      "id": "TC-FALLBACK-003",
+      "status": "PASS",
+      "tier": 2,
+      "domain": "mcp-fallback",
+      "detail": "MCP fallback verified with resolve_odoo_xml_id on live server."
+    },
+    {
+      "id": "TC-FALLBACK-004",
+      "status": "PASS",
+      "tier": 3,
+      "domain": "internet-fallback",
+      "detail": "3-Tier decision guard verified in SKILL.md and rules/odoo-core.mdc."
+    }
+  ]
+}
