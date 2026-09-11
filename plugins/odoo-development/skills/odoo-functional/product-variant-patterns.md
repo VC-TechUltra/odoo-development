@@ -464,3 +464,55 @@ red_products = search_by_attribute('Color', 'Red')
 8. **Archive unused** - Don't delete, archive discontinued variants
 9. **Test configurator** - Ensure all valid combinations work
 10. **Document attributes** - Clear naming for attributes and values
+
+---
+
+## Core Model Reference Catalog (Index Ground-Truth)
+
+> Ground-truth structural catalog extracted from Odoo knowledge database. Use these exact field names and mixins without tool calls.
+
+### Model: `product.template`
+- **Inherited Mixins**: `"product.template"`, `'product.template'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `tax_string` | `Char` | `compute='_compute_tax_string'` |
+| `fiscal_country_codes` | `Char` | `compute='_compute_fiscal_country_codes'` |
+| `product_tmpl_id` | `Many2one` | `'product.template', string='Product Template', readonly=True` |
+
+### Model: `product.product`
+- **Inherited Mixins**: `"product.product"`, `'product.product'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `tax_string` | `Char` | `compute='_compute_tax_string'` |
+| `event_ticket_ids` | `One2many` | `'event.event.ticket', 'product_id', string='Event Tickets'` |
+| `standard_price_update_warning` | `Char` | `compute="_compute_standard_price_update_warning"` |
+
+### Model: `product.category`
+- **Inherited Mixins**: `'product.category'`, `"product.category"`, `['product.category', 'pos.load.mixin']`, `['mail.thread']`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `name` | `Char` | `'Name', index='trigram', required=True` |
+| `parent_id` | `Many2one` | `'product.category', 'Parent Category', index=True, ondelete='casc` |
+| `parent_path` | `Char` | `index=True` |
+| `child_id` | `One2many` | `'product.category', 'parent_id', 'Child Categories'` |
+| `product_properties_definition` | `PropertiesDefinition` | `'Product Properties'` |
+| `putaway_rule_ids` | `One2many` | `'stock.putaway.rule', 'category_id', 'Putaway Rules'` |
+| `filter_for_stock_putaway_rule` | `Boolean` | `'stock.putaway.rule', store=False, search='_search_filter_for_sto` |
+| `product_categ_id` | `Many2one` | `'product.category', string='Product Category', readonly=True` |
+| `product_category_name` | `Char` | `related="product_id.categ_id.complete_name", string="Product Cate` |
+
+### Model: `product.pricelist`
+- **Inherited Mixins**: `'product.pricelist'`, `['product.pricelist', 'pos.load.mixin']`, `['mail.thread', 'mail.activity.mixin']`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `partners_count` | `Integer` | `compute='_compute_partners_count'` |
+| `partners_label` | `Char` | `related='company_id.partnership_label'` |
+| `name` | `Char` | `string="Pricelist Name", required=True, translate=True` |
+| `sequence` | `Integer` | `default=16` |
+| `code` | `Char` | `string="E-commerce Promotional Code", groups='base.group_user'` |
+| `selectable` | `Boolean` | `help="Allow the end user to choose this price list"` |
+| `pricelist_id` | `Many2one` | `'product.pricelist', string='Pricelist'` |

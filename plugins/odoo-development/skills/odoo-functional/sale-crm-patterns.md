@@ -468,3 +468,102 @@ class SaleReport(models.Model):
 8. **Email templates** - Use standard mail.template
 9. **Activity types** - Use existing or create specific ones
 10. **Testing** - Test quotation → order → invoice flow
+
+---
+
+## Core Model Reference Catalog (Index Ground-Truth)
+
+> Ground-truth structural catalog extracted from Odoo knowledge database. Use these exact field names and mixins without tool calls.
+
+### Model: `sale.order`
+- **Inherited Mixins**: `'sale.order'`, `"sale.order"`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `pickup_location_data` | `Json` | `` |
+| `carrier_id` | `Many2one` | `'delivery.carrier', string="Delivery Method", check_company=True,` |
+| `delivery_message` | `Char` | `readonly=True, copy=False` |
+| `delivery_set` | `Boolean` | `compute='_compute_delivery_state'` |
+| `recompute_delivery_price` | `Boolean` | `'Delivery cost should be recomputed'` |
+| `is_all_service` | `Boolean` | `"Service Product", compute="_compute_is_service_products"` |
+| `shipping_weight` | `Float` | `"Shipping Weight", compute="_compute_shipping_weight", store=True` |
+| `event_booth_ids` | `One2many` | `'event.booth', 'sale_order_id', string='Booths'` |
+| `event_booth_count` | `Integer` | `string='Booth Count', compute='_compute_event_booth_count'` |
+| `attendee_count` | `Integer` | `'Attendee Count', compute='_compute_attendee_count'` |
+| `sale_order_id` | `Many2one` | `'sale.order', string='Sales Order', readonly=True` |
+
+### Model: `sale.order.line`
+- **Inherited Mixins**: `'sale.order.line'`, `['sale.order.line', 'pos.load.mixin']`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `is_delivery` | `Boolean` | `string="Is a Delivery", default=False` |
+| `recompute_delivery_price` | `Boolean` | `related='order_id.recompute_delivery_price'` |
+| `event_booth_category_id` | `Many2one` | `'event.booth.category', string='Booths Category', ondelete='set n` |
+| `event_booth_ids` | `One2many` | `'event.booth', 'sale_order_line_id', string='Confirmed Booths'` |
+| `is_multi_slots` | `Boolean` | `related="event_id.is_multi_slots"` |
+| `registration_ids` | `One2many` | `'event.registration', 'sale_order_line_id', string="Registrations` |
+| `is_repair_line` | `Boolean` | `"Is linked to repair", compute='_compute_is_repair_line'` |
+| `pos_order_line_ids` | `One2many` | `'pos.order.line', 'sale_order_line_id', string="Order lines Trans` |
+| `sale_order_line_id` | `Many2one` | `'sale.order.line', string='Sale Order Line', readonly=True` |
+
+### Model: `crm.lead`
+- **Inherited Mixins**: `'crm.lead'`, `"crm.lead"`, `['mail.thread.cc',
+                'mail.thread.blacklist',
+                'mail.thread.phone',
+                'mail.activity.mixin',
+                'utm.mixin',
+                'format.address.mixin',
+                'mail.tracking.duration.mixin',
+               ]`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `referred` | `Char` | `'Referred By'` |
+| `description` | `Html` | `'Notes'` |
+| `active` | `Boolean` | `'Active', default=True, tracking=72` |
+| `stage_id_color` | `Integer` | `string='Stage Color', related="stage_id.color", export_string_tra` |
+| `color` | `Integer` | `'Color Index', default=0` |
+| `expected_revenue` | `Monetary` | `'Expected Revenue', currency_field='company_currency', tracking=T` |
+| `prorated_revenue` | `Monetary` | `'Prorated Revenue', currency_field='company_currency', store=True` |
+| `recurring_revenue` | `Monetary` | `'Recurring Revenues', currency_field='company_currency', tracking` |
+| `recurring_plan` | `Many2one` | `'crm.recurring.plan', string="Recurring Plan"` |
+| `company_currency` | `Many2one` | `"res.currency", string='Currency', compute="_compute_company_curr` |
+| `date_closed` | `Datetime` | `'Closed Date', readonly=True, copy=False` |
+| `date_automation_last` | `Datetime` | `'Last Action', readonly=True` |
+| `day_open` | `Float` | `'Days to Assign', compute='_compute_day_open', store=True` |
+| `day_close` | `Float` | `'Days to Close', compute='_compute_day_close', store=True` |
+| `date_conversion` | `Datetime` | `'Conversion Date', readonly=True` |
+| `date_deadline` | `Date` | `'Expected Closing', help="Estimate of the date on which the oppor` |
+| `partner_is_blacklisted` | `Boolean` | `'Partner is blacklisted', related='partner_id.is_blacklisted', re` |
+| `function` | `Char` | `'Job Position', compute='_compute_function', readonly=False, stor` |
+| `email_normalized` | `Char` | `index='trigram'` |
+| `phone_sanitized` | `Char` | `index='btree_not_null'` |
+| `website` | `Char` | `'Website', help="Website of the contact", compute="_compute_websi` |
+| `lang_code` | `Char` | `related='lang_id.code'` |
+| `lang_active_count` | `Integer` | `compute='_compute_lang_active_count'` |
+| `street` | `Char` | `'Street', compute='_compute_partner_address_values', readonly=Fal` |
+| `street2` | `Char` | `'Street2', compute='_compute_partner_address_values', readonly=Fa` |
+
+### Model: `crm.team`
+- **Inherited Mixins**: `['mail.thread']`, `'crm.team'`, `['mail.alias.mixin', 'crm.team']`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `use_leads` | `Boolean` | `'Leads', help="Check this box to filter and qualify incoming requ` |
+| `use_opportunities` | `Boolean` | `'Pipeline', default=True, help="Check this box to manage a presal` |
+| `alias_id` | `Many2one` | `help="The email address associated with this channel. New emails ` |
+| `assignment_enabled` | `Boolean` | `'Lead Assign', compute='_compute_assignment_enabled'` |
+| `assignment_auto_enabled` | `Boolean` | `'Auto Assignment', compute='_compute_assignment_enabled'` |
+| `assignment_optout` | `Boolean` | `'Skip auto assignment'` |
+| `lead_properties_definition` | `PropertiesDefinition` | `'Lead Properties'` |
+| `pos_config_ids` | `One2many` | `'pos.config', 'crm_team_id', string="Point of Sales"` |
+| `sale_order_count` | `Integer` | `compute='_compute_sale_order_count', string='# Sale Orders'` |
+| `name` | `Char` | `` |
+| `sequence` | `Integer` | `'Sequence', default=10` |
+| `active` | `Boolean` | `default=True, help="If the active field is set to false, it will ` |
+| `user_id` | `Many2one` | `'res.users', string='Team Leader', check_company=True, domain=[('` |
+| `member_warning` | `Text` | `'Membership Issue Warning', compute='_compute_member_warning'` |
+| `color` | `Integer` | `string='Color Index', help="The color of the channel", default=_g` |
+| `dashboard_button_name` | `Char` | `string="Dashboard Button", compute='_compute_dashboard_button_nam` |
+| `member_ids` | `Many2many` | `{ string: "Members", relation: "users" }` |

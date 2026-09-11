@@ -520,3 +520,117 @@ def _cron_auto_reorder(self):
 8. **Performance** - Use `read_group` for aggregations
 9. **Concurrency** - Use proper locking for inventory updates
 10. **Test thoroughly** - Stock operations have many edge cases
+
+---
+
+## Core Model Reference Catalog (Index Ground-Truth)
+
+> Ground-truth structural catalog extracted from Odoo knowledge database. Use these exact field names and mixins without tool calls.
+
+### Model: `stock.picking`
+- **Inherited Mixins**: `"stock.picking"`, `'stock.picking'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `l10n_ar_cai_data` | `Json` | `string="CAI Data", copy=False` |
+| `l10n_in_ewaybill_ids` | `One2many` | `'l10n.in.ewaybill', 'picking_id', string="Ewaybill"` |
+| `l10n_in_ewaybill_feature_enabled` | `Boolean` | `related='company_id.l10n_in_ewaybill_feature'` |
+| `l10n_it_transport_reason` | `Selection` | `[('sale', 'Sale'` |
+| `l10n_it_transport_method` | `Selection` | `[('sender', 'Sender'` |
+| `l10n_it_transport_method_details` | `Char` | `'Transport Note'` |
+| `l10n_it_parcels` | `Integer` | `string="Parcels", default=1` |
+| `l10n_it_ddt_number` | `Char` | `'DDT Number', readonly=True` |
+| `l10n_it_show_print_ddt_button` | `Boolean` | `compute="_compute_l10n_it_show_print_ddt_button"` |
+| `picking_id` | `Many2one` | `'stock.picking'` |
+
+### Model: `stock.move`
+- **Inherited Mixins**: `'stock.move'`, `"stock.move"`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `l10n_in_ewaybill_ids` | `One2many` | `related='picking_id.l10n_in_ewaybill_ids'` |
+| `company_currency_id` | `Many2one` | `related='company_id.currency_id'` |
+| `created_production_id` | `Many2one` | `'mrp.production', 'Created Production Order', check_company=True,` |
+| `bom_line_id` | `Many2one` | `'mrp.bom.line', 'BoM Line', check_company=True` |
+| `unit_factor` | `Float` | `'Unit Factor', compute='_compute_unit_factor', store=True` |
+| `order_finished_lot_ids` | `Many2many` | `'stock.lot', string="Finished Lot/Serial Number", related="raw_ma` |
+| `should_consume_qty` | `Float` | `'Quantity To Consume', compute='_compute_should_consume_qty', dig` |
+| `product_qty_available` | `Float` | `'Product On Hand Quantity', related='product_id.qty_available', d` |
+| `product_virtual_available` | `Float` | `'Product Forecasted Quantity', related='product_id.virtual_availa` |
+| `stock_move_ids` | `One2many` | `'stock.move', 'account_move_id', string='Stock Move'` |
+
+### Model: `stock.move.line`
+- **Inherited Mixins**: `"stock.move.line"`, `'stock.move.line'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `sale_price` | `Float` | `compute='_compute_sale_price'` |
+| `destination_country_code` | `Char` | `related='picking_id.destination_country_code'` |
+| `carrier_id` | `Many2one` | `related='picking_id.carrier_id'` |
+| `carrier_name` | `Char` | `related='picking_id.carrier_id.name', readonly=True, store=True, ` |
+| `workorder_id` | `Many2one` | `'mrp.workorder', 'Work Order', check_company=True` |
+| `production_id` | `Many2one` | `'mrp.production', 'Production Order', check_company=True` |
+| `description_bom_line` | `Char` | `related='move_id.description_bom_line'` |
+| `is_expired` | `Boolean` | `related='lot_id.product_expiry_alert'` |
+| `company_id` | `Many2one` | `'res.company', string='Company', readonly=True, required=True, in` |
+| `product_id` | `Many2one` | `'product.product', 'Product', ondelete="cascade", check_company=T` |
+| `product_uom_category_id` | `Many2one` | `related='product_id.uom_id.category_id'` |
+| `product_category_name` | `Char` | `related="product_id.categ_id.complete_name", store=True, string="` |
+| `qty_done` | `Float` | `'Done', default=0.0, digits='Product Unit of Measure', copy=False` |
+| `package_level_id` | `Many2one` | `'stock.package_level', 'Package Level', check_company=True` |
+| `lot_name` | `Char` | `'Lot/Serial Number Name'` |
+| `date` | `Datetime` | `'Date', default=fields.Datetime.now, required=True` |
+| `location_dest_id` | `Many2one` | `'stock.location', 'To', domain="[('usage', '!=', 'view'` |
+| `location_usage` | `Selection` | `string="Source Location Type", related='location_id.usage'` |
+| `location_dest_usage` | `Selection` | `string="Destination Location Type", related='location_dest_id.usa` |
+| `lots_visible` | `Boolean` | `compute='_compute_lots_visible'` |
+| `picking_partner_id` | `Many2one` | `related='picking_id.partner_id', readonly=True` |
+| `picking_code` | `Selection` | `related='picking_id.picking_type_id.code', readonly=True` |
+| `picking_type_use_create_lots` | `Boolean` | `related='picking_id.picking_type_id.use_create_lots', readonly=Tr` |
+| `picking_type_use_existing_lots` | `Boolean` | `related='picking_id.picking_type_id.use_existing_lots', readonly=` |
+| `picking_type_entire_packs` | `Boolean` | `related='picking_id.picking_type_id.show_entire_packs', readonly=` |
+
+### Model: `stock.location`
+- **Inherited Mixins**: `'stock.location'`, `"stock.location"`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `subcontractor_ids` | `One2many` | `'res.partner', 'property_stock_subcontractor'` |
+| `name` | `Char` | `'Location Name', required=True` |
+| `complete_name` | `Char` | `"Full Location Name", compute='_compute_complete_name', recursive` |
+| `active` | `Boolean` | `'Active', default=True, help="By unchecking the active field, you` |
+| `child_ids` | `One2many` | `'stock.location', 'location_id', 'Contains'` |
+| `parent_path` | `Char` | `index=True` |
+| `putaway_rule_ids` | `One2many` | `'stock.putaway.rule', 'location_in_id', 'Putaway Rules'` |
+| `barcode` | `Char` | `'Barcode', copy=False` |
+| `quant_ids` | `One2many` | `'stock.quant', 'location_id'` |
+| `cyclic_inventory_frequency` | `Integer` | `"Inventory Frequency", default=0, help=" When different than 0, i` |
+| `last_inventory_date` | `Date` | `"Last Inventory", readonly=True, help="Date of the last inventory` |
+| `next_inventory_date` | `Date` | `"Next Expected", compute="_compute_next_inventory_date", store=Tr` |
+| `warehouse_view_ids` | `One2many` | `'stock.warehouse', 'view_location_id', readonly=True` |
+| `warehouse_id` | `Many2one` | `'stock.warehouse', compute='_compute_warehouse_id', store=True` |
+| `storage_category_id` | `Many2one` | `'stock.storage.category', string='Storage Category', check_compan` |
+| `outgoing_move_line_ids` | `One2many` | `'stock.move.line', 'location_id'` |
+| `incoming_move_line_ids` | `One2many` | `'stock.move.line', 'location_dest_id'` |
+| `net_weight` | `Float` | `'Net Weight', compute="_compute_weight"` |
+| `forecast_weight` | `Float` | `'Forecasted Weight', compute="_compute_weight"` |
+| `is_empty` | `Boolean` | `'Is Empty', compute='_compute_is_empty', search='_search_is_empty` |
+| `is_valued_internal` | `Boolean` | `'Is valued inside the company', compute="_compute_is_valued", sea` |
+| `is_valued_external` | `Boolean` | `'Is valued outside the company', compute="_compute_is_valued"` |
+| `equipment_count` | `Integer` | `'Equipment Count', compute='_compute_equipment_count'` |
+| `location_id` | `Many2one` | `'stock.location', 'Location', store=False` |
+
+### Model: `stock.warehouse`
+- **Inherited Mixins**: `"stock.warehouse"`, `'stock.warehouse'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `pbm_type_id` | `Many2one` | `'stock.picking.type', 'Picking Before Manufacturing Operation Typ` |
+| `sam_type_id` | `Many2one` | `'stock.picking.type', 'Stock After Manufacturing Operation Type',` |
+| `pbm_route_id` | `Many2one` | `'stock.route', 'Picking Before Manufacturing Route', ondelete='re` |
+| `pbm_loc_id` | `Many2one` | `'stock.location', 'Picking before Manufacturing Location', check_` |
+| `sam_loc_id` | `Many2one` | `'stock.location', 'Stock after Manufacturing Location', check_com` |
+| `subcontracting_route_id` | `Many2one` | `'stock.route', 'Resupply Subcontractor', ondelete='restrict', cop` |
+| `pos_type_id` | `Many2one` | `'stock.picking.type', string="Point of Sale Operation Type", copy` |
+| `buy_pull_id` | `Many2one` | `'stock.rule', 'Buy rule', copy=False` |
+| `warehouse_id` | `Many2one` | `'stock.warehouse', string='Warehouse'` |

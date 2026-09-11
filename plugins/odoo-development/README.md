@@ -1,6 +1,6 @@
 # Odoo Development Cursor Plugin
 
-Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, hooks, and MCP-first workflows.
+Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, hooks, and a skill-first workflow.
 
 ## How to use
 
@@ -33,20 +33,30 @@ Validate that `Read:` references used in command docs resolve to real files:
 
 ## MCP configuration
 
-The plugin connects to the `odoo-knowledge` MCP server for codebase search, schema inspection, and development guidelines. By default it uses `http://127.0.0.1:8090/mcp`.
+The plugin connects to the `odoo-knowledge` MCP server for codebase search and schema inspection. It ships pointing at `http://127.0.0.1:8099/mcp/`, which assumes the server runs on your own machine.
 
-**To change the URL:** Edit `mcp.json` in the plugin directory and update the `url` field under `mcpServers.odoo-knowledge`. For example, to use a remote server:
+**To change the URL:** Edit `mcp.json` in the plugin directory and update the `url` field under `mcpServers.odoo-knowledge`. For a shared server on your network:
 
 ```json
-"url": "http://your-server:8090/mcp"
+"url": "http://your-server:8099/mcp/"
 ```
 
-**With MCP:** Commands and skills use odoo-knowledge MCP for best results. Run `health_check` via MCP when connectivity is uncertain.
+Keep the trailing slash — requests to `/mcp` are answered with a 307 redirect to `/mcp/`.
+
+If the server was started with `GREEN_MCP_API_KEY` set, it requires a bearer token; add one alongside the URL:
+
+```json
+"headers": { "Authorization": "Bearer your-key" }
+```
+
+**With MCP:** Commands and skills use odoo-knowledge MCP for best results. Run `knowledge_status` via MCP when connectivity is uncertain.
 
 **Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
 
 ## MCP policy
-This plugin is designed to use the `odoo-knowledge` MCP first for:
+The skills answer syntax, patterns, conventions and version differences.
+MCP is called only to confirm what actually exists in a version - a field,
+method, XML ID, inheritance chain or access rule. Supported targets:
 - Odoo 18 Community
 - Odoo 18 Enterprise
 - Odoo 19 Community
@@ -58,8 +68,8 @@ The plugin registers two hooks via `hooks/hooks.json`:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `sessionStart` | `mcp-health-check.sh` | Injects MCP-first workflow context at session start, reminding the agent to use odoo-knowledge MCP first and run `health_check` when connectivity is uncertain. |
-| `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
+| `sessionStart` | `mcp-health-check.sh` | Injects skill-first workflow context at session start: answer from the skills, and call odoo-knowledge MCP only to confirm version-specific existence. |
+| `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and to confirm Odoo facts before destructive commands. Returns `permission: allow` so execution proceeds. |
 
 **Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
 

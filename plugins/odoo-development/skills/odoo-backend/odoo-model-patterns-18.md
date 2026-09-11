@@ -12,7 +12,7 @@
 
 - **Python**: 3.10+ required, 3.12 recommended
 - **Type Hints**: Recommended (will be mandatory in v19)
-- **SQL Builder**: Use `SQL()` for raw SQL (mandatory in v19)
+- **SQL Builder**: Use `SQL()` for raw SQL (available since v17)
 - **Company Check**: Use `_check_company_auto = True`
 - **Decorators**: `@api.model_create_multi` mandatory
 

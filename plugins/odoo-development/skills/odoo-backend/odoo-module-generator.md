@@ -134,11 +134,11 @@ If the version is not explicitly stated, look for these clues in existing code:
 - `check_company=True` on fields
 - Type hints recommended
 - `SQL()` builder recommended
-- `allowed_company_ids` in rules
+- `company_ids` in rules
 
 ### v19 Key Patterns
 - Type hints mandatory
-- `SQL()` builder mandatory
+- `SQL()` builder available from v17; prefer it for new raw SQL
 - OWL 3.x
 - Python 3.12+
 
@@ -292,7 +292,7 @@ Upgrade our custom CRM module from Odoo 16.0 to 17.0
 1. Parse structured input
 2. Load v18 patterns
 3. Generate complete module skeleton with:
-   - Multi-company record rules using `allowed_company_ids`
+   - Multi-company record rules using `company_ids`
    - `_check_company_auto = True` on models
    - Advanced security groups
    - Type hints on methods

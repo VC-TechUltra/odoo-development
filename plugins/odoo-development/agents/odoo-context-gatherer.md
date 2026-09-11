@@ -198,11 +198,11 @@ Return a structured context document in this EXACT format:
 - `check_company=True` on fields
 - Type hints recommended
 - `SQL()` builder recommended
-- `allowed_company_ids` in record rules
+- `company_ids` in record rules
 
 ### Odoo 19
 - Full type annotations REQUIRED
-- `SQL()` builder REQUIRED (no raw SQL)
+- `SQL()` builder available from v17; prefer it for new raw SQL
 - SQL constraints use `models.Constraint()` class
 - `groups_id` cannot be set in `res.users.create()`
 - OWL 3.x patterns

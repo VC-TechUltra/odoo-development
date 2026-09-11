@@ -3,22 +3,42 @@
 ```
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║  MODEL MIGRATION GUIDE: Odoo 18.0 → 19.0                                     ║
-║  Focus: Mandatory type hints, mandatory SQL builder                          ║
+║  Focus: SQL constraints; type-hint conventions                               ║
 ║  Note: v19 is in development - patterns may change.                          ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
 ## Breaking Changes Summary
 
-| Feature | v18 Status | v19 Status | Action |
-|---------|------------|------------|--------|
-| Type hints | Recommended | **Mandatory** | Must add |
-| `SQL()` builder | Recommended | **Mandatory** | Must use |
-| Raw SQL strings | Deprecated | **Removed** | Must migrate |
+| Feature | v18 | v19 | Action |
+|---------|-----|-----|--------|
+| SQL constraints | `_sql_constraints` list | `models.Constraint()` | **Must migrate** |
+| Type hints | rare | widely adopted (~41% of methods) | Add to new code |
+| `SQL()` builder | available (since v17) | available | No v19 change |
+| Raw SQL strings | works | works | Prefer `SQL()` for new code |
 
-## MANDATORY: Type Hints
+## Real breaking change: SQL constraints
 
-### Before (v18 - Optional)
+`_sql_constraints` lists are replaced by `models.Constraint()` attributes.
+This is the one model-layer change in 18 -> 19 that will break existing code.
+
+```python
+# v18
+_sql_constraints = [
+    ('code_unique', 'UNIQUE(code)', 'Code must be unique.'),
+]
+
+# v19
+_code_unique = models.Constraint(
+    'UNIQUE(code)',
+    'Code must be unique.',
+)
+```
+
+
+## Type hints (convention, not enforced)
+
+### Older style
 ```python
 def calculate_totals(self, options=None):
     options = options or {}
@@ -45,7 +65,7 @@ def create(self, vals_list):
     return super().create(vals_list)
 ```
 
-### After (v19 - Mandatory)
+### v19 style
 ```python
 from __future__ import annotations
 
@@ -80,12 +100,12 @@ def create(self, vals_list: list[dict[str, Any]]) -> 'MyModel':
     return super().create(vals_list)
 ```
 
-## MANDATORY: SQL Builder
+## SQL() builder (available since v17)
 
-### Before (v18 - Allowed but deprecated)
+### Raw SQL (still works in v19)
 ```python
 def _get_report_data(self):
-    # This will FAIL in v19
+    # Still functions in v19; SQL() is preferred for new code
     query = """
         SELECT id, name, amount
         FROM %s
@@ -96,7 +116,7 @@ def _get_report_data(self):
     return self.env.cr.dictfetchall()
 ```
 
-### After (v19 - Required)
+### Preferred form
 ```python
 from odoo.tools import SQL
 
@@ -256,12 +276,12 @@ query = SQL(
 
 ### For All Models
 - [ ] Add `from __future__ import annotations` at file top
-- [ ] Add type hints to ALL method parameters
-- [ ] Add return type annotations to ALL methods
+- [ ] Add type hints to new/changed method parameters
+- [ ] Add return annotations to new/changed methods
 - [ ] Import types from `typing` and `collections.abc`
 
 ### For SQL Queries
-- [ ] Replace ALL raw SQL strings with `SQL()` builder
+- [ ] Prefer `SQL()` for new or changed raw SQL
 - [ ] Verify all queries work correctly
 - [ ] Test with various input parameters
 
@@ -314,15 +334,8 @@ if __name__ == '__main__':
 
 ### Error: Missing type hints
 ```
-TypeError: Missing type annotation for parameter 'vals'
 ```
 **Fix**: Add type hints to all method parameters.
-
-### Error: Raw SQL not allowed
-```
-SecurityError: Raw SQL strings are deprecated. Use SQL() builder.
-```
-**Fix**: Convert all raw SQL to use `SQL()` builder.
 
 ### Error: Invalid type hint syntax
 ```

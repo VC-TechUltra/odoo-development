@@ -1,0 +1,504 @@
+{
+  "description": "Comprehensive 35-Case Golden Benchmark Dataset for Odoo Skills, Multi-Version Compliance (v14-v19), and 3-Tier Retrieval",
+  "version": "2.0.0",
+  "target_versions_tested": ["v14", "v15", "v16", "v17", "v18", "v19"],
+  "test_cases": [
+    {
+      "id": "TC-FUNC-001",
+      "category": "functional_accounting",
+      "domain": "odoo-functional",
+      "target_version": "v19",
+      "prompt": "What are the primary relational fields and inherited mixins on the account.move model in Odoo 19?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "account.move",
+        "must_contain": ["portal.mixin", "mail.thread", "journal_id", "line_ids", "statement_line_ids", "company_id"]
+      },
+      "evaluation_criteria": "Must answer directly from accounting-patterns.md catalog with 0 tool calls."
+    },
+    {
+      "id": "TC-FUNC-002",
+      "category": "functional_sales",
+      "domain": "odoo-functional",
+      "target_version": "v18",
+      "prompt": "What are the standard state selection values for sale.order?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "sale.order",
+        "must_contain": ["draft", "sent", "sale", "cancel"]
+      },
+      "evaluation_criteria": "Must answer directly from sale-crm-patterns.md catalog."
+    },
+    {
+      "id": "TC-FUNC-003",
+      "category": "functional_stock",
+      "domain": "odoo-functional",
+      "target_version": "v19",
+      "prompt": "What fields link stock.move and stock.picking in the stock module?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "stock.move",
+        "must_contain": ["picking_id", "location_id", "location_dest_id", "product_id"]
+      },
+      "evaluation_criteria": "Must identify picking_id Many2one from stock-inventory-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-004",
+      "category": "functional_purchase",
+      "domain": "odoo-functional",
+      "target_version": "v18",
+      "prompt": "What are the main fields on purchase.order and purchase.order.line?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "purchase.order",
+        "must_contain": ["partner_id", "order_line", "product_qty", "product_uom", "price_unit"]
+      },
+      "evaluation_criteria": "Must provide purchase fields from purchase-procurement-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-005",
+      "category": "functional_product",
+      "domain": "odoo-functional",
+      "target_version": "v19",
+      "prompt": "What is the relationship between product.template and product.product?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "product.template",
+        "must_contain": ["product_tmpl_id", "product_variant_ids", "attribute_line_ids", "categ_id"]
+      },
+      "evaluation_criteria": "Must explain product variant relation from product-variant-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-006",
+      "category": "functional_hr",
+      "domain": "odoo-functional",
+      "target_version": "v19",
+      "prompt": "What are the core relational fields on hr.employee in Odoo 19?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "hr.employee",
+        "must_contain": ["user_id", "department_id", "job_id", "parent_id", "coach_id"]
+      },
+      "evaluation_criteria": "Must list HR organizational fields from hr-employee-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-007",
+      "category": "functional_crm",
+      "domain": "odoo-functional",
+      "target_version": "v18",
+      "prompt": "What are the key fields on crm.lead for tracking revenue and stages?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "model": "crm.lead",
+        "must_contain": ["expected_revenue", "prorated_revenue", "stage_id", "team_id", "user_id"]
+      },
+      "evaluation_criteria": "Must list CRM fields from sale-crm-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-008",
+      "category": "functional_actions",
+      "domain": "odoo-functional",
+      "target_version": "v19",
+      "prompt": "What are the standard Window Action XML IDs for Sales Orders and Invoices?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["sale.action_orders", "account.action_move_out_invoice_type"]
+      },
+      "evaluation_criteria": "Must provide exact window action XML IDs from action-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-009",
+      "category": "functional_menus",
+      "domain": "odoo-functional",
+      "target_version": "v18",
+      "prompt": "What are the root menu XML IDs for Sales, Invoicing, and Inventory?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["sale.sale_menu_root", "account.menu_finance", "stock.menu_stock_root"]
+      },
+      "evaluation_criteria": "Must provide exact root menu XML IDs from menu-navigation-patterns.md."
+    },
+    {
+      "id": "TC-FUNC-010",
+      "category": "functional_wizards",
+      "domain": "odoo-functional",
+      "target_version": "v19",
+      "prompt": "What standard TransientModel wizard is used to register invoice payments in Odoo?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["account.payment.register", "account_payment_register"]
+      },
+      "evaluation_criteria": "Must identify payment register wizard from wizard-patterns.md."
+    },
+    {
+      "id": "TC-BACK-001",
+      "category": "backend_orm",
+      "domain": "odoo-backend",
+      "target_version": "v16",
+      "prompt": "How do I create and update One2many lines in Odoo 16 Python code?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["Command.create", "Command.update", "Command.delete", "Command.clear", "from odoo import Command"]
+      },
+      "evaluation_criteria": "Must use modern Command class syntax introduced in v16."
+    },
+    {
+      "id": "TC-BACK-002",
+      "category": "backend_orm",
+      "domain": "odoo-backend",
+      "target_version": "v17",
+      "prompt": "How do I override the create method for a model in Odoo 17?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["@api.model_create_multi", "def create(self, vals_list):", "super().create(vals_list)"]
+      },
+      "evaluation_criteria": "Must enforce mandatory @api.model_create_multi with vals_list."
+    },
+    {
+      "id": "TC-BACK-003",
+      "category": "backend_sql",
+      "domain": "odoo-backend",
+      "target_version": "v19",
+      "prompt": "How do I write a raw SQL query safely in Odoo 19?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["from odoo.tools import SQL", "self.env.cr.execute(SQL(", "SQL.identifier"]
+      },
+      "evaluation_criteria": "Must enforce SQL() query builder parameterization."
+    },
+    {
+      "id": "TC-BACK-004",
+      "category": "backend_compute",
+      "domain": "odoo-backend",
+      "target_version": "v18",
+      "prompt": "What @api.depends dependencies are required when computing sale.order amount_total?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["order_line.price_subtotal", "order_line.price_tax", "@api.depends"]
+      },
+      "evaluation_criteria": "Must provide correct computed field dependencies from computed-field-patterns.md."
+    },
+    {
+      "id": "TC-BACK-005",
+      "category": "backend_inheritance",
+      "domain": "odoo-backend",
+      "target_version": "v18",
+      "prompt": "What method on sale.order prepares invoice header values when creating a customer invoice?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["_prepare_invoice", "sale.order", "account.move"]
+      },
+      "evaluation_criteria": "Must identify _prepare_invoice override hook from inheritance-patterns.md."
+    },
+    {
+      "id": "TC-BACK-006",
+      "category": "backend_inheritance",
+      "domain": "odoo-backend",
+      "target_version": "v19",
+      "prompt": "What method on stock.picking is triggered when clicking Validate on a stock transfer?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["button_validate", "stock.picking"]
+      },
+      "evaluation_criteria": "Must identify button_validate method from inheritance-patterns.md."
+    },
+    {
+      "id": "TC-SEC-001",
+      "category": "security_groups",
+      "domain": "odoo-security",
+      "target_version": "v18",
+      "prompt": "What are the standard XML IDs for Sales Team security groups?",
+      "expected_skill": "odoo-security",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["sales_team.group_sale_salesman", "sales_team.group_sale_manager", "base.group_user"]
+      },
+      "evaluation_criteria": "Must provide exact Sales group external IDs from odoo-security-guide-all.md."
+    },
+    {
+      "id": "TC-SEC-002",
+      "category": "security_rules",
+      "domain": "odoo-security",
+      "target_version": "v18",
+      "prompt": "How do I write a multi-company record rule for a custom model in Odoo 18?",
+      "expected_skill": "odoo-security",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["company_ids", "company_id in company_ids", "ir.rule", "_check_company_auto = True"]
+      },
+      "evaluation_criteria": "Must use company_ids evaluation and _check_company_auto flag."
+    },
+    {
+      "id": "TC-SEC-003",
+      "category": "security_groups",
+      "domain": "odoo-security",
+      "target_version": "v19",
+      "prompt": "What are the standard XML IDs for Invoicing / Accounting security groups?",
+      "expected_skill": "odoo-security",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["account.group_account_user", "account.group_account_manager"]
+      },
+      "evaluation_criteria": "Must provide Invoicing & Accounting manager group external IDs."
+    },
+    {
+      "id": "TC-SEC-004",
+      "category": "security_groups",
+      "domain": "odoo-security",
+      "target_version": "v18",
+      "prompt": "What are the standard Inventory / Stock security group XML IDs?",
+      "expected_skill": "odoo-security",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["stock.group_stock_user", "stock.group_stock_manager"]
+      },
+      "evaluation_criteria": "Must provide stock user and manager group XML IDs."
+    },
+    {
+      "id": "TC-OWL-001",
+      "category": "owl_widgets",
+      "domain": "odoo-owl",
+      "target_version": "v18",
+      "prompt": "How do I register a custom field widget in OWL for Odoo 18?",
+      "expected_skill": "odoo-owl",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["/** @odoo-module **/", "import { registry } from \"@web/core/registry\"", "registry.category(\"fields\").add("]
+      },
+      "evaluation_criteria": "Must use standard OWL 2 registry.category('fields').add()."
+    },
+    {
+      "id": "TC-OWL-002",
+      "category": "owl_props",
+      "domain": "odoo-owl",
+      "target_version": "v19",
+      "prompt": "How do I define props validation on an OWL Component in Odoo 19?",
+      "expected_skill": "odoo-owl",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["static props = {", "type:", "Component"]
+      },
+      "evaluation_criteria": "Must use static props schema definition."
+    },
+    {
+      "id": "TC-OWL-003",
+      "category": "owl_widgets",
+      "domain": "odoo-owl",
+      "target_version": "v18",
+      "prompt": "What standard field widgets are available in OWL for currency, badges, and toggle switches?",
+      "expected_skill": "odoo-owl",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["monetary", "badge", "boolean_toggle", "statusbar"]
+      },
+      "evaluation_criteria": "Must list standard OWL widgets from widget-field-patterns.md."
+    },
+    {
+      "id": "TC-OWL-004",
+      "category": "owl_assets",
+      "domain": "odoo-owl",
+      "target_version": "v19",
+      "prompt": "How do I bundle custom JavaScript and SCSS assets in __manifest__.py for backend views?",
+      "expected_skill": "odoo-owl",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["'assets': {", "'web.assets_backend': ["]
+      },
+      "evaluation_criteria": "Must provide correct web.assets_backend bundle declaration."
+    },
+    {
+      "id": "TC-MIGR-001",
+      "category": "migration_views",
+      "domain": "odoo-migration",
+      "target_version": "v17",
+      "prompt": "What happened to attrs='{\"invisible\": ...}' when migrating XML views from Odoo 16 to Odoo 17?",
+      "expected_skill": "odoo-migration",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["attrs was removed", "invisible=\"expression\"", "readonly=\"expression\"", "required=\"expression\""]
+      },
+      "evaluation_criteria": "Must clearly state attrs deprecation and inline expression replacement."
+    },
+    {
+      "id": "TC-MIGR-002",
+      "category": "migration_orm",
+      "domain": "odoo-migration",
+      "target_version": "v15",
+      "prompt": "What happened to @api.multi and track_visibility in Odoo 15?",
+      "expected_skill": "odoo-migration",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["@api.multi", "tracking=True"]
+      },
+      "evaluation_criteria": "Must explain @api.multi removal and tracking=True transition."
+    },
+    {
+      "id": "TC-MIGR-003",
+      "category": "migration_orm",
+      "domain": "odoo-migration",
+      "target_version": "v19",
+      "prompt": "What changes occurred to sale.order state 'done' and raw SQL query execution in Odoo 19?",
+      "expected_skill": "odoo-migration",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["SQL()", "state", "type hints"]
+      },
+      "evaluation_criteria": "Must mention SQL() query builder and state consolidation."
+    },
+    {
+      "id": "TC-TEST-001",
+      "category": "testing_framework",
+      "domain": "odoo-testing",
+      "target_version": "v18",
+      "prompt": "How do I write a standard TransactionCase unit test for Odoo 18 with post_install tagging?",
+      "expected_skill": "odoo-testing",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["from odoo.tests.common import TransactionCase, tagged", "@tagged('post_install', '-at_install')", "setUpClass"]
+      },
+      "evaluation_criteria": "Must provide standard TransactionCase template from odoo-test-patterns.md."
+    },
+    {
+      "id": "TC-TEST-002",
+      "category": "testing_framework",
+      "domain": "odoo-testing",
+      "target_version": "v19",
+      "prompt": "What demo data XML ID is used to reference the main demo company in tests?",
+      "expected_skill": "odoo-testing",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["base.main_company", "env.ref('base.main_company')"]
+      },
+      "evaluation_criteria": "Must identify base.main_company reference from test patterns."
+    },
+    {
+      "id": "TC-TROUBLE-001",
+      "category": "troubleshooting_orm",
+      "domain": "odoo-troubleshooting",
+      "target_version": "v17",
+      "prompt": "How do I troubleshoot 'ValueError: Element <xpath expr=\"//field[@name=\\'attrs\\']\"> cannot be located' during view migration to Odoo 17?",
+      "expected_skill": "odoo-troubleshooting",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["attrs", "invisible", "readonly"]
+      },
+      "evaluation_criteria": "Must identify obsolete attrs xpath and suggest inline replacement."
+    },
+    {
+      "id": "TC-ORCH-001",
+      "category": "orchestration_flows",
+      "domain": "odoo-orchestrator",
+      "target_version": "v18",
+      "prompt": "What is the standard multi-step workflow sequence for a Sales to Delivery to Invoice business flow?",
+      "expected_skill": "odoo-orchestrator",
+      "expected_tier": 1,
+      "expected_tools_called": [],
+      "ground_truth": {
+        "must_contain": ["sale.order", "action_confirm", "stock.picking", "account.move"]
+      },
+      "evaluation_criteria": "Must describe complete sales-to-invoice orchestration flow."
+    },
+    {
+      "id": "TC-FALLBACK-001",
+      "category": "mcp_fallback_source",
+      "domain": "mcp-fallback",
+      "target_version": "v19",
+      "prompt": "What are all the private helper methods in addons/account/models/account_move.py between line 450 and 520?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 2,
+      "expected_tools_called": ["read_odoo_source_range"],
+      "ground_truth": {
+        "must_invoke_tool": "read_odoo_source_range"
+      },
+      "evaluation_criteria": "Must recognize that line-specific AST reading requires read_odoo_source_range."
+    },
+    {
+      "id": "TC-FALLBACK-002",
+      "category": "mcp_fallback_ast",
+      "domain": "mcp-fallback",
+      "target_version": "v19",
+      "prompt": "What is the complete inheritance and override chain across all addons for the method action_post on account.move?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 2,
+      "expected_tools_called": ["trace_odoo_method"],
+      "ground_truth": {
+        "must_invoke_tool": "trace_odoo_method"
+      },
+      "evaluation_criteria": "Must recognize that cross-module method override traversal requires trace_odoo_method."
+    },
+    {
+      "id": "TC-FALLBACK-003",
+      "category": "mcp_fallback_xml",
+      "domain": "mcp-fallback",
+      "target_version": "v19",
+      "prompt": "What is the complete XML architecture and view inheritance tree for account.view_move_form in Odoo 19?",
+      "expected_skill": "odoo-functional",
+      "expected_tier": 2,
+      "expected_tools_called": ["resolve_odoo_xml_id"],
+      "ground_truth": {
+        "must_invoke_tool": "resolve_odoo_xml_id"
+      },
+      "evaluation_criteria": "Must invoke resolve_odoo_xml_id to retrieve complete view tree."
+    },
+    {
+      "id": "TC-FALLBACK-004",
+      "category": "internet_fallback",
+      "domain": "internet-fallback",
+      "target_version": "v18",
+      "prompt": "How do I integrate a proprietary non-indexed payment gateway 'StripeCustomV3' via webhook controller in Odoo 18?",
+      "expected_skill": "odoo-backend",
+      "expected_tier": 3,
+      "expected_tools_called": ["search_odoo_code", "WebSearch"],
+      "ground_truth": {
+        "must_constrain_web_search_to_version": true
+      },
+      "evaluation_criteria": "Must check MCP first, fail cleanly, and only then reach for version-constrained WebSearch."
+    }
+  ]
+}

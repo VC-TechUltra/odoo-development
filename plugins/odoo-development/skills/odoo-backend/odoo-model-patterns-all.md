@@ -15,7 +15,7 @@ This document covers ORM model concepts that are consistent across all Odoo vers
 ║  • v16: Command class introduced, attrs deprecated                           ║
 ║  • v17: @api.model_create_multi mandatory, attrs removed                     ║
 ║  • v18: _check_company_auto, SQL() builder, type hints recommended          ║
-║  • v19: Type hints mandatory, SQL() mandatory                                ║
+║  • v19: type hints partial; SQL() exists since v17                           ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 

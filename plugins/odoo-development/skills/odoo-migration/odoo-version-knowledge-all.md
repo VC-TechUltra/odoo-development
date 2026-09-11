@@ -36,7 +36,7 @@ Legend: ✅ = Supported, ⚠️ DEP = Deprecated, ⚠️ REC = Recommended, ✅ 
 | `tracking` | ➖ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `oldname` | ⚠️ DEP | ❌ REM | ❌ | ❌ | ❌ | ❌ |
 | `check_company` | ➖ | ➖ | ➖ | ➖ | ✅ | ✅ |
-| Type hints on fields | ➖ | ➖ | ➖ | ➖ | ⚠️ REC | ✅ REQ |
+| Type hints on fields | ➖ | ➖ | ➖ | ➖ | ⚠️ REC | ⚠️ REC |
 
 ### View Attributes
 
@@ -75,8 +75,8 @@ Legend: ✅ = Supported, ⚠️ DEP = Deprecated, ⚠️ REC = Recommended, ✅ 
 
 | Pattern | v14 | v15 | v16 | v17 | v18 | v19 |
 |---------|-----|-----|-----|-----|-----|-----|
-| Raw SQL strings | ✅ | ✅ | ✅ | ✅ | ⚠️ DEP | ❌ REM |
-| `SQL()` builder | ➖ | ➖ | ➖ | ➖ | ✅ | ✅ REQ |
+| Raw SQL strings | ✅ | ✅ | ✅ | ✅ | ⚠️ DEP | ⚠️ DEP |
+| `SQL()` builder | ➖ | ➖ | ➖ | ✅ | ✅ | ✅ |
 | `SQL.identifier()` | ➖ | ➖ | ➖ | ➖ | ✅ | ✅ REQ |
 
 ### JavaScript/OWL
@@ -94,8 +94,8 @@ Legend: ✅ = Supported, ⚠️ DEP = Deprecated, ⚠️ REC = Recommended, ✅ 
 
 | Pattern | v14 | v15 | v16 | v17 | v18 | v19 |
 |---------|-----|-----|-----|-----|-----|-----|
-| `company_ids` in rules | ✅ | ✅ | ✅ | ⚠️ DEP | ❌ REM | ❌ |
-| `allowed_company_ids` | ➖ | ➖ | ➖ | ✅ | ✅ | ✅ |
+| `company_ids` in rule domains | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `allowed_company_ids` (context key, not a rule variable) | ➖ | ➖ | ➖ | ✅ | ✅ | ✅ |
 | `user.company_id` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `user.company_ids` | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
@@ -165,11 +165,11 @@ Legend: ✅ = Supported, ⚠️ DEP = Deprecated, ⚠️ REC = Recommended, ✅ 
 2. Add `check_company=True` to fields
 3. Start using `SQL()` builder
 4. Add type hints to methods
-5. Use `allowed_company_ids` in rules
+5. Use `company_ids` in rules
 
 ### v18 → v19
-1. **MUST** add type hints everywhere
-2. **MUST** use `SQL()` for all raw SQL
+1. Add type hints to new methods (widely adopted in v19, not enforced)
+2. Prefer `SQL()` for raw SQL (available since v17)
 3. Migrate to OWL 3.x
 4. Update Python to 3.12+
 
@@ -218,8 +218,6 @@ registry.category("actions").add("module.action", MyComponent);
 | `attrs is not supported` | v17+ | Using `attrs` in view | Use direct attributes |
 | `states is not supported` | v17+ | Using `states` in view | Use `invisible` expression |
 | `create() expects vals_list` | v17+ | Old create signature | Use `@api.model_create_multi` |
-| `Raw SQL not allowed` | v19+ | Using string SQL | Use `SQL()` builder |
-| `Missing type annotation` | v19+ | No type hints | Add type hints |
 
 ---
 

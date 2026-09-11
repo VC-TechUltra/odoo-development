@@ -46,7 +46,7 @@ access_my_model_manager,my.model.manager,model_my_model,base.group_system,1,1,1,
 <record id="my_model_comp_rule" model="ir.rule">
     <field name="name">my.model: multi-company</field>
     <field name="model_id" ref="model_my_model"/>
-    <field name="domain_force">[('company_id', 'in', allowed_company_ids)]</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
 </record>
 ```
 

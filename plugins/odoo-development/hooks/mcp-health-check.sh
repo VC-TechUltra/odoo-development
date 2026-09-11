@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-printf '{"additional_context":"Use the odoo-knowledge MCP first for Odoo 18 and 19 Community and Enterprise tasks. Run health_check when connectivity is uncertain.","hookSpecificOutput":{"hookEventName":"sessionStart","additionalContext":"MCP-first Odoo workflow active."}}\n'
+printf '{"additional_context":"Answer Odoo questions from the odoo-development skills first. Call odoo-knowledge MCP only to confirm what EXISTS in a specific version: a field, method, XML ID, inheritance chain, or security rule. Do not call MCP for syntax, patterns, or conventions the skills already cover.","hookSpecificOutput":{"hookEventName":"sessionStart","additionalContext":"Skill-first Odoo workflow active."}}\n'

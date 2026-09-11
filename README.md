@@ -23,5 +23,5 @@ The marketplace manifest **must** be at the repository root for Cursor to discov
 ```
 
 ## Notes
-- The plugin uses a streamable-http MCP server (default: `http://127.0.0.1:8090/mcp`). Edit `plugins/odoo-development/mcp.json` to change the URL.
+- The plugin uses a streamable-http MCP server (default: `http://127.0.0.1:8099/mcp/`). Edit `plugins/odoo-development/mcp.json` to point at your own server.
 - The plugin is tuned for Odoo 18 and 19 Community and Enterprise.

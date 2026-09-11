@@ -21,9 +21,9 @@ Always ask: "What Odoo version?" or check __manifest__.py
 | 19 | Type hints mandatory |
 
 ## 4. MCP Workflow
-1. health_check - Verify MCP connection
-2. search_odoo_codebase - Find similar code
-3. get_odoo_model_schema - Get model fields
+1. knowledge_status - Verify MCP connection
+2. search_odoo_code - Find similar code
+3. get_odoo_model - Get model fields
 
 ## 5. Common Tasks
 - New model: Use odoo-module generator

@@ -466,3 +466,10 @@ invisible="[('state', '=', 'draft')]"
 <!-- CORRECT -->
 invisible="state == 'draft'"
 ```
+
+
+### XML View Syntax Transition (v16 -> v17)
+- **attrs was removed** completely in Odoo 17.
+- Replace `attrs="{'invisible': [('state', '=', 'draft')]}"` with `invisible="expression"` (e.g. `invisible="state == 'draft'"`).
+- Replace `attrs="{'readonly': [...]}"` with `readonly="expression"`.
+- Replace `attrs="{'required': [...]}"` with `required="expression"`.

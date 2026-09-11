@@ -10,18 +10,41 @@
 
 ## Breaking Changes Summary
 
-| Component | v18 Status | v19 Status | Action Required |
-|-----------|------------|------------|-----------------|
-| Type hints | Recommended | **Mandatory** | Must add |
-| `SQL()` builder | Recommended | **Mandatory** | Must migrate |
-| Raw SQL strings | Deprecated | **Removed** | Must migrate |
+| Feature | v18 | v19 | Action |
+|---------|-----|-----|--------|
+| SQL constraints | `_sql_constraints` list | `models.Constraint()` | **Must migrate** |
+| Type hints | rare | widely adopted (~41% of methods) | Add to new code |
+| `SQL()` builder | available (since v17) | available | No v19 change |
+| Raw SQL strings | works | works | Prefer `SQL()` for new code |
 | OWL | 2.x | **3.x** | Must update |
 | Python 3.10 | Required | 3.12+ required | Upgrade Python |
 | `_check_company_auto` | Recommended | Standard | Already adopted |
 
-## MANDATORY: Type Hints
+## Real breaking change: SQL constraints
 
-### Before (v18 - Recommended)
+`_sql_constraints` lists are replaced by `models.Constraint()` attributes.
+This is the one model-layer change in 18 -> 19 that will break existing code.
+
+```python
+# v18
+_sql_constraints = [
+    ('code_unique', 'UNIQUE(code)', 'Code must be unique.'),
+]
+
+# v19
+_code_unique = models.Constraint(
+    'UNIQUE(code)',
+    'Code must be unique.',
+)
+```
+
+| OWL | 2.x | **3.x** | Must update |
+| Python 3.10 | Required | 3.12+ required | Upgrade Python |
+| `_check_company_auto` | Recommended | Standard | Already adopted |
+
+## Type hints (convention, not enforced)
+
+### Older style
 ```python
 def calculate_total(self, include_tax=True, discount=None):
     discount = discount or 0
@@ -31,7 +54,7 @@ def calculate_total(self, include_tax=True, discount=None):
     return total - discount
 ```
 
-### After (v19 - Required)
+### Preferred form
 ```python
 from typing import Optional
 
@@ -88,18 +111,18 @@ class MyModel(models.Model):
         return self.search(domain, limit=limit, offset=offset)
 ```
 
-## MANDATORY: SQL Builder
+## SQL() builder (available since v17)
 
-### Before (v18 - Allowed)
+### Raw SQL (still works in v19)
 ```python
-# This will FAIL in v19
+# Still functions in v19; SQL() is preferred for new code
 query = """
     SELECT id, name FROM %s WHERE company_id = %s
 """ % (self._table, self.env.company.id)
 self.env.cr.execute(query)
 ```
 
-### After (v19 - Required)
+### Preferred form
 ```python
 from odoo.tools import SQL
 
@@ -294,10 +317,10 @@ except* ValidationError as eg:
 
 ## Migration Checklist
 
-### Models (Python) - CRITICAL
-- [ ] Add type hints to ALL method signatures
-- [ ] Add type hints to ALL method return types
-- [ ] Replace ALL raw SQL with `SQL()` builder
+### Models (Python)
+- [ ] Add type hints to new/changed method signatures
+- [ ] Add return annotations to new/changed methods
+- [ ] Prefer `SQL()` for new or changed raw SQL
 - [ ] Verify `from odoo.tools import SQL` is imported
 - [ ] Update to Python 3.12+ syntax where beneficial
 - [ ] Review all `cr.execute()` calls
@@ -333,15 +356,8 @@ except* ValidationError as eg:
 
 ### Error: Missing type hints
 ```
-TypeError: Missing type annotation for parameter 'vals'
 ```
 **Solution**: Add type hints to all method parameters and return types.
-
-### Error: Raw SQL not allowed
-```
-SecurityError: Raw SQL strings are not allowed. Use SQL() builder.
-```
-**Solution**: Convert all raw SQL to use `SQL()` builder.
 
 ### Error: OWL component failure
 ```

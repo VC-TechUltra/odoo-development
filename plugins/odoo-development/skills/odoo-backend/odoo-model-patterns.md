@@ -67,7 +67,7 @@
 
 ### v19 Patterns
 - Type hints mandatory
-- `SQL()` builder mandatory
+- `SQL()` builder available from v17; prefer it for new raw SQL
 
 ## Version Detection in Existing Code
 

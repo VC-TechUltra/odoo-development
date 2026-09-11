@@ -16,7 +16,6 @@
 | `attrs attribute is no longer supported` | Using attrs= | v17+ | Use invisible= |
 | `create() takes 2 positional arguments` | Single create() | v17+ | Use @api.model_create_multi |
 | `check_company failed` | Cross-company relation | v18+ | Add check_company=True |
-| `SQL string query deprecated` | String SQL | v19 | Use SQL() builder |
 | `External ID not found` | Missing XML reference | All | Check file order in manifest |
 | `Access Denied` | Missing security rules | All | Add ir.model.access.csv |
 | `KeyError: 'field_name'` | Field not in vals | All | Use .get() or check field |
@@ -678,4 +677,3 @@ print(f"Queries: {qc.count}")
 | v17+ attrs error | Use inline expressions |
 | v17+ create error | Use @api.model_create_multi |
 | v18+ company error | Add check_company=True |
-| v19 SQL warning | Use SQL() builder |

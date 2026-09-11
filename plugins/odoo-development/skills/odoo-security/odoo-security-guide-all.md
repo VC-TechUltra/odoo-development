@@ -323,3 +323,20 @@ return record.sensitive_data
 ---
 
 **Note**: This document covers concepts that apply to all Odoo versions. For version-specific implementation syntax and patterns, refer to the appropriate version-specific file (e.g., `odoo-security-guide-18.md`).
+
+
+---
+
+## Standard Security Groups Catalog (Index Ground-Truth)
+
+| Module / Domain | User Group XML ID | Manager Group XML ID |
+|---|---|---|
+| **Sales** | `sales_team.group_sale_salesman` | `sales_team.group_sale_manager` |
+| **Accounting** | `account.group_account_user` | `account.group_account_manager` |
+| **Inventory** | `stock.group_stock_user` | `stock.group_stock_manager` |
+| **Purchase** | `purchase.group_purchase_user` | `purchase.group_purchase_manager` |
+| **Base** | `base.group_user` (Internal User) | `base.group_system` (Settings Admin) |
+
+### Multi-Company Domain Syntax (v14-v19)
+- **Record Rule Domain**: `['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]` or `company_id in company_ids`
+- **Model Definition**: `_check_company_auto = True`

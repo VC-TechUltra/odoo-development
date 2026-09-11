@@ -464,3 +464,71 @@ class PurchaseReport(models.Model):
 8. **Blanket orders** - Use purchase agreements for contracts
 9. **RFQ process** - Competitive bidding for large purchases
 10. **Integration** - Connect with inventory, accounting, projects
+
+---
+
+## Core Model Reference Catalog (Index Ground-Truth)
+
+> Ground-truth structural catalog extracted from Odoo knowledge database. Use these exact field names and mixins without tool calls.
+
+### Model: `purchase.order`
+- **Inherited Mixins**: `['portal.mixin', 'product.catalog.mixin', 'mail.thread', 'mail.activity.mixin', 'account.document.import.mixin']`, `"purchase.order"`, `'purchase.order'`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `default_location_dest_id_is_subcontracting_loc` | `Boolean` | `compute='_compute_default_location_dest_id_is_subcontracting_loc'` |
+| `project_id` | `Many2one` | `'project.project', domain=[('is_template', '=', False` |
+| `name` | `Char` | `'Order Reference', required=True, index='trigram', copy=False, de` |
+| `date_approve` | `Datetime` | `'Confirmation Date', readonly=True, index=True, copy=False` |
+| `lock_confirmed_po` | `Selection` | `related="company_id.po_lock"` |
+| `order_line` | `One2many` | `'purchase.order.line', 'order_id', string='Order Lines', copy=Tru` |
+| `note` | `Html` | `'Terms and Conditions'` |
+| `partner_bill_count` | `Integer` | `related='partner_id.supplier_invoice_count'` |
+| `invoice_count` | `Integer` | `compute="_compute_invoice", string='Bill Count', copy=False, defa` |
+| `invoice_ids` | `Many2many` | `'account.move', compute="_compute_invoice", string='Bills', copy=` |
+| `date_calendar_start` | `Datetime` | `compute='_compute_date_calendar_start', readonly=True, store=True` |
+| `amount_untaxed` | `Monetary` | `string='Untaxed Amount', store=True, readonly=True, compute='_amo` |
+| `tax_totals` | `Binary` | `compute='_compute_tax_totals', exportable=False` |
+| `amount_tax` | `Monetary` | `string='Taxes', store=True, readonly=True, compute='_amount_all'` |
+| `amount_total` | `Monetary` | `string='Total', store=True, readonly=True, compute='_amount_all'` |
+| `amount_total_cc` | `Monetary` | `string="Total in currency", store=True, readonly=True, compute="_` |
+| `fiscal_position_id` | `Many2one` | `'account.fiscal.position', string='Fiscal Position', domain="['|'` |
+| `payment_term_id` | `Many2one` | `'account.payment.term', 'Payment Terms', domain="['|', ('company_` |
+| `incoterm_id` | `Many2one` | `'account.incoterms', 'Incoterm', help="International Commercial T` |
+| `product_id` | `Many2one` | `'product.product', related='order_line.product_id', string='Produ` |
+| `company_id` | `Many2one` | `'res.company', 'Company', required=True, index=True, default=lamb` |
+| `company_currency_id` | `Many2one` | `related="company_id.currency_id", string="Company Currency"` |
+| `country_code` | `Char` | `related='company_id.account_fiscal_country_id.code', string="Coun` |
+| `company_price_include` | `Selection` | `related='company_id.account_price_include'` |
+| `duplicated_order_ids` | `Many2many` | `comodel_name='purchase.order', compute='_compute_duplicated_order` |
+
+### Model: `purchase.order.line`
+- **Inherited Mixins**: `['analytic.mixin']`, `'purchase.order.line'`, `"purchase.order.line"`
+
+| Field Name | Type | Definition / Key Arguments |
+|---|---|---|
+| `translated_product_name` | `Text` | `compute='_compute_translated_product_name'` |
+| `sequence` | `Integer` | `string='Sequence', default=10` |
+| `product_qty` | `Float` | `string='Quantity', digits='Product Unit', required=True` |
+| `product_uom_qty` | `Float` | `string='Total Quantity', compute='_compute_product_uom_qty', stor` |
+| `tax_ids` | `Many2many` | `'account.tax', string='Taxes', context={'active_test': False, 'hi` |
+| `allowed_uom_ids` | `Many2many` | `'uom.uom', compute='_compute_allowed_uom_ids'` |
+| `product_uom_id` | `Many2one` | `'uom.uom', string='Unit', domain="[('id', 'in', allowed_uom_ids` |
+| `product_id` | `Many2one` | `'product.product', string='Product', domain=[('purchase_ok', '=',` |
+| `product_type` | `Selection` | `related='product_id.type', readonly=True` |
+| `price_unit_discounted` | `Float` | `'Unit Price (Discounted` |
+| `price_subtotal` | `Monetary` | `compute='_compute_amount', string='Subtotal', store=True` |
+| `price_total` | `Monetary` | `compute='_compute_amount', string='Total', store=True` |
+| `price_tax` | `Float` | `compute='_compute_amount', string='Tax', store=True` |
+| `order_id` | `Many2one` | `'purchase.order', string='Order Reference', index=True, required=` |
+| `company_id` | `Many2one` | `'res.company', related='order_id.company_id', string='Company', s` |
+| `state` | `Selection` | `related='order_id.state'` |
+| `invoice_lines` | `One2many` | `'account.move.line', 'purchase_line_id', string="Bill Lines", rea` |
+| `qty_invoiced` | `Float` | `compute='_compute_qty_invoiced', string="Billed Qty", digits='Pro` |
+| `qty_received_method` | `Selection` | `[('manual', 'Manual'` |
+| `qty_received` | `Float` | `"Received Qty", compute='_compute_qty_received', inverse='_invers` |
+| `qty_received_manual` | `Float` | `"Manual Received Qty", digits='Product Unit', copy=False` |
+| `amount_to_invoice_at_date` | `Float` | `string='Amount', compute='_compute_amount_to_invoice_at_date'` |
+| `partner_id` | `Many2one` | `'res.partner', related='order_id.partner_id', string='Partner', r` |
+| `currency_id` | `Many2one` | `related='order_id.currency_id', string='Currency'` |
+| `date_order` | `Datetime` | `related='order_id.date_order', string='Order Date', readonly=True` |

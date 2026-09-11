@@ -68,7 +68,7 @@ NEVER mix patterns from different versions.
 | **16** | `Command` class, `attrs` (deprecated), OWL 2.x |
 | **17** | NO `attrs`, `@api.model_create_multi`, inline expressions |
 | **18** | `_check_company_auto`, `check_company=True`, SQL() builder |
-| **19** | Type hints required, SQL() required, OWL 3.x |
+| **19** | Type hints partially adopted, SQL() since v17, OWL 3.x |
 
 ---
 

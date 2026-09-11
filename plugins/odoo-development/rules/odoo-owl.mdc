@@ -10,7 +10,7 @@ alwaysApply: false
 - Detect target Odoo version FIRST
 - OWL availability: v14 (NO OWL), v15 (OWL 1.x), v16-18 (OWL 2.x), v19+ (OWL 3.x)
 - Check __manifest__.py or version key for version confirmation
-- Use MCP to verify Odoo version and available services when possible
+- Take OWL patterns from the skills; use MCP only to confirm a service or component exists
 
 ## Version-Specific Rules
 
@@ -126,7 +126,7 @@ setup() {
 - Use registry pattern for component discovery
 - Separate concerns: components, services, utils
 - Always verify Odoo version before selecting patterns
-- Use MCP to verify schema, XML IDs, and services
+- Confirm schema, XML IDs and services through MCP before relying on them
 - Follow existing repository patterns before introducing new ones
 - TypeScript preferred for Odoo 19+
 - Keep changes minimal and upgrade-safe
