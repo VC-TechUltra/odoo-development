@@ -15,9 +15,10 @@ Create and manage tests for Odoo modules.
 - Integration tests: Testing model interactions
 - HTTP tests: Testing controllers
 
-### Step 2: Load Testing Patterns
+### Step 2: Prefer local patterns, then skill or codemode
 
-Read: skills/odoo-testing/odoo-test-patterns.md
+- Offline: Read: skills/odoo-testing/odoo-test-patterns.md
+- Research: `codemode_search` → `codemode_execute` when APIs are unclear
 
 ## Test File Structure
 

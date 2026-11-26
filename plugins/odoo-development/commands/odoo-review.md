@@ -5,13 +5,12 @@ description: review the selected odoo code for correctness, security, maintainab
 
 Review the selected Odoo code for correctness, security, maintainability, and upgrade safety.
 
-**If odoo-knowledge MCP is unavailable:** Use built-in SemanticSearch, Grep, and Read tools. Proceed with the review—do not block.
+**If odoo-codemode is unavailable:** Use Grep/Read. Proceed—do not block.
 
 Before reviewing:
 - Detect version.
-- Use `search_odoo_codebase` or `code_search`.
-- Use `get_odoo_model_schema`, `get_odoo_xml_id_location`, and `get_model_dependencies` where relevant.
-- For Odoo 18/19 Community and Enterprise, validate version-specific concerns through MCP.
+- Prefer slim local rules for stable syntax (`attrs`, `company_ids`, `useService`, `Command`).
+- For schema/XML IDs/dependencies: `codemode_search` → `codemode_execute`.
 
 Output:
 - Critical

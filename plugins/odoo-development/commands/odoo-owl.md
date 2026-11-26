@@ -32,11 +32,11 @@ Detect from project (check __manifest__.py) or use ${ODOO_VERSION}:
 - 16.0-18.0 (OWL 2.x)
 - 19.0+ (OWL 3.x)
 
-### Step 2: Load Version-Specific Skill
+### Step 2: Prefer local rules, then skill or codemode
 
-Read: skills/odoo-owl/odoo-owl-components-{version}.md
-
-Example: For Odoo 18, read `skills/odoo-owl/odoo-owl-components-18.md`
+- Slim rule: `rules/odoo-owl.mdc` (`useService` from `@web/core/utils/hooks`)
+- Offline: Read: skills/odoo-owl/odoo-owl-components-{version}.md
+- Research: `codemode_search` → `codemode_execute` when registries/services are unclear
 
 ### Step 3: Gather Component Information
 

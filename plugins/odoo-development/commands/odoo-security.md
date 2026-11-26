@@ -14,11 +14,11 @@ Implement security for Odoo modules including ACLs, record rules, groups, and mu
 - List all models in the module
 - Identify which need access control
 
-### Step 2: Load Version-Specific Security Guide
+### Step 2: Prefer local rules, then skill or codemode
 
-```
-Read: skills/odoo-security/odoo-security-guide-{version}.md
-```
+- Slim rule: `rules/odoo-views-security.mdc` (`company_ids` in `ir.rule`)
+- Offline: Read: skills/odoo-security/odoo-security-guide-{version}.md
+- Research: `codemode_search` → `codemode_execute` for groups/XML IDs
 
 ### Step 3: Generate Security Files
 

@@ -1,6 +1,6 @@
 # Odoo Development Cursor Plugin
 
-Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, hooks, and MCP-first workflows.
+Cursor marketplace-oriented Odoo plugin with focused skills, commands, rules, hooks, and MCP-code-first workflows.
 
 ## How to use
 
@@ -33,24 +33,23 @@ Validate that `Read:` references used in command docs resolve to real files:
 
 ## MCP configuration
 
-The plugin connects to the `odoo-knowledge` MCP server for codebase search, schema inspection, and development guidelines. By default it uses `http://127.0.0.1:8090/mcp`.
+**Active (default):** `odoo-codemode` at `${ODOO_MCP_CODE_URL}` → `http://127.0.0.1:8090/mcp-code`
 
-**To change the URL:** Edit `mcp.json` in the plugin directory and update the `url` field under `mcpServers.odoo-knowledge`. For example, to use a remote server:
+Use `codemode_search` then `codemode_execute` for compact multi-step research (schema, XML IDs, source, overrides). Prefer slim local rules/skills for stable syntax so common edits skip an MCP roundtrip.
 
-```json
-"url": "http://your-server:8090/mcp"
-```
+**Disabled by default:** full `odoo-knowledge` at `${ODOO_MCP_URL}` → `http://127.0.0.1:8090/mcp`
 
-**With MCP:** Commands and skills use odoo-knowledge MCP for best results. Run `health_check` via MCP when connectivity is uncertain.
+To re-enable the full Knowledge tool catalog, copy entries from `mcp.knowledge.disabled.json.example` into `mcp.json` (or merge both servers). Prefer keeping only codemode active to reduce tool-schema token tax.
 
-**Without MCP:** The plugin works without the MCP server. Commands and skills fall back to built-in SemanticSearch, Grep, and Read tools. You can use all functionality immediately.
+**Plugin variables** (in `.cursor-plugin/plugin.json`):
+- `ODOO_VERSION` — target series (default `18`)
+- `ODOO_MCP_CODE_URL` — primary codemode endpoint
+- `ODOO_MCP_URL` — optional full Knowledge endpoint
+
+**Without MCP:** The plugin works offline. Commands and skills fall back to one versioned skill file plus built-in Grep/Read. Do not load `-all` or every version file.
 
 ## MCP policy
-This plugin is designed to use the `odoo-knowledge` MCP first for:
-- Odoo 18 Community
-- Odoo 18 Enterprise
-- Odoo 19 Community
-- Odoo 19 Enterprise
+Prefer `odoo-codemode` for Odoo 18/19 Community and Enterprise research. Use slim rules for edit-time invariants (`attrs` removal, `company_ids` in `ir.rule`, `useService` import path, etc.).
 
 ## Hooks
 
@@ -58,8 +57,8 @@ The plugin registers two hooks via `hooks/hooks.json`:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| `sessionStart` | `mcp-health-check.sh` | Injects MCP-first workflow context at session start, reminding the agent to use odoo-knowledge MCP first and run `health_check` when connectivity is uncertain. |
-| `beforeShellExecution` | `validate-odoo-paths.sh` | Runs before shell commands; adds a note to prefer repository-local paths and Odoo MCP verification before destructive commands. Returns `permission: allow` so execution proceeds. |
+| `sessionStart` | `mcp-health-check.sh` | Injects MCP-code-first session context (codemode_search → codemode_execute; slim local rules for stable syntax). |
+| `beforeShellExecution` | `validate-odoo-paths.sh` | Prefers repository-local paths and MCP verification before destructive commands. Returns `permission: allow`. |
 
 **Windows:** The hook scripts use `sh` (POSIX shell). On Windows, ensure Git Bash or WSL is available in your PATH so the `sh` command resolves. Otherwise hooks may fail to run.
 
@@ -74,7 +73,8 @@ The plugin's agents (odoo-code-reviewer, odoo-upgrade-analyzer) use `Read`, `Glo
 - `rules/`
 - `agents/`
 - `hooks/hooks.json`
-- `mcp.json`
+- `mcp.json` (active codemode)
+- `mcp.knowledge.disabled.json.example` (optional full Knowledge)
 - `assets/logo.svg`
 
 ## Marketplace repo layout

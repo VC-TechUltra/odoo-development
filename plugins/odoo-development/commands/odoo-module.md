@@ -1,18 +1,17 @@
 ---
 name: odoo-module
-description: create or extend an odoo module using repository patterns and mcp verification.
+description: create or extend an odoo module using repository patterns and mcp-code verification.
 ---
 
-Create or extend an Odoo module using repository patterns and MCP verification.
+Create or extend an Odoo module using repository patterns and MCP-code verification.
 
-**If odoo-knowledge MCP is unavailable:** Use built-in SemanticSearch, Grep, and Read tools to find patterns. Proceed with implementation—do not block.
+**If odoo-codemode is unavailable:** Use Grep/Read and at most one versioned skill file. Proceed—do not block.
 
 Workflow:
-1. Detect Odoo version.
-2. Use `search_odoo_codebase` or `code_search`.
-3. Use `get_odoo_model_schema`, `get_model_dependencies`, and `get_odoo_development_guidelines`.
-4. For Odoo 18/19 Community and Enterprise, verify version-specific behavior through MCP before writing code.
-5. Produce the smallest complete patch set.
+1. Detect Odoo version (`${ODOO_VERSION}` or nearest `__manifest__.py`).
+2. Prefer slim local rules for stable syntax.
+3. For schema/XML IDs/dependencies: `codemode_search` → `codemode_execute`.
+4. Produce the smallest complete patch set.
 
 Output:
 - Goal

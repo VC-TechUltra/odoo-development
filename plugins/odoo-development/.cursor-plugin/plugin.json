@@ -1,7 +1,7 @@
 {
   "name": "odoo-development",
-  "version": "1.0.0",
-  "description": "odoo development plugin for cursor with focused skills, commands, rules, hooks, and mcp-first workflows for odoo 18 and 19 community and enterprise.",
+  "version": "1.1.0",
+  "description": "odoo development plugin for cursor with focused skills, commands, rules, hooks, and mcp-code-first workflows for odoo 18 and 19 community and enterprise.",
   "author": {
     "name": "TechUltra Solutions Pvt Ltd"
   },
@@ -20,8 +20,12 @@
       "description": "Target Odoo version (14-19). Auto-detected from nearest __manifest__.py or defaults to 18.",
       "default": "18"
     },
+    "ODOO_MCP_CODE_URL": {
+      "description": "Primary odoo-codemode MCP endpoint (compact multi-step research). Active by default in mcp.json.",
+      "default": "http://127.0.0.1:8090/mcp-code"
+    },
     "ODOO_MCP_URL": {
-      "description": "URL for odoo-knowledge MCP server. Change this to match your MCP server location.",
+      "description": "Optional full odoo-knowledge MCP endpoint. Disabled by default; see mcp.knowledge.disabled.json.example.",
       "default": "http://127.0.0.1:8090/mcp"
     }
   }

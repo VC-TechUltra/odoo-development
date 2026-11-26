@@ -1,17 +1,15 @@
 ---
 name: odoo-context-gatherer
 description: |
-  MUST be triggered BEFORE any Odoo code generation or modification.
-  CRITICAL: This agent is MANDATORY for ALL Odoo development tasks.
+  Optional context helper for non-trivial Odoo generation when slim rules + odoo-codemode are not enough.
+  Prefer slim local rules for stable syntax and codemode_search/codemode_execute for schema/XML IDs.
+  Do NOT invoke on every Odoo turn.
 
-  ALWAYS invoke this agent when user mentions:
+  Use when gathering multi-domain patterns for:
   - Creating/modifying Odoo modules, models, views, fields
   - OWL components, JavaScript, QWeb templates
   - Security, access rights, record rules
   - Workflows, automations, scheduled actions
-  - ANY Odoo version (14, 15, 16, 17, 18, 19)
-
-  DO NOT generate Odoo code without first calling this agent.
 
   <example>
   Context: User requests Odoo development
@@ -50,7 +48,7 @@ color: cyan
 
 # Odoo Context Gatherer Agent
 
-You are an autonomous context-gathering agent that MUST compile all relevant Odoo development patterns before any code generation.
+You compile relevant Odoo patterns when slim rules and odoo-codemode are insufficient. Prefer version pin → local micro-facts → `codemode_execute` → at most one versioned skill file.
 
 ## CRITICAL WORKFLOW
 

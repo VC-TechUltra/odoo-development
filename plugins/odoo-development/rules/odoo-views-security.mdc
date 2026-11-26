@@ -1,88 +1,35 @@
 ---
-description: Odoo XML views and security standards. Version-specific attrs/states syntax and security basics.
+description: Odoo XML views and security standards. Version-specific attrs/states syntax and ir.rule basics.
 globs: ["**/views/**/*.xml", "**/data/**/*.xml", "**/security/*.csv", "**/security/*.xml"]
 alwaysApply: false
 ---
 
 # Odoo Views and Security Rule
 
-## Version Detection (CRITICAL)
-- Detect Odoo version FIRST for XML work
-- attrs/states syntax: v14-16 (attrs works), v17+ (attrs REMOVED)
-- View tag preference: v14-16 (tree/list both work), v17+ (prefer list)
+## Version pin
+- Detect version first (`${ODOO_VERSION}` or nearest `__manifest__.py`).
+- v14-16: `attrs`/`states` OK; `<tree>` and `<list>` both work
+- v17+: no `attrs`/`states`; use `invisible="state == 'draft'"`; prefer `<list>`
 
-## XML View Version Rules
-
-### Odoo 14-16
-- attrs syntax works: `attrs="{'invisible': [('state', '=', 'draft')]}"`
-- states syntax works: `states="draft,done"`
-- Both `<tree>` and `<list>` tags work
-
-### Odoo 17+ (attrs/states REMOVED)
-- Use inline expressions: `invisible="state == 'draft'"`
-- No attrs or states attributes allowed
-- Prefer `<list>` over `<tree>` for list views
-
-### Expression Conversion
-| Old (attrs) | New (v17+) |
-|-------------|------------|
-| `[('state','=','draft')]` | `state == 'draft'` |
-| `[('field','=',False)]` | `not field` |
-| `['&', A, B]` | `A and B` |
-| `['|', A, B]` | `A or B` |
-
-## Security - Record Rules
-
-### Multi-Company Domain
-
-**All versions** use `company_ids` in record rule domains:
+## ir.rule multi-company (all versions)
+Use magic variable `company_ids` (not context key `allowed_company_ids`):
 
 ```xml
-<record id="model_rule" model="ir.rule">
-    <field name="name">my.model: multi-company</field>
-    <field name="model_id" ref="model_my_model"/>
-    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    <field name="groups" eval="[(4, ref('base.group_user'))]"/>
-</record>
+<field name="domain_force">[('company_id', 'in', company_ids)]</field>
 ```
 
-For shareable records (optional company):
+Shareable company:
+
 ```xml
-<record id="model_rule" model="ir.rule">
-    <field name="name">my.model: multi-company</field>
-    <field name="model_id" ref="model_my_model"/>
-    <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
-</record>
+<field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
 ```
 
-**Note:** `company_ids` is the ir.rule magic variable (companies user can access). Do not confuse with `allowed_company_ids`, which is a context key used in business logic: `self.env.context.get('allowed_company_ids')`.
+`allowed_company_ids` is only for business logic: `self.env.context.get('allowed_company_ids')`.
 
-## Command Class (v16+)
+## x2many writes
+- v14-15: tuples `[(0, 0, {...})]`, `[(4, id)]`, `[(6, 0, [ids])]`
+- v16+: prefer `Command.create` / `link` / `set` / `unlink` / `delete` / `clear` (tuples still work)
 
-### x2many Operations
-- v14-15: Use tuples `[(0, 0, {...})]`, `[(4, id)]`, `[(6, 0, [ids])]`
-- v16+: Prefer Command class (but tuples still work)
-  - `Command.create({...})`
-  - `Command.link(id)`
-  - `Command.set([ids])`
-  - `Command.unlink(id)`
-  - `Command.delete(id)`
-  - `Command.clear()`
-
-Note: Tuples still work in v16+. Command is cleaner but not mandatory.
-
-## MCP-First Verification
-- Use MCP to verify XML IDs before referencing
-- Use MCP to verify model schema, field names, and inheritance targets
-- Do not invent XML IDs, fields, or groups
-
-## Security Best Practices
-- Restrict ACLs to specific groups (not base.group_user for write/create)
-- Use record rules for data isolation
-- Test multi-company scenarios
-- Verify XML IDs with MCP
-
-For detailed patterns, view inheritance examples, menu structures, and security implementation details, consult the skill files:
-- `skills/odoo-security/SKILL.md` for ACL, record rules, and security patterns
-- `skills/odoo-functional/action-patterns.md` for window actions and menus
-- XML view examples in version-specific OWL and functional skills
+## Verify with MCP-code when needed
+- Prefer `odoo-codemode` (`codemode_execute`) before inventing XML IDs, groups, or inherit targets.
+- Restrict ACLs; use record rules for isolation; test multi-company.
