@@ -7,9 +7,9 @@ description: odoo security patterns for acl, record rules, groups, portal access
 
 ## Router (token-first)
 1. Pin version: `${ODOO_VERSION}` or nearest `__manifest__.py`.
-2. Prefer slim `rules/odoo-views-security.mdc` — `ir.rule` uses `company_ids` (not `allowed_company_ids`).
-3. If need groups/XML IDs/schema: `odoo-codemode` → `codemode_search` → `codemode_execute`.
-4. If MCP unavailable: Read **one** `skills/odoo-security/odoo-security-guide-{version}.md` (never `-all`).
+2. Prefer slim rules + `skills/odoo-invariants.md` — `ir.rule` uses `company_ids` (not `allowed_company_ids`).
+3. If need groups/XML IDs/schema: `odoo-codemode` → `codemode_search` → `codemode_execute` (`odoo.compact.security`).
+4. If MCP unavailable: Read `skills/odoo-invariants.md`, then at most **one** `skills/odoo-security/odoo-security-guide-{version}.md` (never `-all`).
 5. Never invent groups, ACLs, or XML IDs.
 
 ## Optional offline patterns (Read only if needed)

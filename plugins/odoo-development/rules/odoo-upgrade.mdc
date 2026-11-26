@@ -17,4 +17,5 @@ alwaysApply: false
 1. State source and target version
 2. Identify impacted modules; preserve external IDs and semantics
 3. Apply incremental patches
-4. Verify schema/XML IDs with `odoo-codemode` (`codemode_execute`) when unsure
+4. Verify schema/XML IDs with `odoo-codemode` (`codemode_execute` / `odoo.compact.compare_versions`) when unsure
+5. Offline stable syntax: `skills/odoo-invariants.md`

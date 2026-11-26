@@ -8,5 +8,5 @@ description: odoo task-routing and planning skill. decides which odoo skill to u
 ## Router (token-first)
 1. Pin version: `${ODOO_VERSION}` or nearest `__manifest__.py`.
 2. Route to one specialized skill (backend / functional / owl / migration / security / testing / troubleshooting).
-3. Prefer slim local rules for stable syntax; use `odoo-codemode` for research.
+3. Prefer slim local rules + `skills/odoo-invariants.md` for stable syntax; use `odoo-codemode` for research.
 4. Do not load overlapping playbooks; keep planning short.

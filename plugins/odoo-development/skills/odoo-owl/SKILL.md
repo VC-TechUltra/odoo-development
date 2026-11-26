@@ -7,9 +7,9 @@ description: odoo frontend and owl patterns for components, assets, qweb, widget
 
 ## Router (token-first)
 1. Pin version: `${ODOO_VERSION}` or nearest `__manifest__.py` (OWL differs sharply by series).
-2. Prefer slim `rules/odoo-owl.mdc` (`useService` from `@web/core/utils/hooks`).
-3. If need registries/services/templates: `odoo-codemode` → `codemode_search` → `codemode_execute`.
-4. If MCP unavailable: Read **one** `skills/odoo-owl/odoo-owl-components-{version}.md` (never `-all`).
+2. Prefer slim rules + `skills/odoo-invariants.md` (`useService` / `registry` imports).
+3. If need registries/services/templates: `odoo-codemode` → `codemode_search` → `codemode_execute` (`odoo.compact.frontend_brief` / `owl_components`).
+4. If MCP unavailable: Read `skills/odoo-invariants.md`, then at most **one** `skills/odoo-owl/odoo-owl-components-{version}.md` (never `-all`).
 5. Never invent OWL hooks or service names.
 
 ## Optional offline patterns (Read only if needed)

@@ -7,7 +7,7 @@ description: odoo migration and version-routing guidance for version-specific mo
 
 ## Router (token-first)
 1. Pin source and target versions.
-2. Prefer slim `rules/odoo-upgrade.mdc` for stable break-change bullets.
+2. Prefer slim `rules/odoo-upgrade.mdc` + `skills/odoo-invariants.md` for stable break-change / syntax bullets.
 3. If need edition/source proof: `odoo-codemode` → `codemode_search` → `codemode_execute` (or `compare_versions` helpers).
 4. If MCP unavailable: Read **one** `skills/odoo-migration/odoo-version-knowledge-{version}.md` (never `-all`).
 5. Preserve external IDs; migrate incrementally.

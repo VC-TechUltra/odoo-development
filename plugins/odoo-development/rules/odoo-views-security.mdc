@@ -8,11 +8,12 @@ alwaysApply: false
 
 ## Version pin
 - Detect version first (`${ODOO_VERSION}` or nearest `__manifest__.py`).
+- Offline cheat-sheet: `skills/odoo-invariants.md`
 - v14-16: `attrs`/`states` OK; `<tree>` and `<list>` both work
-- v17+: no `attrs`/`states`; use `invisible="state == 'draft'"`; prefer `<list>`
+- v17+: no `attrs`/`states`; use `invisible="state == 'draft'"`; prefer `<list>`; prefer `view_mode` `list,form`
 
 ## ir.rule multi-company (all versions)
-Use magic variable `company_ids` (not context key `allowed_company_ids`):
+Magic variable `company_ids` (confirmed in core apps e.g. `sale.sale_order_comp_rule`). Not context key `allowed_company_ids`:
 
 ```xml
 <field name="domain_force">[('company_id', 'in', company_ids)]</field>
@@ -26,10 +27,12 @@ Shareable company:
 
 `allowed_company_ids` is only for business logic: `self.env.context.get('allowed_company_ids')`.
 
+## ACL CSV
+`id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink` — do not grant write/create/unlink to `base.group_user` by default.
+
 ## x2many writes
 - v14-15: tuples `[(0, 0, {...})]`, `[(4, id)]`, `[(6, 0, [ids])]`
 - v16+: prefer `Command.create` / `link` / `set` / `unlink` / `delete` / `clear` (tuples still work)
 
 ## Verify with MCP-code when needed
-- Prefer `odoo-codemode` (`codemode_execute`) before inventing XML IDs, groups, or inherit targets.
-- Restrict ACLs; use record rules for isolation; test multi-company.
+- Prefer `odoo-codemode` (`codemode_execute`, `odoo.compact.security` / `view_xpaths`) before inventing XML IDs, groups, or inherit targets.
