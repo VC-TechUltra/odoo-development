@@ -6,8 +6,8 @@ description: Odoo development plugin for backend, frontend, migration, security,
 # Odoo Development
 
 ## Router (token-first)
-1. Pin version: `${ODOO_VERSION}` or nearest `__manifest__.py`.
-2. Prefer slim rules + `skills/odoo-invariants.md` for stable syntax (cheaper than MCP).
+1. Pin version **16–19**: `${ODOO_VERSION}` or nearest `__manifest__.py` (pass `version: v16|v17|v18|v19` to codemode).
+2. Prefer slim rules + `skills/odoo-invariants.md` (mcp-code verified on v16–v19) for stable syntax.
 3. For schema / XML IDs / source / multi-fact research: `odoo-codemode` → `codemode_search` → `codemode_execute` (compact helpers).
 4. If MCP unavailable: Read `skills/odoo-invariants.md`, then at most **one** versioned skill file; never `-all`.
 5. Never invent fields, XML IDs, groups, or dependencies when MCP can confirm them.

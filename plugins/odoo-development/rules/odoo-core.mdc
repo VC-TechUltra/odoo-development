@@ -1,5 +1,5 @@
 ---
-description: Odoo backend implementation standards for models, manifests, ORM usage, and dependencies. Use for Python and module work across versions 14-19.
+description: Odoo backend implementation standards for models, manifests, ORM usage, and dependencies. Use for Python and module work across versions 16-19 (14-15 limited).
 globs: ["**/*.py", "**/__manifest__.py", "**/__init__.py"]
 alwaysApply: false
 ---
@@ -7,19 +7,19 @@ alwaysApply: false
 # Odoo Core Rule
 
 ## Version pin
-- Detect version first: `${ODOO_VERSION}` or nearest `__manifest__.py` series (`18.0.x` → 18).
+- Detect version first: `${ODOO_VERSION}` or nearest `__manifest__.py` series (`16.0.x` → 16 … `19.0.x` → 19).
+- Primary support: **16–19**. Offline cheat-sheet: `skills/odoo-invariants.md` (mcp-code verified on v16–v19).
 - Stable syntax below is cheaper than an MCP roundtrip; use `odoo-codemode` for schema/XML IDs/source.
-- Offline cheat-sheet: `skills/odoo-invariants.md`
 
-## Stable syntax (bake these)
-- v14: `@api.multi` deprecated; `track_visibility='onchange'`; x2many tuples OK
-- v15: `@api.multi` removed; `tracking=True`
-- v16+: prefer `from odoo.fields import Command` for x2many (tuples still work)
-- v17+: `@api.model_create_multi` for create; no `attrs`/`states` in views
+## Stable syntax (16–19)
+- v16+: prefer `from odoo.fields import Command` for x2many (tuples still work); `@api.model_create_multi` recommended
+- v17+: `@api.model_create_multi` mandatory for create; no `attrs`/`states` in views; `from odoo.tools import SQL` available
 - v18+: `_check_company_auto = True`; `check_company=True` on company-scoped relations; type hints recommended
-- v19: type hints and `from odoo.tools import SQL` recommended for security (not mandatory for all custom modules)
+- v19: type hints and `SQL()` recommended for security (not mandatory for all custom modules)
+- Limited: v14–15 differ (`@api.multi`, `track_visibility`) — do not invent; confirm before generating
 
 ## Verify with MCP-code when needed
-- Prefer `codemode_search` → `codemode_execute` (helpers: `odoo.compact.implementation_brief`, `field`, `method_overrides`).
+- Prefer `codemode_search` → `codemode_execute` with pinned `version` (`v16`|`v17`|`v18`|`v19`).
+- Helpers: `odoo.compact.implementation_brief`, `field`, `method_overrides`, `compare_versions`.
 - Do not invent fields, XML IDs, groups, or dependencies.
 - Prefer batch-safe ORM; avoid unnecessary `sudo()`; keep manifest/security/views/tests aligned.

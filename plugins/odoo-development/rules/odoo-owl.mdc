@@ -1,5 +1,5 @@
 ---
-description: Odoo frontend and OWL standards for static/src JS/TS/XML/SCSS. Use for OWL components and assets.
+description: Odoo frontend and OWL standards for static/src JS/TS/XML/SCSS across versions 16-19.
 globs: ["**/static/src/**/*.js", "**/static/src/**/*.ts", "**/static/src/**/*.xml", "**/static/src/**/*.scss"]
 alwaysApply: false
 ---
@@ -7,18 +7,18 @@ alwaysApply: false
 # Odoo OWL Rule
 
 ## Version pin
-- Detect version first (`${ODOO_VERSION}` or nearest `__manifest__.py`).
+- Detect version first (`${ODOO_VERSION}` or nearest `__manifest__.py`). Primary: **16–19**.
 - Offline cheat-sheet: `skills/odoo-invariants.md`
-- OWL: v14 none (legacy Widget); v15 OWL 1.x; v16-18 OWL 2.x; v19+ OWL 3.x (stricter static props).
+- OWL: v16–v18 OWL 2.x; v19+ OWL 3.x (stricter static props). (v14–15 limited / different.)
 
-## Stable syntax (v16+)
+## Stable syntax (v16–v19)
 - `/** @odoo-module **/`
 - `import { Component, useState } from "@odoo/owl"`
-- `import { useService } from "@web/core/utils/hooks"` (not `@odoo/owl`) — `web/static/src/core/utils/hooks.js`
+- `import { useService } from "@web/core/utils/hooks"` (not `@odoo/owl`) — confirmed `web/static/src/core/utils/hooks.js` on **v16, v17, v18, v19**
 - `import { registry } from "@web/core/registry"` for actions / systray / services
 - Register assets under `web.assets_backend` (or website bundles) in `__manifest__.py`
 - Do not invent hooks (e.g. fictional `useVisible` / `useIntersectionObserver`)
 
 ## Verify with MCP-code when needed
-- Prefer `codemode_search` → `codemode_execute` (`odoo.compact.frontend_brief`, `owl_components`, `owl_templates`).
+- Prefer `codemode_search` → `codemode_execute` with pinned `version` (`odoo.compact.frontend_brief`, `owl_components`, `owl_templates`).
 - Keep components small; sanitize `t-esc`; do not expose secrets in templates.

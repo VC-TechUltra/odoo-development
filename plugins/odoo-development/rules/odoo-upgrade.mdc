@@ -1,21 +1,20 @@
 ---
-description: Odoo migration and upgrade guardrails. Use for upgrade tasks and deprecated-pattern cleanup.
+description: Odoo migration and upgrade guardrails for paths among versions 16-19. Use for upgrade tasks and deprecated-pattern cleanup.
 globs: ["**/migrations/**", "**/upgrades/**"]
 alwaysApply: false
 ---
 
 # Odoo Upgrade Rule
 
-## Migration paths
-- 14 → 15: remove `@api.multi`; `track_visibility` → `tracking`
-- 15 → 16: prefer `Command`; `@api.model_create_multi`
-- 16 → 17: remove `attrs`/`states`; inline modifiers; prefer `<list>`
+## Migration paths (16–19 focus)
+- 16 → 17: remove `attrs`/`states`; inline modifiers; prefer `<list>` / `list,form`; `@api.model_create_multi`; `SQL()` available
 - 17 → 18: `_check_company_auto`; `check_company=True`; type hints recommended
-- 18 → 19: type hints / `SQL()` strongly recommended (not mandatory for all custom modules)
+- 18 → 19: type hints / `SQL()` strongly recommended (not mandatory for all custom modules); OWL 3.x stricter props
+- Across 16–19: keep `ir.rule` domains on `company_ids` (do not “migrate” to `allowed_company_ids`)
 
 ## Workflow
-1. State source and target version
+1. State source and target version (pin mcp-code `version` to v16|v17|v18|v19)
 2. Identify impacted modules; preserve external IDs and semantics
 3. Apply incremental patches
-4. Verify schema/XML IDs with `odoo-codemode` (`codemode_execute` / `odoo.compact.compare_versions`) when unsure
+4. Verify with `odoo-codemode` (`codemode_execute` / `odoo.compact.compare_versions`) when unsure
 5. Offline stable syntax: `skills/odoo-invariants.md`

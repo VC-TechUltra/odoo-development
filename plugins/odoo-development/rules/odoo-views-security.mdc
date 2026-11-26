@@ -1,5 +1,5 @@
 ---
-description: Odoo XML views and security standards. Version-specific attrs/states syntax and ir.rule basics.
+description: Odoo XML views and security standards for versions 16-19. attrs/states, list vs tree, and ir.rule company_ids.
 globs: ["**/views/**/*.xml", "**/data/**/*.xml", "**/security/*.csv", "**/security/*.xml"]
 alwaysApply: false
 ---
@@ -7,13 +7,13 @@ alwaysApply: false
 # Odoo Views and Security Rule
 
 ## Version pin
-- Detect version first (`${ODOO_VERSION}` or nearest `__manifest__.py`).
-- Offline cheat-sheet: `skills/odoo-invariants.md`
-- v14-16: `attrs`/`states` OK; `<tree>` and `<list>` both work
-- v17+: no `attrs`/`states`; use `invisible="state == 'draft'"`; prefer `<list>`; prefer `view_mode` `list,form`
+- Detect version first (`${ODOO_VERSION}` or nearest `__manifest__.py`). Primary: **16–19**.
+- Offline cheat-sheet: `skills/odoo-invariants.md` (verified v16–v19 via mcp-code).
+- **v16:** `attrs`/`states` OK; `<tree>` and `view_mode` `tree,form` normal
+- **v17–v19:** no `attrs`/`states`; use `invisible="state == 'draft'"`; prefer `<list>` and `view_mode` `list,form`
 
-## ir.rule multi-company (all versions)
-Magic variable `company_ids` (confirmed in core apps e.g. `sale.sale_order_comp_rule`). Not context key `allowed_company_ids`:
+## ir.rule multi-company (v16–v19)
+Magic variable `company_ids` on all of 16–19 (confirmed `sale.sale_order_comp_rule` on each). Not context key `allowed_company_ids`:
 
 ```xml
 <field name="domain_force">[('company_id', 'in', company_ids)]</field>
@@ -31,8 +31,7 @@ Shareable company:
 `id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink` — do not grant write/create/unlink to `base.group_user` by default.
 
 ## x2many writes
-- v14-15: tuples `[(0, 0, {...})]`, `[(4, id)]`, `[(6, 0, [ids])]`
 - v16+: prefer `Command.create` / `link` / `set` / `unlink` / `delete` / `clear` (tuples still work)
 
 ## Verify with MCP-code when needed
-- Prefer `odoo-codemode` (`codemode_execute`, `odoo.compact.security` / `view_xpaths`) before inventing XML IDs, groups, or inherit targets.
+- Prefer `odoo-codemode` with pinned `version` (`codemode_execute`, `odoo.compact.security` / `view_xpaths`) before inventing XML IDs, groups, or inherit targets.
